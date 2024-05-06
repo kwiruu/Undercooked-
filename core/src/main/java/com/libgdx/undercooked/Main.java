@@ -30,13 +30,11 @@ public class Main extends ApplicationAdapter {
     private OrthogonalTiledMapRenderer tmr;
     private TiledMap map;
     private Box2DDebugRenderer b2dr;
-    private Texture backgroundTexture1,backgroundTexture2,backgroundTexture3,backgroundTexture4,backgroundTexture5;
-
     private World world;
     private Body player;
     private SpriteBatch batch;
     private Texture texture;
-
+    private Texture[] test_map_textures;
 
     @Override
     public void create() {
@@ -57,14 +55,16 @@ public class Main extends ApplicationAdapter {
         map = new TmxMapLoader().load("assets/maps/test_map.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
-        // ako nalang ge image kay impossible ang 2k nga sriptes lmao
-        backgroundTexture1 = new Texture("assets/maps/test_map/test_map_blackwall.png");
-        backgroundTexture2 = new Texture("assets/maps/test_map/test_map_wall.png");
-        backgroundTexture3 = new Texture("assets/maps/test_map/test_map_behind_player.png");
-        backgroundTexture4 = new Texture("assets/maps/test_map/test_map_furnitures.png");
-        backgroundTexture5 = new Texture("assets/maps/test_map/test_map_on-top.png");
-
         TiledObjectUtil.parseTiledObjectLayer(world,map.getLayers().get("collision_layer").getObjects());
+        // ako nalang ge image kay impossible ang 2k nga sriptes lmao
+        // for text_map!
+        test_map_textures = new Texture[] {
+            new Texture("assets/maps/test_map/test_map_blackwall.png"),
+            new Texture("assets/maps/test_map/test_map_wall.png"),
+            new Texture("assets/maps/test_map/test_map_furnitures.png"),
+            new Texture("assets/maps/test_map/test_map_on-top.png"),
+            new Texture("assets/maps/test_map/test_map_behind_player.png"),
+        };
     }
 
     @Override
@@ -75,33 +75,27 @@ public class Main extends ApplicationAdapter {
 
         batch.begin();
 
-        // manually add the images by layer!
-        batch.draw(backgroundTexture1, 0, 0);
-        batch.draw(backgroundTexture2, 0, 0);
-        batch.draw(backgroundTexture4, 0, 0);
-        batch.draw(backgroundTexture5, 0, 0);
-        batch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
-        batch.draw(backgroundTexture3, 0, 0);
-
-        batch.end();
-
-        for (int i = 0; i < map.getLayers().getCount(); i++) {
-            if (shouldRenderLayer(i)) {
-                tmr.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
+        // for test_map drawing/rendering!!!
+        int i=0;
+        for (Texture texturez : test_map_textures) {
+            i++;
+            if(i==5){
+                // gamit ani kay e check niya if naa nakas behind_player nga index,
+                // if so then e draw niya ang player first!
+                batch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
+                batch.draw(texturez, 0, 0);
+            }
+            else{
+                batch.draw(texturez, 0, 0);
             }
         }
+        // end or test_map rendering!!!
+
+        batch.end();
 
         b2dr.render(world, camera.combined.scl(PPM));
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-    }
-
-    private boolean shouldRenderLayer(int layerIndex) {
-        // Add your logic here to determine which layers to render
-        // For example, you can check the layer names or indices
-        // Return true for layers you want to render, false for others
-        String layerName = map.getLayers().get(layerIndex).getName();
-        return layerName.equals("background_layer") || layerName.equals("object_layer");
     }
 
     private void update(float deltaTime) {
@@ -155,15 +149,8 @@ public class Main extends ApplicationAdapter {
         b2dr.dispose();
         batch.dispose();
         texture.dispose();
-        backgroundTexture1.dispose();
-        backgroundTexture2.dispose();
-        backgroundTexture3.dispose();
-        backgroundTexture4.dispose();
-        backgroundTexture5.dispose();
         tmr.dispose();
         map.dispose();
-
-
     }
 
     public Body createBox(int x, int y, int width, int height, boolean isStatic){
