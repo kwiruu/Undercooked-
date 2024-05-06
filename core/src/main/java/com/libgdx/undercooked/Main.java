@@ -7,9 +7,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
@@ -20,6 +25,8 @@ public class Main extends ApplicationAdapter {
     private boolean DEBUG = false;
     private final float SCALE= 2.0f;
     private OrthographicCamera camera;
+    private OrthogonalTiledMapRenderer tmr;
+    private TiledMap map;
     private Box2DDebugRenderer b2dr;
 
     private World world;
@@ -36,26 +43,33 @@ public class Main extends ApplicationAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w/SCALE, h/SCALE);
 
-        world = new World(new Vector2(0,0f), false);
+        world = new World(new Vector2(0f,0f), false);
         b2dr = new Box2DDebugRenderer();
 
-        player = createBox(2,10,32,64,false);
-        Body platform = createBox(0, 0, 64, 32, true);
+        player = createBox(8,2,32,32,false);
+        Body platform = createBox(8, 0, 64, 32, true);
 
         batch = new SpriteBatch();
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
+
+        map = new TmxMapLoader().load("assets/maps/test_map.tmx");
+        tmr = new OrthogonalTiledMapRenderer(map);
+
+        TiledObjectUtil.parseTiledObjectLayer(world,map.getLayers().get("collision_layer").getObjects());
     }
 
     @Override
     public void render() {
 
         update(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glClearColor(0f,0f,0f,1f);
+        Gdx.gl.glClearColor(1f,1f,1f,1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(texture,player.getPosition().x * PPM - (texture.getWidth()/2),player.getPosition().y * PPM - (texture.getHeight()/2));
+        batch.draw(texture,player.getPosition().x * PPM - (texture.getWidth()/2),player.getPosition().y * PPM - (texture.getHeight()/4));
         batch.end();
+
+        tmr.render();
 
         b2dr.render(world, camera.combined.scl(PPM));
 
@@ -67,7 +81,7 @@ public class Main extends ApplicationAdapter {
 
         inputUpdate(deltaTime);
         cameraUpdate(deltaTime);
-
+        tmr.setView(camera);
         batch.setProjectionMatrix(camera.combined);
     }
 
@@ -111,6 +125,9 @@ public class Main extends ApplicationAdapter {
         world.dispose();
         b2dr.dispose();
         batch.dispose();
+        texture.dispose();
+        tmr.dispose();
+        map.dispose();
     }
 
     public Body createBox(int x, int y, int width, int height, boolean isStatic){
@@ -122,7 +139,7 @@ public class Main extends ApplicationAdapter {
         else
             def.type = BodyDef.BodyType.DynamicBody;
 
-        def.position.set(x/PPM,y/PPM);
+        def.position.set(x,y);
         def.fixedRotation = true;
         pBody = world.createBody(def);
         PolygonShape shape = new PolygonShape();
