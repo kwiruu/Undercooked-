@@ -50,7 +50,6 @@ public class Main extends ApplicationAdapter {
         b2dr = new Box2DDebugRenderer();
 
         player = createBox(8,2,16,8,false);
-        Body platform = createBox(8, 0, 64, 32, true);
 
         batch = new SpriteBatch();
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
@@ -79,8 +78,11 @@ public class Main extends ApplicationAdapter {
         // manually add the images by layer!
         batch.draw(backgroundTexture1, 0, 0);
         batch.draw(backgroundTexture2, 0, 0);
+        batch.draw(backgroundTexture4, 0, 0);
+        batch.draw(backgroundTexture5, 0, 0);
         batch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
         batch.draw(backgroundTexture3, 0, 0);
+
         batch.end();
 
         for (int i = 0; i < map.getLayers().getCount(); i++) {
