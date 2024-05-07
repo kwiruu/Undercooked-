@@ -3,6 +3,7 @@ package com.libgdx.undercooked;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -70,6 +71,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+
         update(Gdx.graphics.getDeltaTime());
         Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
