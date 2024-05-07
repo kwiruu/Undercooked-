@@ -15,12 +15,10 @@ public class PlayerManager {
     public static Body player;
     private Texture texture;
     private SpriteBatch playerBatch;
-    private TextureAtlas textureAtlas;
     private String lastDirection;
 
 
-    public PlayerManager(World world, TextureAtlas textureAtlasz) {
-        this.textureAtlas = textureAtlasz;
+    public PlayerManager(World world) {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
@@ -59,14 +57,14 @@ public class PlayerManager {
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
     }
 
+    //used to set the last direction the player is facing to render it in idle!
     public void setLastDirection(String direction) {
         this.lastDirection = direction;
     }
-
+    //used to determine the last direction the player is facing to render it in idle!
     public String getLastDirection() {
         return lastDirection;
     }
-
 
     public Vector2 getPosition() {
         return player.getPosition();

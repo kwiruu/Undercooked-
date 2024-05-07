@@ -57,7 +57,7 @@ public class Main extends ApplicationAdapter {
         //for animation!
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
 
-        player = new PlayerManager(world, textureAtlas);
+        player = new PlayerManager(world);
         batch = player.getBatch();
 
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
@@ -79,9 +79,8 @@ public class Main extends ApplicationAdapter {
 
         idle_down = new Animation<>(frameDuration, textureAtlas.findRegions("idle_down"));
         animations = new HashMap<>();
+        //call all of the animations needed!
         initializeAnimations();
-
-
         TextureRegion currentFrame = new TextureRegion();
     }
     @Override
@@ -91,18 +90,21 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         elapsedTime += Gdx.graphics.getDeltaTime();
 
+        //get the animations
         Animation<TextureRegion> currentAnimation = determineCurrentAnimation();
-
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
 
         batch.begin();
 
         // for test_map drawing/rendering!!!
+        // test_map_texures if for the map layers & player layering, currentFrame is for the player animation!
         drawLayerTextures(test_map_textures, currentFrame);
 
-        // end or test_map rendering!!!
+        // end the test_map rendering!!!
         batch.end();
-        b2dr.render(world, camera.combined.scl(PPM));
+
+        //render this to show collision / objects!
+        //b2dr.render(world, camera.combined.scl(PPM));
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
@@ -117,21 +119,6 @@ public class Main extends ApplicationAdapter {
                 batch.draw(texturez, 0, 0);
             }
         }
-    }
-
-
-    public void initializeAnimations() {
-        System.out.println("initialiing animations!");
-        // running anim
-        animations.put("running_down", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_down")));
-        animations.put("running_top", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_top")));
-        animations.put("running_left", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_left")));
-        animations.put("running_right", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_right")));
-        // idle anim
-        animations.put("idle_down", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_down")));
-        animations.put("idle_top", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_up")));
-        animations.put("idle_left", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_left")));
-        animations.put("idle_right", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_right")));
     }
 
     private void update(float deltaTime) {
@@ -187,5 +174,19 @@ public class Main extends ApplicationAdapter {
         textureAtlas.dispose();
         tmr.dispose();
         map.dispose();
+    }
+
+    public void initializeAnimations() {
+        System.out.println("initialiing animations!");
+        // running anim
+        animations.put("running_down", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_down")));
+        animations.put("running_top", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_top")));
+        animations.put("running_left", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_left")));
+        animations.put("running_right", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("running_right")));
+        // idle anim
+        animations.put("idle_down", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_down")));
+        animations.put("idle_top", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_up")));
+        animations.put("idle_left", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_left")));
+        animations.put("idle_right", new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, textureAtlas.findRegions("idle_right")));
     }
 }
