@@ -2,7 +2,7 @@ package com.libgdx.undercooked.entities;
 
 public class FoodSource extends Station {
     public FoodSource(float x, float y, int width, int height, boolean isStatic, FoodType foodType) {
-        super(x, y, width, height, isStatic);
+        super(x, y, width, height);
         containedItem = new FoodItem(foodType);
     }
     // TODO station to continue

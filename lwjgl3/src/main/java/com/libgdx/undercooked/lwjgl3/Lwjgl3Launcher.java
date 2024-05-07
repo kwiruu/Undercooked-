@@ -18,6 +18,7 @@ public class Lwjgl3Launcher {
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Undercooked!");
+        configuration.setWindowedMode(1400, 800);
         configuration.useVsync(true);
         //// Limits FPS to the refresh rate of the currently active monitor.
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate);

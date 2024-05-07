@@ -3,10 +3,11 @@ package com.libgdx.undercooked;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+
+import java.util.HashMap;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
@@ -14,6 +15,8 @@ public class PlayerManager {
     public static Body player;
     private Texture texture;
     private SpriteBatch playerBatch;
+    private String lastDirection;
+
 
     public PlayerManager(World world) {
         float w = Gdx.graphics.getWidth();
@@ -21,13 +24,15 @@ public class PlayerManager {
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
         player = createBox(world, 8, 2, 16, 8, false);
         playerBatch = new SpriteBatch();
+        lastDirection = "down";
     }
+
 
     public SpriteBatch getBatch(){
         return playerBatch;
     }
 
-    public static void inputUpdate(float deltaTime) {
+    public void inputUpdate(float deltaTime) {
         float horizontalForce = 0;
         float verticalForce = 0;
 
@@ -52,15 +57,13 @@ public class PlayerManager {
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
     }
 
-    public void begin(){
-        playerBatch.begin();
+    //used to set the last direction the player is facing to render it in idle!
+    public void setLastDirection(String direction) {
+        this.lastDirection = direction;
     }
-    public void end(){
-        playerBatch.end();
-    }
-
-    public void render() {
-        playerBatch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
+    //used to determine the last direction the player is facing to render it in idle!
+    public String getLastDirection() {
+        return lastDirection;
     }
 
     public Vector2 getPosition() {
@@ -93,8 +96,5 @@ public class PlayerManager {
         return pBody;
     }
 
-    public void draw(Texture texture, int i, int i1) {
-        playerBatch.draw(texture,i,i1);
-    }
 }
 
