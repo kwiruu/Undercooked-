@@ -2,33 +2,33 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-
 import java.util.HashMap;
-
+import java.util.Map;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class PlayerManager {
-    public static Body player;
-    private Texture texture;
-    private SpriteBatch playerBatch;
+    static Body player;
+    private final TextureAtlas textureAtlas;
+    private final SpriteBatch playerBatch;
     private String lastDirection;
-
+    private final Map<String, Animation<TextureRegion>> animations;
 
     public PlayerManager(World world) {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
+        textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         player = createBox(world, 8, 2, 16, 8, false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
+        animations = new HashMap<>();
+        initializeAnimations();
     }
 
-
-    public SpriteBatch getBatch(){
+    public SpriteBatch getBatch() {
         return playerBatch;
     }
 
@@ -48,31 +48,11 @@ public class PlayerManager {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             horizontalForce += 1;
         }
-
         if (horizontalForce != 0 && verticalForce != 0) {
             verticalForce *= 0.7;
             horizontalForce *= 0.7;
         }
-
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
-    }
-
-    //used to set the last direction the player is facing to render it in idle!
-    public void setLastDirection(String direction) {
-        this.lastDirection = direction;
-    }
-    //used to determine the last direction the player is facing to render it in idle!
-    public String getLastDirection() {
-        return lastDirection;
-    }
-
-    public Vector2 getPosition() {
-        return player.getPosition();
-    }
-
-    public void dispose(){
-        playerBatch.dispose();
-        texture.dispose();
     }
 
     private Body createBox(World world, int x, int y, int width, int height, boolean isStatic) {
@@ -88,7 +68,7 @@ public class PlayerManager {
         def.fixedRotation = true;
         pBody = world.createBody(def);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
+        shape.setAsBox((float) width / 2 / PPM, (float) height / 2 / PPM);
 
         pBody.createFixture(shape, 1.0f);
 
@@ -96,5 +76,64 @@ public class PlayerManager {
         return pBody;
     }
 
-}
+    private void initializeAnimations() {
+        // running anim
+        animations.put("running_down", new Animation<>(0.09f, textureAtlas.findRegions("running_down")));
+        animations.put("running_top", new Animation<>(0.09f, textureAtlas.findRegions("running_top")));
+        animations.put("running_left", new Animation<>(0.09f, textureAtlas.findRegions("running_left")));
+        animations.put("running_right", new Animation<>(0.09f, textureAtlas.findRegions("running_right")));
+        // idle anim
+        animations.put("idle_down", new Animation<>(0.09f, textureAtlas.findRegions("idle_down")));
+        animations.put("idle_top", new Animation<>(0.09f, textureAtlas.findRegions("idle_up")));
+        animations.put("idle_left", new Animation<>(0.09f, textureAtlas.findRegions("idle_left")));
+        animations.put("idle_right", new Animation<>(0.09f, textureAtlas.findRegions("idle_right")));
+    }
 
+    public Animation<TextureRegion> getCurrentAnimation() {
+        return determineCurrentAnimation();
+    }
+
+    Animation<TextureRegion> determineCurrentAnimation() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            setLastDirection("top");
+            return animations.get("running_top");
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            setLastDirection("left");
+            return animations.get("running_left");
+        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            setLastDirection("down");
+            return animations.get("running_down");
+        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            setLastDirection("right");
+            return animations.get("running_right");
+        } else {
+            // If no movement keys are pressed, return the idle animation based on the last movement direction
+            String lastDir = getLastDirection();
+            if (lastDir != null) {
+                return animations.get("idle_" + lastDir);
+            } else {
+                // Default to idle_down if no valid last movement direction is found
+                return animations.get("idle_down");
+            }
+        }
+    }
+
+    public void dispose() {
+        playerBatch.dispose();
+        textureAtlas.dispose();
+    }
+
+    public void setLastDirection(String direction) {
+        this.lastDirection = direction;
+    }
+
+    public String getLastDirection() {
+        return lastDirection;
+    }
+
+    public Vector2 getPosition() {
+        return player.getPosition();
+    }
+
+
+}
