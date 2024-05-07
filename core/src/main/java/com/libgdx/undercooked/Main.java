@@ -20,18 +20,16 @@ import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
-//import static jdk.jfr.internal.consumer.EventLog.update;
-
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private boolean DEBUG = false;
-    private final float SCALE= 2.0f;
+    private final float SCALE= 1.5f;
     private OrthographicCamera camera;
     private OrthogonalTiledMapRenderer tmr;
     private TiledMap map;
     private Box2DDebugRenderer b2dr;
     private World world;
-    private Body player;
+    private PlayerManager player;
     private SpriteBatch batch;
     private Texture texture;
     private Texture[] test_map_textures;
@@ -47,9 +45,9 @@ public class Main extends ApplicationAdapter {
         world = new World(new Vector2(0f,0f), false);
         b2dr = new Box2DDebugRenderer();
 
-        player = createBox(8,2,16,8,false);
+        player = new PlayerManager(world);
+        batch = player.getBatch();
 
-        batch = new SpriteBatch();
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
 
         map = new TmxMapLoader().load("assets/maps/test_map.tmx");
@@ -66,7 +64,6 @@ public class Main extends ApplicationAdapter {
             new Texture("assets/maps/test_map/test_map_behind_player.png"),
         };
     }
-
     @Override
     public void render() {
         update(Gdx.graphics.getDeltaTime());
@@ -90,9 +87,7 @@ public class Main extends ApplicationAdapter {
             }
         }
         // end or test_map rendering!!!
-
         batch.end();
-
         b2dr.render(world, camera.combined.scl(PPM));
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
@@ -100,33 +95,10 @@ public class Main extends ApplicationAdapter {
 
     private void update(float deltaTime) {
         world.step(1/60f, 6, 2);
-
-        inputUpdate(deltaTime);
+        player.inputUpdate(deltaTime);
         cameraUpdate(deltaTime);
         tmr.setView(camera);
         batch.setProjectionMatrix(camera.combined);
-    }
-
-    public void inputUpdate(float deltaTime){
-
-        float horizontalForce = 0;
-        float verticalForce = 0;
-
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            verticalForce += 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            horizontalForce -= 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            verticalForce -=1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            horizontalForce += 1;
-        }
-
-        player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
-        player.setLinearVelocity(player.getLinearVelocity().x,verticalForce * 5);
     }
 
     public void cameraUpdate(float deltaTime){
@@ -134,44 +106,19 @@ public class Main extends ApplicationAdapter {
         position.x = player.getPosition().x * PPM;
         position.y = player.getPosition().y * PPM;
         camera.position.set(position);
-
         camera.update();
     }
-
     @Override
     public void resize(int width, int height){
         camera.setToOrtho(false,width/ SCALE,height/ SCALE);
     }
-
     @Override
     public void dispose() {
         world.dispose();
         b2dr.dispose();
-        batch.dispose();
+        player.dispose();
         texture.dispose();
         tmr.dispose();
         map.dispose();
     }
-
-    public Body createBox(int x, int y, int width, int height, boolean isStatic){
-        Body pBody;
-        BodyDef def = new BodyDef();
-
-        if(isStatic)
-            def.type = BodyDef.BodyType.StaticBody;
-        else
-            def.type = BodyDef.BodyType.DynamicBody;
-
-        def.position.set(x,y);
-        def.fixedRotation = true;
-        pBody = world.createBody(def);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/2 / PPM,height/2/ PPM);
-
-        pBody.createFixture(shape,1.0f);
-
-        shape.dispose();
-        return pBody;
-    }
-
 }

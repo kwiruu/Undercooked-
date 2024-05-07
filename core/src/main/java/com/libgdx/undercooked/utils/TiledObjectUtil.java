@@ -20,7 +20,7 @@ public class TiledObjectUtil {
 
             Body body;
             BodyDef bodyDef = new BodyDef();
-            bodyDef.type = BodyDef.BodyType.StaticBody; // You might need to adjust this based on your needs
+            bodyDef.type = BodyDef.BodyType.StaticBody;
 
             body = world.createBody(bodyDef);
             body.createFixture(shape, 1.0f);
