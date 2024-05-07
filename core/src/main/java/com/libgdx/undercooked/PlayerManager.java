@@ -2,6 +2,7 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -80,21 +81,22 @@ public class PlayerManager {
             def.type = BodyDef.BodyType.StaticBody;
         else
             def.type = BodyDef.BodyType.DynamicBody;
-
         def.position.set(x, y);
         def.fixedRotation = true;
         pBody = world.createBody(def);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
-
         pBody.createFixture(shape, 1.0f);
-
         shape.dispose();
         return pBody;
     }
 
-    public void draw(Texture texture, int i, int i1) {
+    public void draw(Texture texture, float i, float i1) {
         playerBatch.draw(texture,i,i1);
+    }
+
+    public OrthographicCamera getCamera() {
+        return getCamera();
     }
 }
 

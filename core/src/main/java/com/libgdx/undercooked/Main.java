@@ -25,14 +25,11 @@ public class Main extends ApplicationAdapter {
     private boolean DEBUG = false;
     private final float SCALE= 1.5f;
     private OrthographicCamera camera;
-    private OrthogonalTiledMapRenderer tmr;
-    private TiledMap map;
     private Box2DDebugRenderer b2dr;
     private World world;
     private PlayerManager player;
     private SpriteBatch batch;
-    private Texture texture;
-    private Texture[] test_map_textures;
+    private MapManager map;
 
     @Override
     public void create() {
@@ -48,21 +45,7 @@ public class Main extends ApplicationAdapter {
         player = new PlayerManager(world);
         batch = player.getBatch();
 
-        texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
-
-        map = new TmxMapLoader().load("assets/maps/test_map.tmx");
-        tmr = new OrthogonalTiledMapRenderer(map);
-
-        TiledObjectUtil.parseTiledObjectLayer(world,map.getLayers().get("collision_layer").getObjects());
-        // ako nalang ge image kay impossible ang 2k nga sriptes lmao
-        // for text_map!
-        test_map_textures = new Texture[] {
-            new Texture("assets/maps/test_map/test_map_blackwall.png"),
-            new Texture("assets/maps/test_map/test_map_wall.png"),
-            new Texture("assets/maps/test_map/test_map_furnitures.png"),
-            new Texture("assets/maps/test_map/test_map_on-top.png"),
-            new Texture("assets/maps/test_map/test_map_behind_player.png"),
-        };
+        map = new MapManager(world);
     }
     @Override
     public void render() {
@@ -71,25 +54,16 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
-        // for test_map drawing/rendering!!!
         int i=0;
-        for (Texture texturez : test_map_textures) {
+        for (Texture texturez : map.test_map_textures) {
             i++;
             if(i==5){
-                // gamit ani kay e check niya if naa nakas behind_player nga index,
-                // if so then e draw niya ang player first!
-                batch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
-                batch.draw(texturez, 0, 0);
+                player.render();
             }
-            else{
                 batch.draw(texturez, 0, 0);
-            }
         }
-        // end or test_map rendering!!!
         batch.end();
         b2dr.render(world, camera.combined.scl(PPM));
-
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
 
@@ -97,7 +71,7 @@ public class Main extends ApplicationAdapter {
         world.step(1/60f, 6, 2);
         player.inputUpdate(deltaTime);
         cameraUpdate(deltaTime);
-        tmr.setView(camera);
+        map.tmr.setView(camera);
         batch.setProjectionMatrix(camera.combined);
     }
 
@@ -117,8 +91,6 @@ public class Main extends ApplicationAdapter {
         world.dispose();
         b2dr.dispose();
         player.dispose();
-        texture.dispose();
-        tmr.dispose();
         map.dispose();
     }
 }
