@@ -21,23 +21,19 @@ import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
-//import static jdk.jfr.internal.consumer.EventLog.update;
-
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private boolean DEBUG = false;
-    private final float SCALE= 2.0f;
+    private final float SCALE= 1.5f;
     private OrthographicCamera camera;
     private OrthogonalTiledMapRenderer tmr;
     private TiledMap map;
     private Box2DDebugRenderer b2dr;
-    private Texture backgroundTexture1,backgroundTexture2,backgroundTexture3,backgroundTexture4,backgroundTexture5;
-
     private World world;
-    private Body player;
+    private PlayerManager player;
     private SpriteBatch batch;
     private Texture texture;
-
+    private Texture[] test_map_textures;
 
     @Override
     public void create() {
@@ -50,25 +46,25 @@ public class Main extends ApplicationAdapter {
         world = new World(new Vector2(0f,0f), false);
         b2dr = new Box2DDebugRenderer();
 
-        player = createBox(8,2,16,8,false);
-        Body platform = createBox(8, 0, 64, 32, true);
+        player = new PlayerManager(world);
+        batch = player.getBatch();
 
-        batch = new SpriteBatch();
         texture = new Texture("assets/sprites/Chef1/idle_down_01.png");
 
         map = new TmxMapLoader().load("assets/maps/test_map.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
-        // ako nalang ge image kay impossible ang 2k nga sriptes lmao
-        backgroundTexture1 = new Texture("assets/maps/test_map/test_map_blackwall.png");
-        backgroundTexture2 = new Texture("assets/maps/test_map/test_map_wall.png");
-        backgroundTexture3 = new Texture("assets/maps/test_map/test_map_behind_player.png");
-        backgroundTexture4 = new Texture("assets/maps/test_map/test_map_furnitures.png");
-        backgroundTexture5 = new Texture("assets/maps/test_map/test_map_on-top.png");
-
         TiledObjectUtil.parseTiledObjectLayer(world,map.getLayers().get("collision_layer").getObjects());
+        // ako nalang ge image kay impossible ang 2k nga sriptes lmao
+        // for text_map!
+        test_map_textures = new Texture[] {
+            new Texture("assets/maps/test_map/test_map_blackwall.png"),
+            new Texture("assets/maps/test_map/test_map_wall.png"),
+            new Texture("assets/maps/test_map/test_map_furnitures.png"),
+            new Texture("assets/maps/test_map/test_map_on-top.png"),
+            new Texture("assets/maps/test_map/test_map_behind_player.png"),
+        };
     }
-
     @Override
     public void render() {
 
@@ -78,61 +74,33 @@ public class Main extends ApplicationAdapter {
 
         batch.begin();
 
-        // manually add the images by layer!
-        batch.draw(backgroundTexture1, 0, 0);
-        batch.draw(backgroundTexture2, 0, 0);
-        batch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
-        batch.draw(backgroundTexture3, 0, 0);
-        batch.end();
-
-        for (int i = 0; i < map.getLayers().getCount(); i++) {
-            if (shouldRenderLayer(i)) {
-                tmr.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
+        // for test_map drawing/rendering!!!
+        int i=0;
+        for (Texture texturez : test_map_textures) {
+            i++;
+            if(i==5){
+                // gamit ani kay e check niya if naa nakas behind_player nga index,
+                // if so then e draw niya ang player first!
+                batch.draw(texture, player.getPosition().x * PPM - (texture.getWidth() / 2), player.getPosition().y * PPM - (texture.getHeight() / 8));
+                batch.draw(texturez, 0, 0);
+            }
+            else{
+                batch.draw(texturez, 0, 0);
             }
         }
-
+        // end or test_map rendering!!!
+        batch.end();
         b2dr.render(world, camera.combined.scl(PPM));
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
 
-    private boolean shouldRenderLayer(int layerIndex) {
-        // Add your logic here to determine which layers to render
-        // For example, you can check the layer names or indices
-        // Return true for layers you want to render, false for others
-        String layerName = map.getLayers().get(layerIndex).getName();
-        return layerName.equals("background_layer") || layerName.equals("object_layer");
-    }
-
     private void update(float deltaTime) {
         world.step(1/60f, 6, 2);
-
-        inputUpdate(deltaTime);
+        player.inputUpdate(deltaTime);
         cameraUpdate(deltaTime);
         tmr.setView(camera);
         batch.setProjectionMatrix(camera.combined);
-    }
-
-    public void inputUpdate(float deltaTime){
-
-        float horizontalForce = 0;
-        float verticalForce = 0;
-
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            verticalForce += 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            horizontalForce -= 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            verticalForce -=1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            horizontalForce += 1;
-        }
-
-        player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
-        player.setLinearVelocity(player.getLinearVelocity().x,verticalForce * 5);
     }
 
     public void cameraUpdate(float deltaTime){
@@ -140,51 +108,19 @@ public class Main extends ApplicationAdapter {
         position.x = player.getPosition().x * PPM;
         position.y = player.getPosition().y * PPM;
         camera.position.set(position);
-
         camera.update();
     }
-
     @Override
     public void resize(int width, int height){
         camera.setToOrtho(false,width/ SCALE,height/ SCALE);
     }
-
     @Override
     public void dispose() {
         world.dispose();
         b2dr.dispose();
-        batch.dispose();
+        player.dispose();
         texture.dispose();
-        backgroundTexture1.dispose();
-        backgroundTexture2.dispose();
-        backgroundTexture3.dispose();
-        backgroundTexture4.dispose();
-        backgroundTexture5.dispose();
         tmr.dispose();
         map.dispose();
-
-
     }
-
-    public Body createBox(int x, int y, int width, int height, boolean isStatic){
-        Body pBody;
-        BodyDef def = new BodyDef();
-
-        if(isStatic)
-            def.type = BodyDef.BodyType.StaticBody;
-        else
-            def.type = BodyDef.BodyType.DynamicBody;
-
-        def.position.set(x,y);
-        def.fixedRotation = true;
-        pBody = world.createBody(def);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/2 / PPM,height/2/ PPM);
-
-        pBody.createFixture(shape,1.0f);
-
-        shape.dispose();
-        return pBody;
-    }
-
 }
