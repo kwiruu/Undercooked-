@@ -25,7 +25,7 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private boolean DEBUG = false;
-    private final float SCALE= 2.0f;
+    private final float SCALE= 1.5f;
     private OrthographicCamera camera;
     private OrthogonalTiledMapRenderer tmr;
     private TiledMap map;
