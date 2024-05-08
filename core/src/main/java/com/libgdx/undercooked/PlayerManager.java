@@ -22,6 +22,8 @@ public class PlayerManager {
     private float currentTime;
     private boolean spacePressed = false;
     private float spaceCooldown = 1f;
+    private float deltaTimez;
+    public boolean playerLocked = false;
     public PlayerManager(World world) {
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         player = createBox(world, 8, 2, 16, 8, false);
@@ -41,8 +43,12 @@ public class PlayerManager {
         float horizontalForce = 0;
         float verticalForce = 0;
         currentTime += deltaTime;
+        deltaTimez = deltaTime;
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
+            if(!playerLocked && !isLifting){
+                playerLocked = true;
+            }
             spacePressed = true;
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
@@ -50,26 +56,29 @@ public class PlayerManager {
 
         // Update space cooldown
         if (spacePressed) {
-            spaceCooldown -= deltaTime;
+            spaceCooldown -= 0.03f;
             if (spaceCooldown <= 0) {
                 spacePressed = false;
+                if(playerLocked){
+                    playerLocked = false;
+                }
                 spaceCooldown = 1f; // Reset cooldown
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && !playerLocked) {
             verticalForce += 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && !playerLocked) {
             horizontalForce -= 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && !playerLocked) {
             verticalForce -= 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && !playerLocked) {
             horizontalForce += 1;
         }
-        if (horizontalForce != 0 && verticalForce != 0) {
+        if ((horizontalForce != 0 && verticalForce != 0)&& !playerLocked) {
             verticalForce *= 0.7;
             horizontalForce *= 0.7;
         }
@@ -100,10 +109,13 @@ public class PlayerManager {
     Animation<TextureRegion> determineCurrentAnimation() {
         String lastDir = getLastDirection();
 
+        float animationSpeed = animations.get("lifting_" + lastDir).getAnimationDuration();
+        currentTime += deltaTimez * animationSpeed;
+
         if (isLifting) {
             Animation<TextureRegion> liftingAnimation = animations.get("lifting_" + lastDir);
             // Check if lifting animation is close to finishing based on a threshold
-            if (currentTime >= liftingAnimation.getAnimationDuration() * 0.9f) {
+            if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
                     if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                         setLastDirection("top");
                             return animations.get("running_lifting_top");
@@ -202,10 +214,10 @@ public class PlayerManager {
         animations.put("idle_left", new Animation<>(0.09f, textureAtlas.findRegions("idle_left")));
         animations.put("idle_right", new Animation<>(0.09f, textureAtlas.findRegions("idle_right")));
         // lifting anim
-        animations.put("lifting_down", new Animation<>(0.05f, textureAtlas.findRegions("lifting_down")));
-        animations.put("lifting_top", new Animation<>(0.05f, textureAtlas.findRegions("lifting_top")));
-        animations.put("lifting_left", new Animation<>(0.05f, textureAtlas.findRegions("lifting_left")));
-        animations.put("lifting_right", new Animation<>(0.05f, textureAtlas.findRegions("lifting_right")));
+        animations.put("lifting_down", new Animation<>(0.12f, textureAtlas.findRegions("lifting_down")));
+        animations.put("lifting_top", new Animation<>(0.12f, textureAtlas.findRegions("lifting_top")));
+        animations.put("lifting_left", new Animation<>(0.12f, textureAtlas.findRegions("lifting_left")));
+        animations.put("lifting_right", new Animation<>(0.12f, textureAtlas.findRegions("lifting_right")));
         // lifting idle anim
         animations.put("idle_lifting_top", new Animation<>(0.09f, textureAtlas.findRegions("idle_lifting_top")));
         animations.put("idle_lifting_down", new Animation<>(0.12f, textureAtlas.findRegions("idle_lifting_down")));
