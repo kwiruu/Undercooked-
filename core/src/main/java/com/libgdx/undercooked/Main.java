@@ -36,6 +36,7 @@ public class Main extends ApplicationAdapter {
         b2dr = new Box2DDebugRenderer();
 
         player = new PlayerManager(world);
+        player.run();
         batch = player.getBatch();
 
         map = new MapManager(world);
@@ -64,7 +65,6 @@ public class Main extends ApplicationAdapter {
         cameraUpdate(deltaTime);
         map.tmr.setView(camera);
     }
-
 
     public void cameraUpdate(float deltaTime){
         Vector2 position = player.getPosition();
