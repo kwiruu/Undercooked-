@@ -12,25 +12,32 @@ import java.util.HashMap;
 import java.util.Map;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
-public class PlayerManager {
+public class PlayerManager implements Runnable{
     static Body player;
-    private final TextureAtlas textureAtlas;
-    private final SpriteBatch playerBatch;
+    private TextureAtlas textureAtlas;
+    private SpriteBatch playerBatch;
+    private final World world;
     private String lastDirection;
-    private final Map<String, Animation<TextureRegion>> animations;
+    private final Map<String, Animation<TextureRegion>> animations = new HashMap<>();;
     public boolean isLifting;
     private float currentTime;
     private boolean spacePressed = false;
     private float spaceCooldown = 1f;
-    public PlayerManager(World world) {
+
+    @Override
+    public void run() {
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         player = createBox(world, 8, 2, 16, 8, false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
-        animations = new HashMap<>();
         initializeAnimations();
         isLifting = false;
         currentTime = 0;
+    }
+
+    public PlayerManager(World world) {
+        this.world = world;
+
     }
 
     public SpriteBatch getBatch() {
@@ -149,7 +156,7 @@ public class PlayerManager {
                     return animations.get("running_lifting_down");
                 }
                 return animations.get("running_down");
-            } else { // Gdx.input.isKeyPressed(Input.Keys.D)
+            } else if(Gdx.input.isKeyPressed(Input.Keys.D)){
                 setLastDirection("right");
                 if (isLifting) {
                     return animations.get("running_lifting_right");
@@ -161,8 +168,8 @@ public class PlayerManager {
             if (isLifting) {
                 return animations.get("idle_lifting_" + lastDir);
             }
-            return animations.get("idle_" + lastDir);
         }
+        return animations.get("idle_" + lastDir);
     }
 
     public boolean isAnimationFinished(){
@@ -184,10 +191,6 @@ public class PlayerManager {
 
     public Vector2 getPosition() {
         return player.getPosition();
-    }
-
-    public Animation<TextureRegion> getCurrentAnimation() {
-        return determineCurrentAnimation();
     }
 
     private void initializeAnimations() {

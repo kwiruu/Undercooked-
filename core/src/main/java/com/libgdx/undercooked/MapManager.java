@@ -12,7 +12,6 @@ import static com.libgdx.undercooked.PlayerManager.player;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class MapManager {
-
     private TiledMap map;
     Texture[] test_map_textures;
     OrthogonalTiledMapRenderer tmr;
