@@ -18,7 +18,10 @@ public class PlayerManager {
     private final SpriteBatch playerBatch;
     private String lastDirection;
     private final Map<String, Animation<TextureRegion>> animations;
-
+    public boolean isLifting;
+    private float currentTime;
+    private boolean spacePressed = false;
+    private float spaceCooldown = 1f;
     public PlayerManager(World world) {
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         player = createBox(world, 8, 2, 16, 8, false);
@@ -26,6 +29,8 @@ public class PlayerManager {
         lastDirection = "down";
         animations = new HashMap<>();
         initializeAnimations();
+        isLifting = false;
+        currentTime = 0;
     }
 
     public SpriteBatch getBatch() {
@@ -35,6 +40,22 @@ public class PlayerManager {
     public void inputUpdate(float deltaTime) {
         float horizontalForce = 0;
         float verticalForce = 0;
+        currentTime += deltaTime;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
+            spacePressed = true;
+            isLifting = !isLifting; // Toggle lifting state
+            currentTime = 0; // Reset animation time
+        }
+
+        // Update space cooldown
+        if (spacePressed) {
+            spaceCooldown -= deltaTime;
+            if (spaceCooldown <= 0) {
+                spacePressed = false;
+                spaceCooldown = 1f; // Reset cooldown
+            }
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             verticalForce += 1;
@@ -76,46 +97,76 @@ public class PlayerManager {
         return pBody;
     }
 
-    private void initializeAnimations() {
-        // running anim
-        animations.put("running_down", new Animation<>(0.09f, textureAtlas.findRegions("running_down")));
-        animations.put("running_top", new Animation<>(0.09f, textureAtlas.findRegions("running_top")));
-        animations.put("running_left", new Animation<>(0.09f, textureAtlas.findRegions("running_left")));
-        animations.put("running_right", new Animation<>(0.09f, textureAtlas.findRegions("running_right")));
-        // idle anim
-        animations.put("idle_down", new Animation<>(0.09f, textureAtlas.findRegions("idle_down")));
-        animations.put("idle_top", new Animation<>(0.09f, textureAtlas.findRegions("idle_up")));
-        animations.put("idle_left", new Animation<>(0.09f, textureAtlas.findRegions("idle_left")));
-        animations.put("idle_right", new Animation<>(0.09f, textureAtlas.findRegions("idle_right")));
-    }
-
-    public Animation<TextureRegion> getCurrentAnimation() {
-        return determineCurrentAnimation();
-    }
-
     Animation<TextureRegion> determineCurrentAnimation() {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            setLastDirection("top");
-            return animations.get("running_top");
-        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            setLastDirection("left");
-            return animations.get("running_left");
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            setLastDirection("down");
-            return animations.get("running_down");
-        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            setLastDirection("right");
-            return animations.get("running_right");
-        } else {
-            // If no movement keys are pressed, return the idle animation based on the last movement direction
-            String lastDir = getLastDirection();
-            if (lastDir != null) {
-                return animations.get("idle_" + lastDir);
+        String lastDir = getLastDirection();
+
+        if (isLifting) {
+            Animation<TextureRegion> liftingAnimation = animations.get("lifting_" + lastDir);
+            // Check if lifting animation is close to finishing based on a threshold
+            if (currentTime >= liftingAnimation.getAnimationDuration() * 0.9f) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                        setLastDirection("top");
+                            return animations.get("running_lifting_top");
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                        setLastDirection("left");
+                            return animations.get("running_lifting_left");
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                        setLastDirection("down");
+                            return animations.get("running_lifting_down");
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.D)){
+                    setLastDirection("right");
+                    return animations.get("running_lifting_right");
+                    } else{
+                    return animations.get("idle_lifting_" + lastDir);
+                }
             } else {
-                // Default to idle_down if no valid last movement direction is found
-                return animations.get("idle_down");
+                return liftingAnimation;
             }
         }
+
+        // Check if any movement keys are pressed
+        if (Gdx.input.isKeyPressed(Input.Keys.W) ||
+            Gdx.input.isKeyPressed(Input.Keys.A) ||
+            Gdx.input.isKeyPressed(Input.Keys.S) ||
+            Gdx.input.isKeyPressed(Input.Keys.D)) {
+
+            // If movement keys are pressed, return the corresponding running animation
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                setLastDirection("top");
+                if (isLifting) {
+                    return animations.get("running_lifting_top");
+                }
+                return animations.get("running_top");
+            } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                setLastDirection("left");
+                if (isLifting) {
+                    return animations.get("running_lifting_left");
+                }
+                return animations.get("running_left");
+            } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                setLastDirection("down");
+                if (isLifting) {
+                    return animations.get("running_lifting_down");
+                }
+                return animations.get("running_down");
+            } else { // Gdx.input.isKeyPressed(Input.Keys.D)
+                setLastDirection("right");
+                if (isLifting) {
+                    return animations.get("running_lifting_right");
+                }
+                return animations.get("running_right");
+            }
+        } else {
+            // If no movement keys are pressed, return the corresponding idle animation
+            if (isLifting) {
+                return animations.get("idle_lifting_" + lastDir);
+            }
+            return animations.get("idle_" + lastDir);
+        }
+    }
+
+    public boolean isAnimationFinished(){
+        return animations.get("lifting_"+getLastDirection()).isAnimationFinished(currentTime);
     }
 
     public void dispose() {
@@ -135,5 +186,36 @@ public class PlayerManager {
         return player.getPosition();
     }
 
+    public Animation<TextureRegion> getCurrentAnimation() {
+        return determineCurrentAnimation();
+    }
+
+    private void initializeAnimations() {
+        // running anim
+        animations.put("running_down", new Animation<>(0.09f,  textureAtlas.findRegions("running_down")));
+        animations.put("running_top", new Animation<>(0.09f, textureAtlas.findRegions("running_top")));
+        animations.put("running_left", new Animation<>(0.09f, textureAtlas.findRegions("running_left")));
+        animations.put("running_right", new Animation<>(0.09f, textureAtlas.findRegions("running_right")));
+        // idle anim
+        animations.put("idle_down", new Animation<>(0.09f, textureAtlas.findRegions("idle_down")));
+        animations.put("idle_top", new Animation<>(0.09f, textureAtlas.findRegions("idle_up")));
+        animations.put("idle_left", new Animation<>(0.09f, textureAtlas.findRegions("idle_left")));
+        animations.put("idle_right", new Animation<>(0.09f, textureAtlas.findRegions("idle_right")));
+        // lifting anim
+        animations.put("lifting_down", new Animation<>(0.05f, textureAtlas.findRegions("lifting_down")));
+        animations.put("lifting_top", new Animation<>(0.05f, textureAtlas.findRegions("lifting_top")));
+        animations.put("lifting_left", new Animation<>(0.05f, textureAtlas.findRegions("lifting_left")));
+        animations.put("lifting_right", new Animation<>(0.05f, textureAtlas.findRegions("lifting_right")));
+        // lifting idle anim
+        animations.put("idle_lifting_top", new Animation<>(0.09f, textureAtlas.findRegions("idle_lifting_top")));
+        animations.put("idle_lifting_down", new Animation<>(0.12f, textureAtlas.findRegions("idle_lifting_down")));
+        animations.put("idle_lifting_left", new Animation<>(0.12f, textureAtlas.findRegions("idle_lifting_left")));
+        animations.put("idle_lifting_right", new Animation<>(0.12f, textureAtlas.findRegions("idle_lifting_right")));
+        // lifting running anim
+        animations.put("running_lifting_down", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_down")));
+        animations.put("running_lifting_top", new Animation<>(0.09f, textureAtlas.findRegions("running_lifting_top")));
+        animations.put("running_lifting_left", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_left")));
+        animations.put("running_lifting_right", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_right")));
+    }
 
 }
