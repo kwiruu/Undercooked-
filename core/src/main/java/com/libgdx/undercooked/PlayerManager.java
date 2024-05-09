@@ -123,19 +123,19 @@ public class PlayerManager implements Runnable {
             Animation<TextureRegion> liftingAnimation = animations.get("lifting_" + lastDir);
             // Check if lifting animation is close to finishing based on a threshold
             if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
-                    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                        setLastDirection("top");
-                            return animations.get("running_lifting_top");
-                    } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                        setLastDirection("left");
-                            return animations.get("running_lifting_left");
-                    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                        setLastDirection("down");
-                            return animations.get("running_lifting_down");
-                    } else if (Gdx.input.isKeyPressed(Input.Keys.D)){
+                if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                    setLastDirection("top");
+                    return animations.get("running_lifting_top");
+                } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                    setLastDirection("left");
+                    return animations.get("running_lifting_left");
+                } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                    setLastDirection("down");
+                    return animations.get("running_lifting_down");
+                } else if (Gdx.input.isKeyPressed(Input.Keys.D)){
                     setLastDirection("right");
                     return animations.get("running_lifting_right");
-                    } else{
+                } else{
                     return animations.get("idle_lifting_" + lastDir);
                 }
             } else {

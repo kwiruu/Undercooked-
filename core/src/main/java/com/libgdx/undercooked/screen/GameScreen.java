@@ -1,4 +1,4 @@
-package screen;
+package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
 import com.libgdx.undercooked.PlayerManager;
 import com.libgdx.undercooked.entities.Stove;
@@ -20,7 +21,9 @@ import com.libgdx.undercooked.entities.Stove;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
+
     private final float SCALE= 1.5f;
+    private final Main context;
     private OrthographicCamera camera;
     private MapManager map;
     private Box2DDebugRenderer b2dr;
@@ -30,31 +33,39 @@ public class GameScreen extends ScreenAdapter {
     private float elapsedTime = 0f;
     private Array<Stove> stove; // init stove
     FitViewport viewport;
+    private boolean initialized = false; // To track initialization
+
+    public GameScreen(final Main context){
+        this.context = context;
+    }
 
     @Override
     public void show() {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
+        if (!initialized) {
+            float w = Gdx.graphics.getWidth();
+            float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, w/SCALE, h/SCALE);
+            camera = new OrthographicCamera();
+            camera.setToOrtho(false, w/SCALE, h/SCALE);
 
-        world = new World(new Vector2(0f,0f), false);
-        b2dr = new Box2DDebugRenderer();
+            world = new World(new Vector2(0f,0f), false);
+            b2dr = new Box2DDebugRenderer();
 
-        player = new PlayerManager(world);
-        player.run();
+            player = new PlayerManager(world);
+            player.run();
 
-        batch = player.getBatch();
+            batch = player.getBatch();
 
-        map = new MapManager(world);
+            map = new MapManager(world);
 
-        //create stove
-        stove = new Array<Stove>();
-        stove.addAll(map.getStoves());
-        //create stove
+            //create stove
+            stove = new Array<Stove>();
+            stove.addAll(map.getStoves());
+            //create stove
 
-        viewport = new FitViewport(1400,800);
+            viewport = new FitViewport(1400,800);
+            initialized = true;
+        }
     }
 
     @Override
@@ -82,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
+            context.setScreen(ScreenType.LOADING);
         }
     }
 
@@ -108,8 +119,6 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         world.dispose();
         b2dr.dispose();
-        player.dispose();
-        map.dispose();
         batch.dispose();
     }
 }
