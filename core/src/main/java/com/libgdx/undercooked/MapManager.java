@@ -19,7 +19,7 @@ public class MapManager {
 
     private TiledMap map;
     Texture[] test_map_textures;
-    OrthogonalTiledMapRenderer tmr;
+    public OrthogonalTiledMapRenderer tmr;
     private Array<Stove> stoves;
 
     // bag o ni bows

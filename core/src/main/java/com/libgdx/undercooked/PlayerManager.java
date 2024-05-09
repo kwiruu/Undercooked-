@@ -113,7 +113,7 @@ public class PlayerManager implements Runnable {
         return pBody;
     }
 
-    Animation<TextureRegion> determineCurrentAnimation() {
+    public Animation<TextureRegion> determineCurrentAnimation() {
         String lastDir = getLastDirection();
 
         float animationSpeed = animations.get("lifting_" + lastDir).getAnimationDuration();
