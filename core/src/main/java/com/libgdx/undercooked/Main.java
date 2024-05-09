@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.libgdx.undercooked.entities.Stove;
+
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 /** {@link ApplicationListener} implementation shared by all platforms. */
@@ -23,6 +26,7 @@ public class Main extends ApplicationAdapter {
     private PlayerManager player;
     private SpriteBatch batch;
     private float elapsedTime = 0f;
+    private Array<Stove> stove; // init stove
 
     @Override
     public void create() {
@@ -40,6 +44,12 @@ public class Main extends ApplicationAdapter {
         batch = player.getBatch();
 
         map = new MapManager(world);
+
+        //create stove
+        stove = new Array<Stove>();
+        stove.addAll(map.getStoves());
+        //create stove
+
     }
     @Override
     public void render() {
@@ -54,6 +64,12 @@ public class Main extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         map.drawLayerTextures(batch, currentFrame);
+
+        // stove render
+        for (Stove stove : stove) {
+            stove.render(batch);
+        }
+        // stove render
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();

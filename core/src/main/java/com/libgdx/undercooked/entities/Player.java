@@ -1,9 +1,10 @@
 package com.libgdx.undercooked.entities;
 
-public class Player extends Entity {
+public class Player {
+    //temporarily stopped extends Entity
 
     public Player(float x, float y, int width, int height, boolean isStatic) {
-        super(x, y, width, height, isStatic);
+        super();
     }
     // TODO idk
 }
