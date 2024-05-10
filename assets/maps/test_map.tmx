@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="71">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="73">
  <tileset firstgid="1" source="Room_Builder_32x32.tsx"/>
  <tileset firstgid="8285" name="Interiors_32x32" tilewidth="32" tileheight="32" tilecount="17024" columns="16">
   <image source="../tilesets/Interiors_32x32.png" width="512" height="34048"/>
@@ -111,7 +111,6 @@
   <object id="25" x="97" y="480.75" width="28" height="46.75"/>
   <object id="26" x="710.545" y="194.909" width="16.7273" height="22"/>
   <object id="28" x="192.182" y="608" width="95.6364" height="10.5455"/>
-  <object id="70" name="pickle_source" gid="25313" x="544" y="288" width="32" height="64"/>
  </objectgroup>
  <objectgroup id="30" name="station_layer">
   <object id="44" name="stove" gid="25309" x="192" y="128" width="32" height="64"/>
@@ -124,6 +123,7 @@
   <object id="67" name="tomato_source" gid="25313" x="544" y="416" width="32" height="64"/>
   <object id="68" name="onion_source" gid="25314" x="448" y="192" width="32" height="64"/>
   <object id="69" name="meat_source" gid="25315" x="512" y="160" width="64" height="64"/>
+  <object id="72" name="pickle_source" gid="25313" x="544" y="288" width="32" height="64"/>
  </objectgroup>
  <layer id="22" name="on-top" width="25" height="20">
   <data encoding="csv">

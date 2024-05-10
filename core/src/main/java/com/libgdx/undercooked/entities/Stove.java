@@ -11,6 +11,8 @@ import java.awt.Rectangle;
 public class Stove extends Station {
     private SpriteBatch batch;
 
+    // spriteBatch is used to add a TextureRegion to a certain batch./
+    // then the spriteBatch is then rendered!
     public Stove(float x, float y, int width, int height, SpriteBatch batch) {
         super(x, y, width, height);
         this.batch = batch;

@@ -26,6 +26,7 @@ public class Entity {
     public void render() {
 
         // call each object added to the array of different stations!
+        // array stoves, chopping_boards, rice_cookers, food_sources!
         for (Stove stove : stoves) {
             stove.render();
         }
@@ -43,10 +44,12 @@ public class Entity {
     private void renderEntity(TiledMap map) {
         MapLayer objectLayer = map.getLayers().get("station_layer");
 
-        // this is for adding the stations to an array of different stations!
+        // kani kay for adding the stations to an array of different stations!
+        // array stoves, chopping_boards, rice_cookers, food_sources!
         // it is called in the constructor then to be used in the mapManager
 
         for (MapObject object : objectLayer.getObjects()) {
+            // if the object is named stove in the tiled map then mu create siyag new nga stove!
             if (object.getName().equals("stove")) {
                  x = object.getProperties().get("x", Float.class);
                  y = object.getProperties().get("y", Float.class) + 55;
@@ -77,52 +80,51 @@ public class Entity {
 
             //--------------------IMPORTANT-----------------------//
 
-            //for the foodsources!!!
+            // for the foodsources!!!
+            // in the tiled map, we only need to name the foodsources like these!
+            // more modular map creation!!!!!
+
             if (object.getName().equals("onion_source")) {
                 x = object.getProperties().get("x", Float.class);
-                y = object.getProperties().get("y", Float.class)+60;
+                y = object.getProperties().get("y", Float.class)+55;
                 width = object.getProperties().get("width", Float.class);
                 height = object.getProperties().get("height", Float.class);
 
                 FoodSource onion = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.onion);
-                food_sources.add(onion); // Add stove to the array
-            }
-            if (object.getName().equals("meat_source")) {
+                food_sources.add(onion); // Add onion to the array
+            }else if (object.getName().equals("meat_source")) {
                 x = object.getProperties().get("x", Float.class)+16;
                 y = object.getProperties().get("y", Float.class)+40;
                 width = object.getProperties().get("width", Float.class);
                 height = object.getProperties().get("height", Float.class);
 
                 FoodSource meat = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.meat);
-                food_sources.add(meat); // Add stove to the array
-            }
-            if (object.getName().equals("fish_tank_source")) {
+                food_sources.add(meat); // Add meat to the array
+            }else if (object.getName().equals("fish_tank_source")) {
                 x = object.getProperties().get("x", Float.class)+32;
-                y = object.getProperties().get("y", Float.class)+60;
+                y = object.getProperties().get("y", Float.class)+55;
                 width = object.getProperties().get("width", Float.class);
                 height = object.getProperties().get("height", Float.class);
 
                 FoodSource fish = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.fish);
                 food_sources.add(fish); // Add stove to the array
-            }
-            if (object.getName().equals("tomato_source")) {
+            }else if (object.getName().equals("tomato_source")) {
                 x = object.getProperties().get("x", Float.class);
-                y = object.getProperties().get("y", Float.class)+60;
+                y = object.getProperties().get("y", Float.class)+55;
                 width = object.getProperties().get("width", Float.class);
                 height = object.getProperties().get("height", Float.class);
 
                 FoodSource tomato = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.tomato);
-                food_sources.add(tomato); // Add stove to the array
+                food_sources.add(tomato); // Add tomato to the array
             }
-            // FIXME pickle if statement won't read!
-            if (object.getName().equals("pickle_source")) {
+            else if (object.getName().equals("pickle_source")) {
                 x = object.getProperties().get("x", Float.class);
                 y = object.getProperties().get("y", Float.class)+55;
                 width = object.getProperties().get("width", Float.class);
                 height = object.getProperties().get("height", Float.class);
 
                 FoodSource pickle = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.pickle);
-                food_sources.add(pickle); // Add stove to the array
+                food_sources.add(pickle); // Add pickle to the array
             }
         }
     }
