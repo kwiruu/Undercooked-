@@ -1,30 +1,45 @@
-//package com.libgdx.undercooked.entities;
-//
-//import com.badlogic.gdx.physics.box2d.Body;
-//import com.badlogic.gdx.physics.box2d.BodyDef;
-//import com.badlogic.gdx.physics.box2d.PolygonShape;
-//import com.libgdx.undercooked.Main;
-//
-//import static com.libgdx.undercooked.utils.Constants.PPM;
-//
-//public abstract class Entity {
-//    Body eBody;
-//
-//    // constructor derived from createBox
-//    public Entity(float x, float y, int width, int height, boolean isStatic) {
-//        BodyDef def = new BodyDef();
-//        if (isStatic) {
-//            def.type = BodyDef.BodyType.StaticBody;
-//        } else {
-//            def.type = BodyDef.BodyType.DynamicBody;
-//        }
-//        def.position.set(x,y);
-//        def.fixedRotation = true;
-//        //eBody = world.createBody(def);
-//        PolygonShape shape = new PolygonShape();
-//        shape.setAsBox(width/2 / PPM,height/2/ PPM);
-//        eBody.createFixture(shape,1.0f);
-//        shape.dispose();
-//    }
-//    // TODO either extract station position from tilemap or do manually for each map
-//}
+package com.libgdx.undercooked.entities;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.utils.Array;
+
+public class Entity {
+
+    private Array<Stove> stoves;
+    private SpriteBatch batch;
+
+    public Entity(TiledMap map, SpriteBatch batch) {
+        this.batch = batch;
+        stoves = new Array<>();
+        populateStoves(map);
+    }
+
+    public Array<Stove> getStoves() {
+        return stoves;
+    }
+
+    public void render() {
+        for (Stove stove : stoves) {
+            stove.render();
+        }
+    }
+
+    private void populateStoves(TiledMap map) {
+        MapLayer objectLayer = map.getLayers().get("station_layer");
+        // Get the different stations
+        for (MapObject object : objectLayer.getObjects()) {
+            if (object.getName().equals("stove")) {
+                float stovex = object.getProperties().get("x", Float.class);
+                float stovey = object.getProperties().get("y", Float.class) + 55;
+                float stoveWidth = object.getProperties().get("width", Float.class);
+                float stoveHeight = object.getProperties().get("height", Float.class);
+
+                Stove stove = new Stove(stovex, stovey, (int) stoveWidth, (int) stoveHeight, batch);
+                stoves.add(stove); // Add stove to the array
+            }
+        }
+    }
+}
