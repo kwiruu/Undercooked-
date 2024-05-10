@@ -8,10 +8,10 @@ import com.badlogic.gdx.utils.Array;
 
 import java.awt.Rectangle;
 
-public class Stove extends Station {
+public class RiceCooker extends Station {
     private SpriteBatch batch;
 
-    public Stove(float x, float y, int width, int height, SpriteBatch batch) {
+    public RiceCooker(float x, float y, int width, int height, SpriteBatch batch) {
         super(x, y, width, height);
         this.batch = batch;
         // different classes different icons!
@@ -24,5 +24,5 @@ public class Stove extends Station {
         batch.draw(currentFrame, getX(), getY());
     }
 
-    // TODO station to continue needs implementations
+    // TODO station to continue
 }

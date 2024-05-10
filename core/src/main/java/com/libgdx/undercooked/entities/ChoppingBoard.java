@@ -8,14 +8,14 @@ import com.badlogic.gdx.utils.Array;
 
 import java.awt.Rectangle;
 
-public class Stove extends Station {
+public class ChoppingBoard extends Station {
     private SpriteBatch batch;
 
-    public Stove(float x, float y, int width, int height, SpriteBatch batch) {
+    public ChoppingBoard(float x, float y, int width, int height, SpriteBatch batch) {
         super(x, y, width, height);
         this.batch = batch;
         // different classes different icons!
-        floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
+        floatingIconFrames = floating_iconAtlas.findRegions("chop_icon"); // Assuming "clock_icon" is the name of the animation
     }
     public void render() {
         // Update stateTime
@@ -24,5 +24,5 @@ public class Stove extends Station {
         batch.draw(currentFrame, getX(), getY());
     }
 
-    // TODO station to continue needs implementations
+    // TODO station to continue
 }
