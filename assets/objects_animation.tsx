@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="objects_animation" tilewidth="32" tileheight="32" tilecount="512" columns="16">
+<tileset version="1.10" tiledversion="1.10.2" name="objects_animation" tilewidth="32" tileheight="32" tilecount="256" columns="16">
  <image source="sprites/object_animations.png" width="512" height="512"/>
  <tile id="208">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="0" duration="200"/>
    <frame tileid="3" duration="200"/>
@@ -30,6 +33,9 @@
   </animation>
  </tile>
  <tile id="209">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="1" duration="200"/>
    <frame tileid="4" duration="200"/>
@@ -58,6 +64,9 @@
   </animation>
  </tile>
  <tile id="210">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="2" duration="200"/>
    <frame tileid="5" duration="200"/>
@@ -86,6 +95,9 @@
   </animation>
  </tile>
  <tile id="212">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="96" duration="200"/>
    <frame tileid="98" duration="200"/>
@@ -93,6 +105,9 @@
   </animation>
  </tile>
  <tile id="213">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="97" duration="200"/>
    <frame tileid="99" duration="200"/>
@@ -100,21 +115,33 @@
   </animation>
  </tile>
  <tile id="215">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="114" duration="200"/>
   </animation>
  </tile>
  <tile id="216">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="115" duration="200"/>
   </animation>
  </tile>
  <tile id="217">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="116" duration="200"/>
   </animation>
  </tile>
  <tile id="219">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="168" duration="200"/>
    <frame tileid="169" duration="200"/>
@@ -123,6 +150,9 @@
   </animation>
  </tile>
  <tile id="221">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="176" duration="200"/>
    <frame tileid="177" duration="200"/>
@@ -133,6 +163,9 @@
   </animation>
  </tile>
  <tile id="223">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="172" duration="200"/>
    <frame tileid="173" duration="200"/>
@@ -141,6 +174,9 @@
   </animation>
  </tile>
  <tile id="224">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="72" duration="200"/>
    <frame tileid="75" duration="200"/>
@@ -153,6 +189,9 @@
   </animation>
  </tile>
  <tile id="225">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="73" duration="200"/>
    <frame tileid="76" duration="200"/>
@@ -165,6 +204,9 @@
   </animation>
  </tile>
  <tile id="226">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="74" duration="200"/>
    <frame tileid="77" duration="200"/>
@@ -177,6 +219,9 @@
   </animation>
  </tile>
  <tile id="228">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="102" duration="200"/>
    <frame tileid="104" duration="200"/>
@@ -184,6 +229,9 @@
   </animation>
  </tile>
  <tile id="229">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="103" duration="200"/>
    <frame tileid="105" duration="200"/>
@@ -191,6 +239,9 @@
   </animation>
  </tile>
  <tile id="231">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="132" duration="200"/>
    <frame tileid="135" duration="200"/>
@@ -201,6 +252,9 @@
   </animation>
  </tile>
  <tile id="232">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="133" duration="200"/>
    <frame tileid="136" duration="200"/>
@@ -211,6 +265,9 @@
   </animation>
  </tile>
  <tile id="233">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="134" duration="200"/>
    <frame tileid="137" duration="200"/>
@@ -221,6 +278,9 @@
   </animation>
  </tile>
  <tile id="237">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="187" duration="200"/>
    <frame tileid="188" duration="200"/>
@@ -233,6 +293,9 @@
   </animation>
  </tile>
  <tile id="244">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="108" duration="200"/>
    <frame tileid="110" duration="200"/>
@@ -240,6 +303,9 @@
   </animation>
  </tile>
  <tile id="245">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="109" duration="200"/>
    <frame tileid="111" duration="200"/>
@@ -247,6 +313,9 @@
   </animation>
  </tile>
  <tile id="247">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="150" duration="200"/>
    <frame tileid="153" duration="200"/>
@@ -257,6 +326,9 @@
   </animation>
  </tile>
  <tile id="248">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="151" duration="200"/>
    <frame tileid="154" duration="200"/>
@@ -267,6 +339,9 @@
   </animation>
  </tile>
  <tile id="249">
+  <properties>
+   <property name="animation" value=""/>
+  </properties>
   <animation>
    <frame tileid="152" duration="200"/>
    <frame tileid="155" duration="200"/>
