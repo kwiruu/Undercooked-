@@ -114,6 +114,7 @@ public class Entity {
                 FoodSource tomato = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.tomato);
                 food_sources.add(tomato); // Add stove to the array
             }
+            // FIXME pickle if statement won't read!
             if (object.getName().equals("pickle_source")) {
                 x = object.getProperties().get("x", Float.class);
                 y = object.getProperties().get("y", Float.class)+55;
