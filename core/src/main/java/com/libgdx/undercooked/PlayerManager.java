@@ -23,7 +23,7 @@ public class PlayerManager implements Runnable {
     private float currentTime;
     private boolean spacePressed = false;
     private float spaceCooldown = 1f;
-    private float deltaTimez;
+    private float deltaTimes;
     public boolean playerLocked = false;
     @Override
     public void run(){
@@ -50,7 +50,7 @@ public class PlayerManager implements Runnable {
         float horizontalForce = 0;
         float verticalForce = 0;
         currentTime += deltaTime;
-        deltaTimez = deltaTime;
+        deltaTimes = deltaTime;
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
             if(!playerLocked && !isLifting){
@@ -60,8 +60,7 @@ public class PlayerManager implements Runnable {
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
         }
-
-        // Update space cooldown
+        
         if (spacePressed) {
             spaceCooldown -= 0.03f;
             if (spaceCooldown <= 0) {
@@ -69,7 +68,7 @@ public class PlayerManager implements Runnable {
                 if(playerLocked){
                     playerLocked = false;
                 }
-                spaceCooldown = 1f; // Reset cooldown
+                spaceCooldown = 1f; 
             }
         }
 
@@ -86,8 +85,8 @@ public class PlayerManager implements Runnable {
             horizontalForce += 1;
         }
         if ((horizontalForce != 0 && verticalForce != 0)&& !playerLocked) {
-            verticalForce *= 0.7;
-            horizontalForce *= 0.7;
+            verticalForce *= 0.7F;
+            horizontalForce *= 0.7F;
         }
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
     }
@@ -117,7 +116,7 @@ public class PlayerManager implements Runnable {
         String lastDir = getLastDirection();
 
         float animationSpeed = animations.get("lifting_" + lastDir).getAnimationDuration();
-        currentTime += deltaTimez * animationSpeed;
+        currentTime += deltaTimes * animationSpeed;
 
         if (isLifting) {
             Animation<TextureRegion> liftingAnimation = animations.get("lifting_" + lastDir);
@@ -182,11 +181,6 @@ public class PlayerManager implements Runnable {
             }
             return animations.get("idle_" + lastDir);
         }
-    }
-
-    public void dispose() {
-        playerBatch.dispose();
-        textureAtlas.dispose();
     }
 
     public void setLastDirection(String direction) {

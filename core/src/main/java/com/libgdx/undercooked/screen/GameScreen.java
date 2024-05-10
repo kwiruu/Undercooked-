@@ -15,13 +15,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
 import com.libgdx.undercooked.PlayerManager;
-import com.libgdx.undercooked.entities.Entity;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
 
-    private final float SCALE = 1.5f;
     private final Main context;
     private OrthographicCamera camera;
     private MapManager map;
@@ -31,8 +29,6 @@ public class GameScreen extends ScreenAdapter {
     private SpriteBatch batch;
     private float elapsedTime = 0f;
     private FitViewport viewport;
-
-    private Entity entity;
     private boolean initialized = false; // To track initialization
 
     public GameScreen(final Main context) {
@@ -46,6 +42,7 @@ public class GameScreen extends ScreenAdapter {
             float h = Gdx.graphics.getHeight();
 
             camera = new OrthographicCamera();
+            float SCALE = 1.5f;
             camera.setToOrtho(false, w / SCALE, h / SCALE);
 
             world = new World(new Vector2(0f, 0f), false);

@@ -15,10 +15,10 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class MapManager {
 
-    private TiledMap map;
-    private Texture[] test_map_textures;
+    private final TiledMap map;
+    private final Texture[] test_map_textures;
     public OrthogonalTiledMapRenderer tmr;
-    private Entity entity;
+    private final Entity entity;
 
     public MapManager(World world, SpriteBatch batch) {
         map = new TmxMapLoader().load("assets/maps/test_map.tmx");
