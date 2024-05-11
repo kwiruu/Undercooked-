@@ -70,6 +70,24 @@
         "label": { "font": "default-font", "fontColor": "white" },
         "background": "default-pane", "wrapWidth": 150
       }
+    },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+    "default": {
+      "font": "default-font",
+      "fontColor": "white",
+      "background": "textfield",
+      "cursor": "textfield-cursor",
+      "selection": "textfield-selection"
+    },
+    "empty": {
+      "font": "default-font",
+      "fontColor": "white",
+      "background": "textfield-empty",
+      "cursor": "textfield-cursor",
+      "selection": "textfield-selection"
     }
   }
-}
+
+}}
+

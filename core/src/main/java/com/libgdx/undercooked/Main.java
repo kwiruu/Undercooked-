@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
+import com.libgdx.undercooked.screen.LandingPageScreen;
 import com.libgdx.undercooked.screen.ScreenType;
 
 import java.util.EnumMap;
@@ -26,7 +27,13 @@ public class Main extends Game {
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         screenCache = new EnumMap<ScreenType, Screen>(ScreenType.class);
-        setScreen(ScreenType.LOADING);
+
+        // comment this if samokan ka
+        setScreen(ScreenType.LANDING);
+
+
+        // uncomment this if gusto raka mag work sa code
+        //setScreen(ScreenType.LOADING);
     }
 
 
@@ -48,5 +55,8 @@ public class Main extends Game {
         }
     }
 
+    public String getUsername() {
+        return LandingPageScreen.getUsername();
+    }
 
 }
