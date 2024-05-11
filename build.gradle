@@ -64,6 +64,10 @@ subprojects {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://jitpack.io' }
   }
+  dependencies {
+    implementation "org.mini2Dx:universal-tween-engine:6.3.3"
+
+  }
 }
 
 eclipse.project.name = 'Undercooked' + '-parent'
