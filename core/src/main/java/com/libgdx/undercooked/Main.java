@@ -9,12 +9,13 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.libgdx.undercooked.screen.LandingPageScreen;
 import com.libgdx.undercooked.screen.ScreenType;
+import com.libgdx.undercooked.screen.SplashScreen;
 
 import java.util.EnumMap;
 
 import static database.SQLOperations.*;
 
-public class Main extends Game {
+public class Main extends Game implements SplashScreen.SplashScreenListener{
     private static final String TAG = Main.class.getSimpleName();
     private EnumMap<ScreenType, Screen> screenCache;
 
@@ -28,14 +29,21 @@ public class Main extends Game {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         screenCache = new EnumMap<ScreenType, Screen>(ScreenType.class);
 
-        // comment this if samokan ka
-        setScreen(ScreenType.LANDING);
-
-
-        // uncomment this if gusto raka mag work sa code
-        //setScreen(ScreenType.LOADING);
+        SplashScreen splashScreen = new SplashScreen(this);
+        splashScreen.setListener(new SplashScreen.SplashScreenListener() {
+            @Override
+            public void onSplashScreenFinished() {
+                setScreen(ScreenType.LANDING);
+            }
+        });
+        setScreen(splashScreen);
     }
 
+    @Override
+    public void onSplashScreenFinished() {
+        // Transition to GameScreen after splash animation completes
+        setScreen(ScreenType.LANDING);
+    }
 
     public void setScreen(final ScreenType screenType) {
         final Screen screen = screenCache.get(screenType);
@@ -54,7 +62,6 @@ public class Main extends Game {
             setScreen(screen);
         }
     }
-
     public String getUsername() {
         return LandingPageScreen.getUsername();
     }
