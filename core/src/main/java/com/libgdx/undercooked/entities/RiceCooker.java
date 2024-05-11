@@ -28,6 +28,7 @@ public class RiceCooker extends Station {
 
     @Override
     public void interact(PlayerManager p) {
+        System.out.println("rice cooker");
         if (containedItem == null && p.hasHeldItem()) {
             // case 1 no item, p item
             // set cooking timer based on foodItem

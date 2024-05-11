@@ -37,5 +37,6 @@ public abstract class Station {
         return y;
     }
 
+    public abstract void render();
     public abstract void interact(PlayerManager p);
 }

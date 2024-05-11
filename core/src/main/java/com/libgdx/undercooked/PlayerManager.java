@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
+import com.libgdx.undercooked.entities.Station;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,7 @@ public class PlayerManager implements Runnable {
     private float deltaTimes;
     public boolean playerLocked = false;
     private FoodType heldItem;
+    private EntityList entityList;
     @Override
     public void run(){
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
@@ -62,6 +66,17 @@ public class PlayerManager implements Runnable {
             spacePressed = true;
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
+            Station st = entityList.pointStation(getInteractPos());
+            if (st != null) {
+                st.interact(this);
+            } else {
+                System.out.println("pointed at nothing");
+            }
+            try {
+                ;
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         }
 
         if (spacePressed) {
@@ -259,5 +274,8 @@ public class PlayerManager implements Runnable {
     }
     public void setHeldItem(FoodType heldItem) {
         this.heldItem = heldItem;
+    }
+    public void setEntityList(EntityList entityList) {
+        this.entityList = entityList;
     }
 }

@@ -17,13 +17,13 @@ public class FoodSource extends Station {
         // this else statement is para sa icon name depending on the foodtype!
         if(foodType.equals(FoodType.tomato)){
             floatingIconFrames = floating_iconAtlas.findRegions("tomato_icon");
-        }else if(foodType.equals(FoodType.onion)){
+        } else if(foodType.equals(FoodType.onion)){
             floatingIconFrames = floating_iconAtlas.findRegions("onion_icon");
-        }else if(foodType.equals(FoodType.meat)){
+        } else if(foodType.equals(FoodType.meat)){
             floatingIconFrames = floating_iconAtlas.findRegions("meat_icon");
-        }else if(foodType.equals(FoodType.fish)){
+        } else if(foodType.equals(FoodType.fish)){
             floatingIconFrames = floating_iconAtlas.findRegions("fish_icon");
-        }else if(foodType.equals(FoodType.pickle)){
+        } else if(foodType.equals(FoodType.pickle)){
             floatingIconFrames = floating_iconAtlas.findRegions("pickle_icon");
         }
 
