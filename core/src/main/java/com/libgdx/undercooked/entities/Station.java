@@ -2,14 +2,15 @@ package com.libgdx.undercooked.entities;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.libgdx.undercooked.PlayerManager;
 
 public abstract class Station {
     //temporarily stopped extends Entity
-    FoodItem containedItem;
-    private float x;
-    private float y;
-    private int width;
-    private int height;
+    FoodType containedItem;
+    private final float x;
+    private final float y;
+    private final int width;
+    private final int height;
     protected TextureAtlas floating_iconAtlas;
     protected float frameDuration;
     protected float stateTime; // Time elapsed since the start of the animation
@@ -35,4 +36,7 @@ public abstract class Station {
     public float getY() {
         return y;
     }
+
+    public abstract void render();
+    public abstract void interact(PlayerManager p);
 }
