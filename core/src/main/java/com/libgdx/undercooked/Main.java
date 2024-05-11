@@ -20,13 +20,13 @@ public class Main extends Game {
     @Override
     public void create() {
 
-        createTable("tblAccount");
-        insertAccount("valceven",1);
+        createTableHighScore();
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         screenCache = new EnumMap<ScreenType, Screen>(ScreenType.class);
         setScreen(ScreenType.LOADING);
     }
+
 
     public void setScreen(final ScreenType screenType) {
         final Screen screen = screenCache.get(screenType);
