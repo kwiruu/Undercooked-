@@ -2,11 +2,7 @@ package com.libgdx.undercooked.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-
-import java.awt.Rectangle;
 
 public class ChoppingBoard extends Station {
     private SpriteBatch batch;
@@ -19,7 +15,7 @@ public class ChoppingBoard extends Station {
     }
     public void render() {
         // Update stateTime
-        stateTime += Gdx.graphics.getDeltaTime();
+        stateTime += (float) (Gdx.graphics.getDeltaTime() + .5);
         TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
         batch.draw(currentFrame, getX(), getY());
     }
