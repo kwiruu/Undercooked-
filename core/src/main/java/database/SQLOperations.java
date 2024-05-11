@@ -1,9 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static database.SQLConnection.getConnection;
 
@@ -62,5 +59,26 @@ public class SQLOperations {
             e.printStackTrace();
         }
     }
+
+    public static boolean userSignIn(String userName) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                 "SELECT * FROM tblAccount WHERE userName = ?");
+        ) {
+            stmt.setString(1, userName);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("User signed in successfully. Welcome ma nigga");
+            } else {
+                insertAccount(userName, 1);
+                System.out.println("New account created. Proceeding to the game...");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 }

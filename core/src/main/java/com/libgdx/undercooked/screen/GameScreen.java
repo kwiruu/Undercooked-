@@ -2,6 +2,7 @@ package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,14 +12,21 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
 import com.libgdx.undercooked.PlayerManager;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter implements Screen {
 
     private final Main context;
     private OrthographicCamera camera;
@@ -28,8 +36,11 @@ public class GameScreen extends ScreenAdapter {
     private PlayerManager player;
     private SpriteBatch batch;
     private float elapsedTime = 0f;
-    private FitViewport viewport;
     private boolean initialized = false; // To track initialization
+    private FitViewport viewport;
+    private Stage stage;
+    private Skin skin;
+    private final String username = LandingPageScreen.getUsername();
 
     public GameScreen(final Main context) {
         this.context = context;
@@ -58,16 +69,30 @@ public class GameScreen extends ScreenAdapter {
 
             viewport = new FitViewport(1400, 800);
             initialized = true;
+
+            stage = new Stage(new ScreenViewport());
+            skin = new Skin(Gdx.files.internal("metal-ui.json"));
+
+            Gdx.input.setInputProcessor(stage);
+
+            // Create the root table and set its alignment to top-right
+            Table rootTable = new Table();
+            rootTable.top().right();
+            rootTable.setFillParent(true);
+            stage.addActor(rootTable);
+
+            // Add username label to the root table
+            Label usernameLabel = new Label("Username: " + context.getUsername(), skin);
+            rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
         }
     }
 
     @Override
     public void render(float deltaTime) {
+
         update(deltaTime);
         Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        viewport.apply(true);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
 
@@ -81,6 +106,9 @@ public class GameScreen extends ScreenAdapter {
         map.drawLayerTextures(batch, currentFrame);
 
         batch.end();
+
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             context.setScreen(ScreenType.LOADING);
