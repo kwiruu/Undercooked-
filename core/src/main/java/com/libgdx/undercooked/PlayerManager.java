@@ -72,11 +72,6 @@ public class PlayerManager implements Runnable {
             } else {
                 System.out.println("pointed at nothing");
             }
-            try {
-                ;
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
         }
 
         if (spacePressed) {
@@ -261,6 +256,7 @@ public class PlayerManager implements Runnable {
                 point.add(-displacement,0);
                 break;
         }
+        System.out.println(point);
         return point;
     }
     public boolean hasHeldItem() {
