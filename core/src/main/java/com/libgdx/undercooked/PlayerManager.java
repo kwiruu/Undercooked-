@@ -66,13 +66,15 @@ public class PlayerManager implements Runnable {
             spacePressed = true;
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
-            Station st = entityList.pointStation(getInteractPos());
+            //Station st = entityList.pointStation(getInteractPos());
+            Station st = entityList.pointStation(debugInteractPos());
             if (st != null) {
                 st.interact(this);
             } else {
                 System.out.println("pointed at nothing");
             }
         }
+        debugKeys();
 
         if (spacePressed) {
             spaceCooldown -= 0.03f;
@@ -239,7 +241,7 @@ public class PlayerManager implements Runnable {
     }
 
     public Vector2 getInteractPos() {
-        // used to find station position
+        // find station position
         Vector2 point = getPosition();
         float displacement = 8;
         switch (lastDirection) {
@@ -258,6 +260,18 @@ public class PlayerManager implements Runnable {
         }
         System.out.println(point);
         return point;
+    }
+    private Vector2 debugInteractPos() {
+        return new Vector2(545, 407);
+    }
+    private void debugKeys() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            System.out.println("Removing: " + heldItem);
+            removeHeldItem();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            System.out.println("Item check: " + heldItem);
+        }
     }
     public boolean hasHeldItem() {
         return getHeldItem() != null;

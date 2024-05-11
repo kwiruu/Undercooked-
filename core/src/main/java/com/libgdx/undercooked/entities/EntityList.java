@@ -121,7 +121,7 @@ public class EntityList {
     public Station pointStation (Vector2 v2) {
         Rectangle r;
         for (Station s: stationArray) {
-            System.out.println("checking (" + s.getX() + "-" + (s.getX()+8) + ", " + s.getY() + "-" + (s.getY()+8) + ")");
+            System.out.println(s + " checking (" + s.getX() + "-" + (s.getX()+8) + ", " + s.getY() + "-" + (s.getY()+8) + ")");
             // needs tweaking
             r = new Rectangle(s.getX(), s.getY(), 8f, 8f);
             if (r.contains(v2)) {

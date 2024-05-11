@@ -24,7 +24,7 @@ public class ChoppingBoard extends Station {
 
     @Override
     public void interact(PlayerManager p) {
-        System.out.println("chopping board");
+        System.out.println("interacted with chopping board");
         if (containedItem == null && p.hasHeldItem()) {
             // case 1 no item, p item
                 // set chopping timer based on foodItem

@@ -47,6 +47,7 @@ public class FoodSource extends Station {
 
     @Override
     public void interact(PlayerManager p) {
+        System.out.println("interacted with a foodSource for - " + containedItem);
         // case 1 no p item
         // set player item to contained item
         // case 2

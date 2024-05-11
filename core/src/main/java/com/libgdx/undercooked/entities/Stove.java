@@ -30,7 +30,7 @@ public class Stove extends Station {
 
     @Override
     public void interact(PlayerManager p) {
-        System.out.println("stove");
+        System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
             // case 1 no item, p item
                 // set cooking timer based on foodItem
