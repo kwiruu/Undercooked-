@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.libgdx.undercooked.entities.FoodType;
+
 import java.util.HashMap;
 import java.util.Map;
 import static com.libgdx.undercooked.utils.Constants.PPM;
@@ -25,6 +27,7 @@ public class PlayerManager implements Runnable {
     private float spaceCooldown = 1f;
     private float deltaTimes;
     public boolean playerLocked = false;
+    private FoodType heldItem;
     @Override
     public void run(){
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
@@ -60,7 +63,7 @@ public class PlayerManager implements Runnable {
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
         }
-        
+
         if (spacePressed) {
             spaceCooldown -= 0.03f;
             if (spaceCooldown <= 0) {
@@ -68,7 +71,7 @@ public class PlayerManager implements Runnable {
                 if(playerLocked){
                     playerLocked = false;
                 }
-                spaceCooldown = 1f; 
+                spaceCooldown = 1f;
             }
         }
 
@@ -225,4 +228,36 @@ public class PlayerManager implements Runnable {
 
     }
 
+    public Vector2 getInteractPos() {
+        // used to find station position
+        Vector2 point = getPosition();
+        float displacement = 8;
+        switch (lastDirection) {
+            case "top":
+                point.add(0, displacement);
+                break;
+            case "down":
+                point.add(0, -displacement);
+                break;
+            case "left":
+                point.add(displacement,0);
+                break;
+            case "right":
+                point.add(-displacement,0);
+                break;
+        }
+        return point;
+    }
+    public boolean hasHeldItem() {
+        return getHeldItem() != null;
+    }
+    public FoodType getHeldItem() {
+        return heldItem;
+    }
+    public void removeHeldItem() {
+        heldItem = null;
+    }
+    public void setHeldItem(FoodType heldItem) {
+        this.heldItem = heldItem;
+    }
 }
