@@ -41,6 +41,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private Stage stage;
     private Skin skin;
     private final String username = LandingPageScreen.getUsername();
+    private GameUI gameui;
 
     public GameScreen(final Main context) {
         this.context = context;
@@ -84,6 +85,10 @@ public class GameScreen extends ScreenAdapter implements Screen {
             // Add username label to the root table
             Label usernameLabel = new Label("Username: " + context.getUsername(), skin);
             rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
+
+            // game ui!
+            gameui = new GameUI(stage);
+            gameui.createButtons();
         }
     }
 

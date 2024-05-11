@@ -1,0 +1,9 @@
+buttonsAtlas.png
+size:256,128
+repeat:none
+pause_button
+index:0
+bounds:2,2,64,64
+pause_button
+index:1
+bounds:68,2,64,64
