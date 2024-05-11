@@ -20,6 +20,8 @@ public class Main extends Game {
     @Override
     public void create() {
 
+        createTableAccount("tblAccount");
+        createTableMap();
         createTableHighScore();
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
