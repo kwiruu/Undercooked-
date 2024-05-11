@@ -8,5 +8,5 @@ public class FoodItem {
     public FoodItem(FoodType ft) {
         fType = ft;
     }
-
+    // do not use
 }

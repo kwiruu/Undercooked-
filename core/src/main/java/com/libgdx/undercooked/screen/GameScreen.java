@@ -54,6 +54,8 @@ public class GameScreen extends ScreenAdapter {
 
             map = new MapManager(world,batch);
 
+            player.setEntityList(map.getEntityList());
+
             viewport = new FitViewport(1400, 800);
             initialized = true;
         }

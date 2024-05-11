@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.entities.Entity;
+import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static com.libgdx.undercooked.PlayerManager.player;
@@ -18,7 +18,7 @@ public class MapManager {
     private final TiledMap map;
     private final Texture[] test_map_textures;
     public OrthogonalTiledMapRenderer tmr;
-    private final Entity entity;
+    private final EntityList entityList;
 
     public MapManager(World world, SpriteBatch batch) {
         map = new TmxMapLoader().load("assets/maps/test_map.tmx");
@@ -34,7 +34,7 @@ public class MapManager {
             new Texture("assets/maps/test_map/test_map_behind_player.png"),
         };
 
-        entity = new Entity(map, batch);
+        entityList = new EntityList(map, batch);
     }
 
     public void drawLayerTextures(SpriteBatch batch, TextureRegion textregion) {
@@ -45,7 +45,7 @@ public class MapManager {
             }
             batch.draw(texturez, 0, 0);
         }
-        entity.render();
+        entityList.render();
     }
 
     public void dispose() {
@@ -54,5 +54,9 @@ public class MapManager {
 
     public TiledMap getMap() {
         return map;
+    }
+
+    public EntityList getEntityList() {
+        return entityList;
     }
 }

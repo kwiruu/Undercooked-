@@ -30,10 +30,11 @@ public class Stove extends Station {
 
     @Override
     public void interact(PlayerManager p) {
+        System.out.println("stove");
         if (containedItem == null && p.hasHeldItem()) {
             // case 1 no item, p item
-            // set cooking timer based on foodItem
-            // need to check if valid foodItem
+                // set cooking timer based on foodItem
+                // need to check if valid foodItem
             if (p.getHeldItem() == FoodType.tomato && p.getHeldItem() == FoodType.chopped_tomato) {
                 containedItem = FoodType.tomato_soup;
                 timer = 500;
