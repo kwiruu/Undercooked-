@@ -3,11 +3,10 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SQLConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/dbundercooked";
+    private static final String URL = "jdbc:mysql://localhost:3306/dbUndercooked";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
@@ -25,19 +24,4 @@ public class SQLConnection {
         }
         return conn;
     }
-
-
-
-    public static void createTable(String tblName) {
-        try (Connection conn = getConnection();) {
-            Statement stmt = conn.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS " + tblName +
-                "username TEXT(20) PRIMARY KEY NOT NULL DEFAULT user";
-            stmt.executeUpdate(sql);
-            System.out.println("Database " + tblName + " created successfully");
-        } catch (SQLException e) {
-            System.out.println("AKO DOYDAS");
-        }
-    }
-
 }

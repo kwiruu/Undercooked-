@@ -11,7 +11,7 @@ import com.libgdx.undercooked.screen.ScreenType;
 
 import java.util.EnumMap;
 
-import static database.SQLConnection.createTable;
+import static database.SQLOperations.*;
 
 public class Main extends Game {
     private static final String TAG = Main.class.getSimpleName();
@@ -21,6 +21,7 @@ public class Main extends Game {
     public void create() {
 
         createTable("tblAccount");
+        insertAccount("valceven",1);
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         screenCache = new EnumMap<ScreenType, Screen>(ScreenType.class);
