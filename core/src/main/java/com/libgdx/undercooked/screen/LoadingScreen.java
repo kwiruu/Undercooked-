@@ -39,11 +39,10 @@ public class LoadingScreen implements Screen {
         TextButton optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
-        root.add(startButton).fillX().uniformX().padBottom(20);
+        root.add(startButton).width(100).fillX().uniformX().padBottom(20);
         root.row();
-        root.add(optionsButton).fillX().uniformX().padBottom(20);
+        root.add(optionsButton).width(100).fillX().uniformX().padBottom(20);
         root.row();
-        root.add(exitButton).fillX().uniformX();
 
         startButton.setDisabled(true);
         startButton.addListener(new ClickListener(){
