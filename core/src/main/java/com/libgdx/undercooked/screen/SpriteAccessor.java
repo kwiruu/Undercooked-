@@ -16,7 +16,6 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
                 return -1;
         }
     }
-
     @Override
     public void setValues(Sprite sprite, int i, float[] floats) {
         switch (i){
