@@ -1,0 +1,114 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	Text_font: {
+		file: Text_font.fnt
+		scaledSize: 15
+		markupEnabled: false
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	RGBA_107_80_82_255: {
+		r: 0.41960785
+		g: 0.3137255
+		b: 0.32156864
+		a: 1
+	}
+	RGBA_81_80_107_255: {
+		r: 0.31764707
+		g: 0.3137255
+		b: 0.41960785
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: button_down_box
+		down: button_up_box
+		over: button_down_box
+		focused: button_down_box
+		disabled: button_down_box
+		checked: button_down_box
+		checkedOver: button_down_box
+		checkedDown: button_down_box
+		checkedFocused: button_down_box
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: check_box_checked
+		checkboxOff: check_box
+		checkboxOnOver: check_box
+		checkboxOver: check_box
+		checkboxOnDisabled: check_box
+		checkboxOffDisabled: check_box
+		font: Text_font
+		up: check_box
+		down: check_box
+		over: check_box
+		focused: check_box
+		disabled: check_box
+		checked: check_box_checked
+		checkedOver: check_box_checked
+		checkedDown: check_box_checked
+		checkedFocused: check_box_checked
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: Text_font
+		background: check_box
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: check_box
+		corner: scrollcorner_box
+		hScroll: scrollbg_y_box
+		hScrollKnob: scrollknob_y_box
+		vScroll: scrollbg_box
+		vScrollKnob: scrollknob_box
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: Text_font
+		fontColor: RGBA_107_80_82_255
+		downFontColor: RGBA_81_80_107_255
+		overFontColor: RGBA_107_80_82_255
+		focusedFontColor: RGBA_107_80_82_255
+		disabledFontColor: RGBA_107_80_82_255
+		checkedFontColor: RGBA_107_80_82_255
+		checkedDownFontColor: RGBA_107_80_82_255
+		checkedOverFontColor: RGBA_107_80_82_255
+		checkedFocusedFontColor: RGBA_107_80_82_255
+		up: button_down_box
+		down: button_up_box
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: Text_font
+		fontColor: RGBA_107_80_82_255
+		focusedFontColor: RGBA_107_80_82_255
+		disabledFontColor: RGBA_107_80_82_255
+		background: textfield_box
+		focusedBackground: textfield_box
+		disabledBackground: textfield_box
+		messageFont: Text_font
+		messageFontColor: RGBA_107_80_82_255
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: window_box
+		titleFont: Text_font
+		titleFontColor: RGBA_107_80_82_255
+	}
+}
+}

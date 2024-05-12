@@ -23,7 +23,7 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void show() {
-        skin = new Skin(Gdx.files.internal("metal-ui.json")); // Change this to your own skin file
+        skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json")); // Change this to your own skin file
 
         stage = new Stage(new ScreenViewport());
 
@@ -76,7 +76,7 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+        Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(Gdx.graphics.getDeltaTime());

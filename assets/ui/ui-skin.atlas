@@ -1,0 +1,120 @@
+
+ui-skin.png
+size: 1024, 1024
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Text_font
+  rotate: false
+  xy: 1, 231
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+button_down_box
+  rotate: false
+  xy: 1, 39
+  size: 64, 64
+  split: 13, 13, 17, 13
+  pad: 0, 0, 0, 0
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+button_up_box
+  rotate: false
+  xy: 131, 165
+  size: 64, 64
+  split: 13, 13, 21, 9
+  pad: 0, 0, 0, 0
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+check_box
+  rotate: false
+  xy: 1, 1
+  size: 36, 36
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+check_box_checked
+  rotate: false
+  xy: 605, 707
+  size: 36, 36
+  split: 7, 7, 10, 8
+  pad: 0, 0, 0, 0
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+label_box
+  rotate: false
+  xy: 515, 679
+  size: 88, 64
+  split: 14, 13, 18, 19
+  pad: 0, 0, 0, 0
+  orig: 88, 64
+  offset: 0, 0
+  index: -1
+scrollbg_box
+  rotate: false
+  xy: 643, 707
+  size: 10, 36
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 10, 36
+  offset: 0, 0
+  index: -1
+scrollbg_y_box
+  rotate: false
+  xy: 67, 93
+  size: 36, 10
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 36, 10
+  offset: 0, 0
+  index: -1
+scrollcorner_box
+  rotate: false
+  xy: 197, 215
+  size: 14, 14
+  split: 0, 0, 0, 0
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+scrollknob_box
+  rotate: false
+  xy: 131, 149
+  size: 18, 14
+  split: 5, 5, 5, 7
+  pad: 0, 0, 0, 0
+  orig: 18, 14
+  offset: 0, 0
+  index: -1
+scrollknob_y_box
+  rotate: false
+  xy: 515, 627
+  size: 12, 18
+  split: 5, 5, 5, 7
+  pad: 0, 0, 0, 0
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+textfield_box
+  rotate: false
+  xy: 515, 647
+  size: 44, 30
+  split: 7, 7, 7, 9
+  pad: 0, 0, 0, 0
+  orig: 44, 30
+  offset: 0, 0
+  index: -1
+window_box
+  rotate: false
+  xy: 1, 105
+  size: 128, 124
+  split: 34, 29, 33, 21
+  pad: 0, 0, 0, 0
+  orig: 128, 124
+  offset: 0, 0
+  index: -1

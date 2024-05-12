@@ -19,7 +19,6 @@ public class LandingPageScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private SpriteBatch batch;
-    private Texture background;
     private static String username = null;
     public LandingPageScreen(final Main context) {
         this.context = context;
@@ -28,9 +27,8 @@ public class LandingPageScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("metal-ui.json")); // Change this to your own skin file
+        skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json")); // Change this to your own skin file
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("libgdx.png")); // Change this to your background image
 
         Gdx.input.setInputProcessor(stage);
 
@@ -39,17 +37,22 @@ public class LandingPageScreen implements Screen {
         stage.addActor(root);
 
         root.pad(20);
+        root.defaults().space(10);
+
+        Texture imgTexture = new Texture(Gdx.files.internal("assets/sprites_raw/login_box2.png"));
+        Image img = new Image(imgTexture);
+        root.add(img).size(imgTexture.getWidth()*2, imgTexture.getHeight()*2).pad(3).colspan(2);
 
         final Label enterUserLabel = new Label("Username:", skin);
         final TextField usernameField = new TextField("", skin);
         TextButton okButton = new TextButton("OK", skin);
 
-        root.add(enterUserLabel).padBottom(20).colspan(2);
+        // Position the enterUserLabel at the top-left corner
+        root.add(enterUserLabel).top().left().padTop(20).padLeft(20).colspan(2);
         root.row();
-        root.add(usernameField).fillX().uniformX().padBottom(20).colspan(2);
+        root.add(usernameField).height(40).fillX().uniformX().padBottom(20).pad(3).colspan(2);
         root.row();
-        root.add(okButton).fillX().uniformX().colspan(2);
-
+        root.add(okButton).width(100).height(45).pad(3).padTop(0).colspan(2);
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -65,13 +68,14 @@ public class LandingPageScreen implements Screen {
         });
     }
 
+
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+        Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -103,7 +107,6 @@ public class LandingPageScreen implements Screen {
         stage.dispose();
         skin.dispose();
         batch.dispose();
-        background.dispose();
     }
 
     public static String getUsername(){
