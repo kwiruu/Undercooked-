@@ -66,7 +66,7 @@ public class GameUI{
             }
         });
 
-        Skin skin = new Skin(Gdx.files.internal("metal-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         Table rootTable = new Table();
         rootTable.top().right();
@@ -81,7 +81,7 @@ public class GameUI{
 
     public void updateButtonPosition() {
         float displacement = isHovered ? 2.5f : 0f;
-        pause_button.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32 + displacement, Gdx.graphics.getHeight() - 72);
+        pause_button.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72 + displacement);
     }
 
     public void render() {
