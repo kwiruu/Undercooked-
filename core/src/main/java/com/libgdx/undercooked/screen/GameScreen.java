@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
@@ -31,7 +30,6 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
         private boolean initialized = false; // To track initialization
         private FitViewport viewport;
         private GameUI gameUI;
-        private Stage stage;
 
         public GameScreen(final Main context) {
             this.context = context;
@@ -86,7 +84,6 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 context.setScreen(ScreenType.LOADING);
             }
-
             gameUI.render();
         }
 

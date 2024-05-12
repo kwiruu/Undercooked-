@@ -42,9 +42,7 @@ public class FoodSource extends Station {
         1. to change the type of icon the food source make we need to find it in the region,
          so just pass the string name of the region for the foodsource to render for!
         2. foodSource object naming must be different on tiled since per map we need at most 3 foodsource!
-
     */
-
     @Override
     public void interact(PlayerManager p) {
         System.out.println("interacted with a foodSource for - " + containedItem);
