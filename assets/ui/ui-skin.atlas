@@ -11,6 +11,13 @@ Text_font
   orig: 512, 512
   offset: 0, 0
   index: -1
+minus_box
+  rotate: false
+  xy: 197, 197
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 button_down_box
   rotate: false
   xy: 1, 39
@@ -76,7 +83,7 @@ scrollbg_y_box
   index: -1
 scrollcorner_box
   rotate: false
-  xy: 197, 215
+  xy: 561, 663
   size: 14, 14
   split: 0, 0, 0, 0
   orig: 14, 14
@@ -84,7 +91,7 @@ scrollcorner_box
   index: -1
 scrollknob_box
   rotate: false
-  xy: 131, 149
+  xy: 515, 631
   size: 18, 14
   split: 5, 5, 5, 7
   pad: 0, 0, 0, 0
@@ -93,7 +100,7 @@ scrollknob_box
   index: -1
 scrollknob_y_box
   rotate: false
-  xy: 515, 627
+  xy: 605, 687
   size: 12, 18
   split: 5, 5, 5, 7
   pad: 0, 0, 0, 0
@@ -116,5 +123,12 @@ window_box
   split: 34, 29, 33, 21
   pad: 0, 0, 0, 0
   orig: 128, 124
+  offset: 0, 0
+  index: -1
+plus_box
+  rotate: false
+  xy: 131, 131
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1

@@ -57,7 +57,6 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: Text_font
-		background: check_box
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
@@ -92,9 +91,6 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 		fontColor: RGBA_107_80_82_255
 		focusedFontColor: RGBA_107_80_82_255
 		disabledFontColor: RGBA_107_80_82_255
-		background: textfield_box
-		focusedBackground: textfield_box
-		disabledBackground: textfield_box
 		messageFont: Text_font
 		messageFontColor: RGBA_107_80_82_255
 	}
@@ -102,6 +98,17 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
+	default: {
+		plus: plus_box
+		minus: minus_box
+		plusOver: plus_box
+		minusOver: minus_box
+		over: scrollknob_box
+		selection: scrollknob_y_box
+		background: check_box
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
