@@ -3,12 +3,15 @@ package com.libgdx.undercooked.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 
@@ -33,6 +36,10 @@ public class LoadingScreen implements Screen {
         root.setFillParent(true);
         stage.addActor(root);
 
+        // Set background image
+        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/screens/mainscreen.png"));
+        root.setBackground(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
+
         root.pad(20);
 
         TextButton startButton = new TextButton("Start", skin);
@@ -42,6 +49,8 @@ public class LoadingScreen implements Screen {
         root.add(startButton).width(100).fillX().uniformX().padBottom(20);
         root.row();
         root.add(optionsButton).width(100).fillX().uniformX().padBottom(20);
+        root.row();
+        root.add(exitButton).width(100).fillX().uniformX().padBottom(20);
         root.row();
 
         startButton.setDisabled(true);
@@ -72,6 +81,7 @@ public class LoadingScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
     }
+
 
     @Override
     public void render(float v) {
