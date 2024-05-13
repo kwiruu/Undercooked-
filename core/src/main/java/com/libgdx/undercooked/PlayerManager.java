@@ -24,7 +24,6 @@ public class PlayerManager implements Runnable {
     private final World world;
     static Body player;
     static Body itemBox;
-
     static String hasItemz = "";
     private TextureAtlas textureAtlas;
     private SpriteBatch playerBatch;
