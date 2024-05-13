@@ -326,8 +326,8 @@ public class PlayerManager implements Runnable {
     public void renderItem(SpriteBatch batch, float elapsedTime){
         if (!hasItemz.isEmpty()) {
             Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + hasItemz + ".png"));
-            float itemX = (player.getPosition().x - 0.4f) * PPM; // Adjust X position to center above the player
-            float itemY = (player.getPosition().y + 1.5f) * PPM; // Adjust Y position to above the player
+            float itemX = (player.getPosition().x - 0.5f) * PPM; // Adjust X position to center above the player
+            float itemY = (player.getPosition().y + 0.9f) * PPM; // Adjust Y position to above the player
 
             // Ensure texture is loaded
             if (!texture.getTextureData().isPrepared()) {
