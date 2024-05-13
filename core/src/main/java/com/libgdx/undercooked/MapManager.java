@@ -45,18 +45,30 @@ public class MapManager {
             if (i == 4) { // Check if it's the layer for the player
                 String itemHeld = hasItemz;
                 batch.draw(textregion, player.getPosition().x * PPM - ((float) textregion.getRegionWidth() / 2), player.getPosition().y * PPM - ((float) textregion.getRegionHeight() / 8));
-                if(!itemHeld.isEmpty()){
-                    System.out.println(itemHeld);
-                    Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));// Assuming FoodType has a texture region associated
-                    float itemX = player.getPosition().x + 8; // Adjust X position to center above the player
-                    float itemY = player.getPosition().y + 20; // Adjust Y position to above the player
-                    batch.draw(texture, itemX * PPM, itemY * PPM, 16, 16);
+                if (!itemHeld.isEmpty()) {
+                    Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));
+                    float itemX = (player.getPosition().x - 0.4f) * PPM; // Adjust X position to center above the player
+                    float itemY = (player.getPosition().y + 1.5f) * PPM; // Adjust Y position to above the player
+
+                    // Ensure texture is loaded
+                    if (!texture.getTextureData().isPrepared()) {
+                        texture.getTextureData().prepare();
+                    }
+
+                    // Check if the texture fits within the viewport
+                    if (itemX >= 0 && itemX <= Gdx.graphics.getWidth() && itemY >= 0 && itemY <= Gdx.graphics.getHeight()) {
+                        batch.draw(texture, itemX, itemY, 24, 24);
+                    } else {
+                        // Log a warning if the texture is outside the viewport
+                        Gdx.app.log("Warning", "Texture outside viewport");
+                    }
                 }
             }
             batch.draw(texturez, 0, 0);
         }
         entityList.render();
     }
+
 
     public void dispose() {
         tmr.dispose();
