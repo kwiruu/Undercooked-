@@ -343,7 +343,7 @@ public class PlayerManager implements Runnable {
             }
 
             // Draw the current frame of the smoke animation at the specified position
-            TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, false); // true for looping
+            TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true for looping
             batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
         }
     }
