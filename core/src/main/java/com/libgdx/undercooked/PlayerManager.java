@@ -2,6 +2,7 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Station;
@@ -37,6 +39,8 @@ public class PlayerManager implements Runnable {
     public boolean playerLocked = false;
     private FoodType heldItem;
     private EntityList entityList;
+    private Animation<TextureAtlas.AtlasRegion> smokeAnimation;
+    private float stateTime;
 
     @Override
     public void run(){
@@ -47,8 +51,10 @@ public class PlayerManager implements Runnable {
         lastDirection = "down";
         animations = new HashMap<>();
         initializeAnimations();
+        initializeSmokeAnimation();
         isLifting = false;
         currentTime = 0;
+        stateTime = 0;
     }
 
     public PlayerManager(World world) {
@@ -311,4 +317,40 @@ public class PlayerManager implements Runnable {
     public void setEntityList(EntityList entityList) {
         this.entityList = entityList;
     }
+    private void initializeSmokeAnimation() {
+        TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("assets/fx_sprites/fxAtlas.atlas"));
+        Array<TextureAtlas.AtlasRegion> smokeRegions = smokeAtlas.findRegions("poof"); // Assuming "poof" is the name of your region
+        smokeAnimation = new Animation<>(0.2f, smokeRegions);
+    }
+
+    public void renderItem(SpriteBatch batch, float elapsedTime){
+        if (!hasItemz.isEmpty()) {
+            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + hasItemz + ".png"));
+            float itemX = (player.getPosition().x - 0.4f) * PPM; // Adjust X position to center above the player
+            float itemY = (player.getPosition().y + 1.5f) * PPM; // Adjust Y position to above the player
+
+            // Ensure texture is loaded
+            if (!texture.getTextureData().isPrepared()) {
+                texture.getTextureData().prepare();
+            }
+
+            // Check if the texture fits within the viewport
+            if (itemX >= 0 && itemX <= Gdx.graphics.getWidth() && itemY >= 0 && itemY <= Gdx.graphics.getHeight()) {
+                batch.draw(texture, itemX, itemY);
+            } else {
+                // Log a warning if the texture is outside the viewport
+                Gdx.app.log("Warning", "Texture outside viewport");
+            }
+
+            // Draw the current frame of the smoke animation at the specified position
+            TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, false); // true for looping
+            batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
+        }
+    }
+
+    public void renderItemUpdate(float elapsedTime){
+        // Update the elapsed time for the smoke animation
+        stateTime += elapsedTime;
+    }
+
 }

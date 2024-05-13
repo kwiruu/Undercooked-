@@ -81,6 +81,7 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
             batch.setProjectionMatrix(camera.combined);
 
             map.drawLayerTextures(batch, currentFrame);
+            player.renderItem(batch, elapsedTime);
 
             batch.end();
 
@@ -92,6 +93,7 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
         private void update(float deltaTime) {
         world.step(1 / 60f, 6, 2);
         player.inputUpdate(deltaTime);
+        player.renderItemUpdate(deltaTime);
         cameraUpdate(deltaTime);
         map.tmr.setView(camera);
         gameUI.update(player);
