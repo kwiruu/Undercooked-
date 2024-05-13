@@ -37,81 +37,84 @@ public class EntityList {
         // it is called in the constructor then to be used in the mapManager
 
         for (MapObject object : objectLayer.getObjects()) {
-            // if the object is named stove in the tiled map then mu create siyag new nga stove!
-            if (object.getName().equals("stove")) {
-                 x = object.getProperties().get("x", Float.class);
-                 y = object.getProperties().get("y", Float.class) + 55;
-                 width = object.getProperties().get("width", Float.class);
-                 height = object.getProperties().get("height", Float.class);
+            String objectName = object.getName();
+            if (objectName != null) {
+                // if the object is named stove in the tiled map then mu create siyag new nga stove!
+                if (object.getName().equals("stove")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 55;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                Stove stove = new Stove(x, y, (int) width, (int) height, batch);
-                stationArray.add(stove); // Add stove to the array
-            }
-            if (object.getName().equals("chopping_board")) {
-                 x = object.getProperties().get("x", Float.class)+70;
-                 y = object.getProperties().get("y", Float.class)+25;
-                 width = object.getProperties().get("width", Float.class);
-                 height = object.getProperties().get("height", Float.class);
+                    Stove stove = new Stove(x, y, (int) width, (int) height, batch);
+                    stationArray.add(stove); // Add stove to the array
+                }
+                if (object.getName().equals("chopping_board")) {
+                    x = object.getProperties().get("x", Float.class) + 70;
+                    y = object.getProperties().get("y", Float.class) + 25;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                ChoppingBoard choppingBoard = new ChoppingBoard(x, y, (int) width, (int) height, batch);
-                stationArray.add(choppingBoard); // Add stove to the array
-            }
-            if (object.getName().equals("rice_cooker")) {
-                x = object.getProperties().get("x", Float.class);
-                y = object.getProperties().get("y", Float.class)+40;
-                width = object.getProperties().get("width", Float.class);
-                height = object.getProperties().get("height", Float.class);
+                    ChoppingBoard choppingBoard = new ChoppingBoard(x, y, (int) width, (int) height, batch);
+                    stationArray.add(choppingBoard); // Add stove to the array
+                }
+                if (object.getName().equals("rice_cooker")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 40;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                RiceCooker riceCooker = new RiceCooker(x, y, (int) width, (int) height, batch);
-                stationArray.add(riceCooker); // Add stove to the array
-            }
+                    RiceCooker riceCooker = new RiceCooker(x, y, (int) width, (int) height, batch);
+                    stationArray.add(riceCooker); // Add stove to the array
+                }
 
-            //--------------------IMPORTANT-----------------------//
+                //--------------------IMPORTANT-----------------------//
 
-            // for the foodsources!!!
-            // in the tiled map, we only need to name the foodsources like these!
-            // more modular map creation!!!!!
+                // for the foodsources!!!
+                // in the tiled map, we only need to name the foodsources like these!
+                // more modular map creation!!!!!
 
-            if (object.getName().equals("onion_source")) {
-                x = object.getProperties().get("x", Float.class);
-                y = object.getProperties().get("y", Float.class)+55;
-                width = object.getProperties().get("width", Float.class);
-                height = object.getProperties().get("height", Float.class);
+                if (object.getName().equals("onion_source")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 55;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                FoodSource onion = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.onion);
-                stationArray.add(onion); // Add onion to the array
-            }else if (object.getName().equals("meat_source")) {
-                x = object.getProperties().get("x", Float.class)+16;
-                y = object.getProperties().get("y", Float.class)+40;
-                width = object.getProperties().get("width", Float.class);
-                height = object.getProperties().get("height", Float.class);
+                    FoodSource onion = new FoodSource(x, y, (int) width, (int) height, batch, FoodType.onion);
+                    stationArray.add(onion); // Add onion to the array
+                } else if (object.getName().equals("meat_source")) {
+                    x = object.getProperties().get("x", Float.class) + 16;
+                    y = object.getProperties().get("y", Float.class) + 40;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                FoodSource meat = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.meat);
-                stationArray.add(meat); // Add meat to the array
-            } else if (object.getName().equals("fish_tank_source")) {
-                x = object.getProperties().get("x", Float.class)+32;
-                y = object.getProperties().get("y", Float.class)+55;
-                width = object.getProperties().get("width", Float.class);
-                height = object.getProperties().get("height", Float.class);
+                    FoodSource meat = new FoodSource(x, y, (int) width, (int) height, batch, FoodType.meat);
+                    stationArray.add(meat); // Add meat to the array
+                } else if (object.getName().equals("fish_tank_source")) {
+                    x = object.getProperties().get("x", Float.class) + 32;
+                    y = object.getProperties().get("y", Float.class) + 55;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                FoodSource fish = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.fish);
-                stationArray.add(fish); // Add stove to the array
-            } else if (object.getName().equals("tomato_source")) {
-                x = object.getProperties().get("x", Float.class);
-                y = object.getProperties().get("y", Float.class)+55;
-                width = object.getProperties().get("width", Float.class);
-                height = object.getProperties().get("height", Float.class);
+                    FoodSource fish = new FoodSource(x, y, (int) width, (int) height, batch, FoodType.fish);
+                    stationArray.add(fish); // Add stove to the array
+                } else if (object.getName().equals("tomato_source")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 55;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                FoodSource tomato = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.tomato);
-                stationArray.add(tomato); // Add tomato to the array
-            } else if (object.getName().equals("pickle_source")) {
-                x = object.getProperties().get("x", Float.class);
-                y = object.getProperties().get("y", Float.class)+55;
-                width = object.getProperties().get("width", Float.class);
-                height = object.getProperties().get("height", Float.class);
+                    FoodSource tomato = new FoodSource(x, y, (int) width, (int) height, batch, FoodType.tomato);
+                    stationArray.add(tomato); // Add tomato to the array
+                } else if (object.getName().equals("pickle_source")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 55;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
 
-                FoodSource pickle = new FoodSource(x, y, (int) width, (int) height, batch,FoodType.pickle);
-                stationArray.add(pickle); // Add pickle to the array
+                    FoodSource pickle = new FoodSource(x, y, (int) width, (int) height, batch, FoodType.pickle);
+                    stationArray.add(pickle); // Add pickle to the array
+                }
             }
         }
     }
