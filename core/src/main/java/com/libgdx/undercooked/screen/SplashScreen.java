@@ -3,6 +3,7 @@ package com.libgdx.undercooked.screen;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,8 @@ public class SplashScreen implements Screen {
     private Sprite splash;
     private TweenManager tweenManager;
     private final Main context;
+    private boolean keyPressedSinceLastFrame;
+
     public SplashScreen(final Main context) {
         this.context = context;
     }
@@ -48,11 +51,21 @@ public class SplashScreen implements Screen {
     }
 
     @Override
-    public void render(float v) {
-        Gdx.gl.glClearColor(0,0,0,1);
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        // Check for input to speed up the fade
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            keyPressedSinceLastFrame = true;
+        }
 
-        tweenManager.update(v);
+        if(keyPressedSinceLastFrame) {
+            tweenManager.update(delta * 5.0f);
+        }
+        else{
+            tweenManager.update(delta);
+        }
+
         batch.begin();
         splash.draw(batch);
         batch.end();
@@ -60,6 +73,7 @@ public class SplashScreen implements Screen {
             splashAnimationFinished();
         }
     }
+
 
     @Override
     public void resize(int i, int i1) {
