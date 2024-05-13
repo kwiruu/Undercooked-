@@ -361,7 +361,7 @@ public class PlayerManager implements Runnable {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
-            if(spacePressed) {
+            if(spacePressed || Gdx.input.isKeyPressed(Input.Keys.X)) {
                 // Draw the current frame of the smoke animation at the specified position
                 TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
                 batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
