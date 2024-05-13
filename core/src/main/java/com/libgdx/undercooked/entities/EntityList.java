@@ -4,21 +4,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.bullet.softbody.btSoftBody;
 import com.badlogic.gdx.utils.Array;
 
 public class EntityList {
     private final SpriteBatch batch;
     private final Array<Station> stationArray;
+    private final TiledMap map;
 
     public EntityList(TiledMap map, SpriteBatch batch) {
+        this.map = map;
         this.batch = batch;
         stationArray = new Array<>();
-
         renderEntity(map);
     }
     public void render() {
@@ -120,10 +118,11 @@ public class EntityList {
 
     public Station pointStation (Vector2 v2) {
         Rectangle r;
+        float displacement = 48F;
         for (Station s: stationArray) {
-            System.out.println(s + " checking (" + s.getX() + "-" + (s.getX()+8) + ", " + s.getY() + "-" + (s.getY()+8) + ")");
+            System.out.println(s + " checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
             // needs tweaking
-            r = new Rectangle(s.getX(), s.getY(), 8f, 8f);
+            r = new Rectangle(s.getX(), s.getY(), 32f, 64f);
             if (r.contains(v2)) {
                 return s;
             }

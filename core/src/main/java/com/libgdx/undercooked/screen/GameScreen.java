@@ -1,7 +1,6 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -76,14 +75,15 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
             Animation<TextureRegion> currentAnimation = player.determineCurrentAnimation();
             TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
 
+
             batch.begin();
+
             batch.setProjectionMatrix(camera.combined);
+            player.drawheldItem();
             map.drawLayerTextures(batch, currentFrame);
             batch.end();
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                context.setScreen(ScreenType.LOADING);
-            }
+
             gameUI.render();
         }
 
@@ -93,6 +93,7 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
         player.inputUpdate(deltaTime);
         cameraUpdate(deltaTime);
         map.tmr.setView(camera);
+        gameUI.update(player);
     }
 
     public void cameraUpdate(float deltaTime) {

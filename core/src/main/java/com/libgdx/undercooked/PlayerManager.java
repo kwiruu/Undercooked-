@@ -2,24 +2,29 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Station;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class PlayerManager implements Runnable {
     private final World world;
     static Body player;
+    static Body itemBox;
     private TextureAtlas textureAtlas;
     private SpriteBatch playerBatch;
     private String lastDirection;
@@ -32,10 +37,12 @@ public class PlayerManager implements Runnable {
     public boolean playerLocked = false;
     private FoodType heldItem;
     private EntityList entityList;
+
     @Override
     public void run(){
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         player = createBox(world, 8, 2, 16, 8, false);
+        itemBox = createBox(world,8,10,16,16,false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
         animations = new HashMap<>();
@@ -49,6 +56,16 @@ public class PlayerManager implements Runnable {
 
     }
 
+    public void drawheldItem(){
+        if (hasHeldItem()) {
+            String itemHeld = String.valueOf(getHeldItem());
+            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));// Assuming FoodType has a texture region associated
+            float itemX = player.getPosition().x + 8; // Adjust X position to center above the player
+            float itemY = player.getPosition().y + 20; // Adjust Y position to above the player
+            playerBatch.draw(texture, itemX, itemY, 16, 16);
+        }
+    }
+
     public SpriteBatch getBatch() {
         return playerBatch;
     }
@@ -59,6 +76,14 @@ public class PlayerManager implements Runnable {
         currentTime += deltaTime;
         deltaTimes = deltaTime;
 
+//        if (hasHeldItem()) {
+//            String itemHeld = String.valueOf(getHeldItem());
+//            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));// Assuming FoodType has a texture region associated
+//            float itemX = getPosition().x + 8; // Adjust X position to center above the player
+//            float itemY = getPosition().y + 20; // Adjust Y position to above the player
+//            playerBatch.draw(texture, itemX, itemY, 16, 16);
+//        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
             if(!playerLocked && !isLifting){
                 playerLocked = true;
@@ -66,12 +91,13 @@ public class PlayerManager implements Runnable {
             spacePressed = true;
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
-            //Station st = entityList.pointStation(getInteractPos());
-            Station st = entityList.pointStation(debugInteractPos());
+            Station st = entityList.pointStation(getInteractPos());
+           // Station st = entityList.pointStation(debugInteractPos());
             if (st != null) {
                 st.interact(this);
             } else {
                 System.out.println("pointed at nothing");
+                Gdx.input.setCursorPosition((int) getInteractPos().x, (int) getInteractPos().y);
             }
         }
         debugKeys();
@@ -126,6 +152,8 @@ public class PlayerManager implements Runnable {
         shape.dispose();
         return pBody;
     }
+
+
 
     public Animation<TextureRegion> determineCurrentAnimation() {
         String lastDir = getLastDirection();
@@ -242,27 +270,29 @@ public class PlayerManager implements Runnable {
 
     public Vector2 getInteractPos() {
         // find station position
-        Vector2 point = getPosition();
-        float displacement = 8;
+        Vector2 point = new Vector2(getPosition().x * 32, getPosition().y * 34);
+        float displacement = 32;
         switch (lastDirection) {
             case "top":
                 point.add(0, displacement);
                 break;
             case "down":
-                point.add(0, -displacement);
+                point.add(0, displacement);
                 break;
             case "left":
-                point.add(displacement,0);
+                point.add(-displacement,0);
                 break;
             case "right":
-                point.add(-displacement,0);
+                point.add(displacement,0);
                 break;
         }
         System.out.println(point);
         return point;
     }
     private Vector2 debugInteractPos() {
-        return new Vector2(545, 407);
+        Vector2 point = new Vector2(545, 407);
+        System.out.println(point);
+        return point;
     }
     private void debugKeys() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
@@ -278,6 +308,10 @@ public class PlayerManager implements Runnable {
     }
     public FoodType getHeldItem() {
         return heldItem;
+    }
+
+    public String getItemName(){
+        return heldItem + "";
     }
     public void removeHeldItem() {
         heldItem = null;

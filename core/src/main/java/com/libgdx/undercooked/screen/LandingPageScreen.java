@@ -10,13 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
-
-import static database.SQLOperations.userSignIn;
 
 public class LandingPageScreen implements Screen {
     private final Main context;
@@ -86,20 +87,15 @@ public class LandingPageScreen implements Screen {
                 username = usernameField.getText();
 
                 if (username.isEmpty()) {
-                    // Handle empty username
+
                 }
-                else if(userSignIn(username) && !username.isEmpty()){
+                else if(!username.isEmpty()){
                     context.setScreen(ScreenType.GAME);
                 }
             }
         });
     }
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> cdd323af2493abf8690106c2364fe3de2fd31acb
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0, 1f);
