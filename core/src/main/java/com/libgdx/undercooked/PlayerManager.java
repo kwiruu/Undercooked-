@@ -79,16 +79,16 @@ public class PlayerManager implements Runnable {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
-            if(!playerLocked && !isLifting){
-                playerLocked = true;
-            }
             spacePressed = true;
-            isLifting = !isLifting; // Toggle lifting state
-            currentTime = 0; // Reset animation time
             Station st = entityList.pointStation(getInteractPos());
             // Station st = entityList.pointStation(debugInteractPos());
             if (st != null) {
                 st.interact(this);
+                if(!playerLocked && !isLifting){
+                    playerLocked = true;
+                }
+                isLifting = !isLifting; // Toggle lifting state
+                currentTime = 0; // Reset animation time
             } else {
                 System.out.println("pointed at nothing");
                 Gdx.input.setCursorPosition((int) getInteractPos().x, (int) getInteractPos().y);
