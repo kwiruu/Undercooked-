@@ -1,5 +1,6 @@
 package com.libgdx.undercooked;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
+import static com.libgdx.undercooked.PlayerManager.hasItemz;
 import static com.libgdx.undercooked.PlayerManager.player;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
@@ -41,7 +43,15 @@ public class MapManager {
         for (int i = 0; i < test_map_textures.length; i++) {
             Texture texturez = test_map_textures[i];
             if (i == 4) { // Check if it's the layer for the player
+                String itemHeld = hasItemz;
                 batch.draw(textregion, player.getPosition().x * PPM - ((float) textregion.getRegionWidth() / 2), player.getPosition().y * PPM - ((float) textregion.getRegionHeight() / 8));
+                if(!itemHeld.isEmpty()){
+                    System.out.println(itemHeld);
+                    Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));// Assuming FoodType has a texture region associated
+                    float itemX = player.getPosition().x + 8; // Adjust X position to center above the player
+                    float itemY = player.getPosition().y + 20; // Adjust Y position to above the player
+                    batch.draw(texture, itemX * PPM, itemY * PPM, 16, 16);
+                }
             }
             batch.draw(texturez, 0, 0);
         }
