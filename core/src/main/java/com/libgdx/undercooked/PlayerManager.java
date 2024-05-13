@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -338,7 +339,14 @@ public class PlayerManager implements Runnable {
         if (!hasItemz.isEmpty()) {
             Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + hasItemz + ".png"));
             float itemX = (player.getPosition().x - 0.5f) * PPM; // Adjust X position to center above the player
-            float itemY = (player.getPosition().y + 0.9f) * PPM; // Adjust Y position to above the player
+
+            // Calculate Y position using a sine function for smooth oscillating motion
+            float amplitude = 0.05f; // Adjust the amplitude of the oscillation
+            float frequency = 1.6f; // Adjust the frequency of the oscillation
+            float phase = MathUtils.PI2 * stateTime; // Adjust the phase of the oscillation
+            float offsetY = amplitude * MathUtils.sin(phase * frequency); // Smooth oscillating motion
+
+            float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM; // Adjust Y position to above the player
 
             // Ensure texture is loaded
             if (!texture.getTextureData().isPrepared()) {
@@ -353,11 +361,11 @@ public class PlayerManager implements Runnable {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
-            if(spacePressed || exPressed){
+            if(spacePressed) {
+                // Draw the current frame of the smoke animation at the specified position
                 TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
                 batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
 
-                // Update liftingElapsedTime only if animation is still playin
                 // Check if the animation has finished playing
                 if (smokeAnimation.isAnimationFinished(stateTime)) {
                     stateTime = 0;
