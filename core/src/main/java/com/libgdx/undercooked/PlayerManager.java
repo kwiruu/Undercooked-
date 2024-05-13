@@ -86,7 +86,7 @@ public class PlayerManager implements Runnable {
             isLifting = !isLifting; // Toggle lifting state
             currentTime = 0; // Reset animation time
             Station st = entityList.pointStation(getInteractPos());
-           // Station st = entityList.pointStation(debugInteractPos());
+            // Station st = entityList.pointStation(debugInteractPos());
             if (st != null) {
                 st.interact(this);
             } else {
@@ -320,7 +320,7 @@ public class PlayerManager implements Runnable {
     private void initializeSmokeAnimation() {
         TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("assets/fx_sprites/fxAtlas.atlas"));
         Array<TextureAtlas.AtlasRegion> smokeRegions = smokeAtlas.findRegions("poof"); // Assuming "poof" is the name of your region
-        smokeAnimation = new Animation<>(0.2f, smokeRegions);
+        smokeAnimation = new Animation<>(0.15f, smokeRegions);
     }
 
     public void renderItem(SpriteBatch batch, float elapsedTime){
@@ -342,9 +342,16 @@ public class PlayerManager implements Runnable {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
-            // Draw the current frame of the smoke animation at the specified position
-            TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true for looping
-            batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
+            if(spacePressed) {
+                // Draw the current frame of the smoke animation at the specified position
+                TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
+                batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
+
+                // Check if the animation has finished playing
+                if (smokeAnimation.isAnimationFinished(stateTime)) {
+                    stateTime = 0;
+                }
+            }
         }
     }
 
