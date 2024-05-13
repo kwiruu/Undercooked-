@@ -2,12 +2,15 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
@@ -21,6 +24,8 @@ public class MapManager {
     private final Texture[] test_map_textures;
     public OrthogonalTiledMapRenderer tmr;
     private final EntityList entityList;
+    private Animation<TextureRegion> smokeAnimation;
+    private float stateTime; // State time for the smoke animation
 
     public MapManager(World world, SpriteBatch batch) {
         map = new TmxMapLoader().load("assets/maps/test_map.tmx");
@@ -37,6 +42,13 @@ public class MapManager {
         };
 
         entityList = new EntityList(map, batch);
+
+        // Load smoke animation frames
+        TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("assets/fx_sprites/fxAtlas.atlas"));
+        Array<TextureAtlas.AtlasRegion> smokeRegions = smokeAtlas.findRegions("poof"); // Assuming "poof" is the name of your region
+        smokeAnimation = new Animation<>(0.2f, smokeRegions); // Create the animation with all frames
+        stateTime = 0f; // Initialize state time for animation
+
     }
 
     public void drawLayerTextures(SpriteBatch batch, TextureRegion textregion) {
@@ -57,18 +69,22 @@ public class MapManager {
 
                     // Check if the texture fits within the viewport
                     if (itemX >= 0 && itemX <= Gdx.graphics.getWidth() && itemY >= 0 && itemY <= Gdx.graphics.getHeight()) {
-                        batch.draw(texture, itemX, itemY, 24, 24);
+                        batch.draw(texture, itemX, itemY);
                     } else {
                         // Log a warning if the texture is outside the viewport
                         Gdx.app.log("Warning", "Texture outside viewport");
                     }
+
+                    // Draw the current frame of the smoke animation at the specified position
+                    TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true for looping
+                    batch.draw(currentFrame, itemX-8, itemY-8,48,48);
                 }
             }
             batch.draw(texturez, 0, 0);
         }
         entityList.render();
+        stateTime += Gdx.graphics.getDeltaTime(); // Update state time for the next frame
     }
-
 
     public void dispose() {
         tmr.dispose();
@@ -81,5 +97,4 @@ public class MapManager {
     public EntityList getEntityList() {
         return entityList;
     }
-
 }
