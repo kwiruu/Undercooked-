@@ -79,8 +79,9 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
             batch.begin();
 
             batch.setProjectionMatrix(camera.combined);
-            player.drawheldItem();
+
             map.drawLayerTextures(batch, currentFrame);
+
             batch.end();
 
 

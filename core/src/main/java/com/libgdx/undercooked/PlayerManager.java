@@ -2,7 +2,6 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,6 +24,8 @@ public class PlayerManager implements Runnable {
     private final World world;
     static Body player;
     static Body itemBox;
+
+    static String hasItemz = "";
     private TextureAtlas textureAtlas;
     private SpriteBatch playerBatch;
     private String lastDirection;
@@ -56,16 +57,6 @@ public class PlayerManager implements Runnable {
 
     }
 
-    public void drawheldItem(){
-        if (hasHeldItem()) {
-            String itemHeld = String.valueOf(getHeldItem());
-            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));// Assuming FoodType has a texture region associated
-            float itemX = player.getPosition().x + 8; // Adjust X position to center above the player
-            float itemY = player.getPosition().y + 20; // Adjust Y position to above the player
-            playerBatch.draw(texture, itemX, itemY, 16, 16);
-        }
-    }
-
     public SpriteBatch getBatch() {
         return playerBatch;
     }
@@ -76,13 +67,11 @@ public class PlayerManager implements Runnable {
         currentTime += deltaTime;
         deltaTimes = deltaTime;
 
-//        if (hasHeldItem()) {
-//            String itemHeld = String.valueOf(getHeldItem());
-//            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + itemHeld + ".png"));// Assuming FoodType has a texture region associated
-//            float itemX = getPosition().x + 8; // Adjust X position to center above the player
-//            float itemY = getPosition().y + 20; // Adjust Y position to above the player
-//            playerBatch.draw(texture, itemX, itemY, 16, 16);
-//        }
+        if(hasHeldItem()){
+            hasItemz = getHeldItem() + "";
+        }else{
+            hasItemz = "";
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
             if(!playerLocked && !isLifting){
