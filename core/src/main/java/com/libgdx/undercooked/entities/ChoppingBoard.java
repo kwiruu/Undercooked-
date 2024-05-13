@@ -17,7 +17,7 @@ public class ChoppingBoard extends Station {
     }
     public void render() {
         // Update stateTime
-        stateTime += (float) (Gdx.graphics.getDeltaTime() + .5);
+        stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
         TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
         batch.draw(currentFrame, getX(), getY());
     }
