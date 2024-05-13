@@ -285,6 +285,7 @@ public class PlayerManager implements Runnable {
     private void debugKeys() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Removing: " + heldItem);
+            isLifting = false;
             removeHeldItem();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
