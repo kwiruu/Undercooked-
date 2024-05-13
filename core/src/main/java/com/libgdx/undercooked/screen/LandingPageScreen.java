@@ -94,9 +94,12 @@ public class LandingPageScreen implements Screen {
             }
         });
     }
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> cdd323af2493abf8690106c2364fe3de2fd31acb
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0, 1f);

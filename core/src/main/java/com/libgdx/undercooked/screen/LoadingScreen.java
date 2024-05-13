@@ -65,7 +65,7 @@ public class LoadingScreen implements Screen {
         optionsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-
+                context.setScreen(ScreenType.OPTIONS);
             }
         });
 
