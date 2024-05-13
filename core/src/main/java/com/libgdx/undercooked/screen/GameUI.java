@@ -1,8 +1,10 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
+import com.libgdx.undercooked.PlayerManager;
 
 public class GameUI{
     private final Main context;
@@ -24,9 +27,14 @@ public class GameUI{
     private int currentIndex = 0;
     private boolean isHovered = false;
 
+    Label usernameLabel;
+
+    Vector2 playerPos = new Vector2();
+
 
     public GameUI(final Main context) {
         this.context = context;
+
         this.stage = new Stage(new ScreenViewport());
         this.atlas = new TextureAtlas(Gdx.files.internal("assets/ui/buttonsAtlas.atlas"));
         buttonRegions = new TextureRegion[2];
@@ -43,6 +51,8 @@ public class GameUI{
 
         pause_button.setSize(64, 64);
         pause_button.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72);
+
+
 
         pause_button.addListener(new ClickListener() {
             @Override
@@ -66,6 +76,7 @@ public class GameUI{
             }
         });
 
+
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         Table rootTable = new Table();
@@ -73,7 +84,8 @@ public class GameUI{
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        Label usernameLabel = new Label("Username: " + context.getUsername(), skin);
+        //Label usernameLabel = new Label("Username: " + context.getUsername(), skin);
+        usernameLabel = new Label("Position: " + playerPos, skin);
         rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
 
         stage.addActor(pause_button);
@@ -88,6 +100,13 @@ public class GameUI{
         Gdx.input.setInputProcessor(stage);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            context.setScreen(ScreenType.LOADING);
+        }
     }
 
+    public void update(PlayerManager player){
+        playerPos.set((player.getPosition().x), player.getPosition().y);
+        usernameLabel.setText("Position: " + playerPos);
+    }
 }

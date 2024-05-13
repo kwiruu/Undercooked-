@@ -59,4 +59,5 @@ public class MapManager {
     public EntityList getEntityList() {
         return entityList;
     }
+
 }
