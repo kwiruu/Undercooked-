@@ -34,6 +34,7 @@ public class PlayerManager implements Runnable {
     public boolean isLifting;
     private float currentTime;
     private boolean spacePressed = false;
+    private boolean exPressed = false;
     private float spaceCooldown = 1f;
     private float deltaTimes;
     public boolean playerLocked = false;
@@ -106,7 +107,6 @@ public class PlayerManager implements Runnable {
                 spaceCooldown = 1f;
             }
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.W) && !playerLocked) {
             verticalForce += 1;
         }
@@ -289,18 +289,25 @@ public class PlayerManager implements Runnable {
         return point;
     }
     private void debugKeys() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+            if(isLifting){
+                exPressed = true;
+            }
             System.out.println("Removing: " + heldItem);
-            isLifting = false;
+
             removeHeldItem();
+            isLifting = false;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             System.out.println("Item check: " + heldItem);
         }
     }
+
+
     public boolean hasHeldItem() {
         return getHeldItem() != null;
     }
+
     public FoodType getHeldItem() {
         return heldItem;
     }
@@ -308,15 +315,19 @@ public class PlayerManager implements Runnable {
     public String getItemName(){
         return heldItem + "";
     }
+
     public void removeHeldItem() {
         heldItem = null;
     }
+
     public void setHeldItem(FoodType heldItem) {
         this.heldItem = heldItem;
     }
+
     public void setEntityList(EntityList entityList) {
         this.entityList = entityList;
     }
+
     private void initializeSmokeAnimation() {
         TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("assets/fx_sprites/fxAtlas.atlas"));
         Array<TextureAtlas.AtlasRegion> smokeRegions = smokeAtlas.findRegions("poof"); // Assuming "poof" is the name of your region
@@ -342,11 +353,11 @@ public class PlayerManager implements Runnable {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
-            if(spacePressed) {
-                // Draw the current frame of the smoke animation at the specified position
+            if(spacePressed || exPressed){
                 TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
                 batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
 
+                // Update liftingElapsedTime only if animation is still playin
                 // Check if the animation has finished playing
                 if (smokeAnimation.isAnimationFinished(stateTime)) {
                     stateTime = 0;
@@ -359,5 +370,4 @@ public class PlayerManager implements Runnable {
         // Update the elapsed time for the smoke animation
         stateTime += elapsedTime;
     }
-
 }

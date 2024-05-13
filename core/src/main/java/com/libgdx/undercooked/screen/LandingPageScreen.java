@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
+import com.libgdx.undercooked.AudioManager.MainMenuSound;
 
 public class LandingPageScreen implements Screen {
     private final Main context;
@@ -26,8 +27,11 @@ public class LandingPageScreen implements Screen {
     private SpriteBatch batch;
     private static String username = null;
     private Texture imgTexture; // Declare imgTexture here
+    private MainMenuSound mainMenuSound;
+
     public LandingPageScreen(final Main context) {
         this.context = context;
+        this.mainMenuSound = new MainMenuSound();
     }
 
     @Override
@@ -94,6 +98,9 @@ public class LandingPageScreen implements Screen {
                 }
             }
         });
+
+        // Start the sound in a new thread
+        new Thread(mainMenuSound).start();
     }
 
     @Override
@@ -134,6 +141,7 @@ public class LandingPageScreen implements Screen {
         stage.dispose();
         skin.dispose();
         batch.dispose();
+        //mainMenuSound.stop(); // Stop the sound when disposing
     }
 
     public static String getUsername(){
