@@ -30,7 +30,6 @@ public class ChoppingBoard extends Station {
             if (validate(p.getHeldItem())) {
                 timer = 500;
                 p.setHeldItem(transmute(p.getHeldItem()));
-                p.removeHeldItem();
                 // trap player here
             }
         } else if (!p.hasHeldItem()) {
