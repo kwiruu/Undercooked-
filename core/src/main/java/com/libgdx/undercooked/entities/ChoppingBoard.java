@@ -25,25 +25,44 @@ public class ChoppingBoard extends Station {
     @Override
     public void interact(PlayerManager p) {
         System.out.println("interacted with chopping board");
-        if (containedItem == null && p.hasHeldItem()) {
-            // case 1 no item, p item
-                // set chopping timer based on foodItem
-                // need to check if valid foodItem
-            if (p.getHeldItem() == FoodType.tomato && p.getHeldItem() == FoodType.chopped_tomato) {
-                containedItem = FoodType.chopped_tomato;
+        if (timer == 0 && p.hasHeldItem()) {
+            // start chop
+            if (validate(p.getHeldItem())) {
                 timer = 500;
-                p.removeHeldItem();
+                p.setHeldItem(transmute(p.getHeldItem()));
+                // trap player here
             }
-        } else if (timer == 0 && !p.hasHeldItem()) {
-            // case 2 has item, any p item
-                // continue chopping
-            // filler code
-            timer+=1;
+        } else if (!p.hasHeldItem()) {
+            // trap player and continue timer here
+        } else {
+            // show invalid sign
         }
-        // case 3-5 - do nothing
-        // cooking
-        // no item, no p item
-        // done cooking, p item
     }
-    // TODO station to continue
+
+    private boolean validate(FoodType ft) {
+        switch (ft) {
+            case tomato:
+            case onion:
+            case pickle:
+            case meat:
+            case fish:
+                return true;
+        }
+        return false;
+    }
+    private FoodType transmute(FoodType ft) {
+        switch (ft) {
+            case tomato:
+                return FoodType.chopped_tomato;
+            case onion:
+                return FoodType.chopped_onion;
+            case pickle:
+                return FoodType.chopped_pickle;
+            case meat:
+                return FoodType.chopped_meat;
+            case fish:
+                return FoodType.chopped_fish;
+        }
+        return null;
+    }
 }

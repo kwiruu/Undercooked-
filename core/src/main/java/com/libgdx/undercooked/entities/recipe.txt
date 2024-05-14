@@ -1,0 +1,9 @@
+Tomato -Chopping> C.Tomato -Stove> Tomato Soup
+Meat -Stove> Plain Meat
+Meat -Mix-C.Produce> Seasoned Meat -Stove> Better Meat
+Any Cooked Meat -RiceCooker> Meat Meal
+Any Produce -RiceCooker> Struggle Meal
+Pasta -Stove> Cooked Pasta -Mix-C.Tomato> Spaghetti
+
+
+
