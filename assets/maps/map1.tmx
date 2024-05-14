@@ -139,7 +139,7 @@
   <object id="80" gid="25315" x="480" y="160" width="96" height="64"/>
   <object id="81" name="meat_source" gid="25315" x="480" y="160" width="96" height="64"/>
  </objectgroup>
- <layer id="22" name="on-top" width="25" height="20">
+ <layer id="22" name="on_top" width="25" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,12519,12934,12520,12888,12888,12888,12996,12965,12966,0,0,0,0,0,0,0,0,25263,25264,25265,0,0,

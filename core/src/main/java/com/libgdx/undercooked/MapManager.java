@@ -24,22 +24,21 @@ public class MapManager {
     private final EntityList entityList;
 
     public MapManager(World world, SpriteBatch batch) {
-        map = new TmxMapLoader().load("assets/maps/test_map.tmx");
+        map = new TmxMapLoader().load("assets/maps/map1.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("collision_layer").getObjects());
 
         test_map_textures = new Texture[] {
-            new Texture("assets/maps/test_map/test_map_blackwall.png"),
-            new Texture("assets/maps/test_map/test_map_wall.png"),
-            new Texture("assets/maps/test_map/test_map_furnitures.png"),
-            new Texture("assets/maps/test_map/test_map_on-top.png"),
-            new Texture("assets/maps/test_map/test_map_behind_player.png"),
+            new Texture("assets/maps/map1/blackwall.png"),
+            new Texture("assets/maps/map1/wall.png"),
+            new Texture("assets/maps/map1/furnitures.png"),
+            new Texture("assets/maps/map1/on_top.png"),
+            new Texture("assets/maps/map1/behind_player.png"),
         };
 
         entityList = new EntityList(map, batch);
 
-        // Initialize smoke animation
     }
 
 

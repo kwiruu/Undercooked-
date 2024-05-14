@@ -13,6 +13,8 @@ import com.libgdx.undercooked.screen.SplashScreen;
 
 import java.util.EnumMap;
 
+import static database.SQLOperations.*;
+
 public class Main extends Game implements SplashScreen.SplashScreenListener{
     private static final String TAG = Main.class.getSimpleName();
     private EnumMap<ScreenType, Screen> screenCache;
@@ -20,6 +22,8 @@ public class Main extends Game implements SplashScreen.SplashScreenListener{
     @Override
     public void create() {
 
+
+//        createDatabase();
 //        createTableAccount("tblAccount");
 //        createTableMap();
 //        createTableHighScore();

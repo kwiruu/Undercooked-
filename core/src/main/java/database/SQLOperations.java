@@ -5,6 +5,16 @@ import java.sql.*;
 import static database.SQLConnection.getConnection;
 
 public class SQLOperations {
+
+    public static void createDatabase(){
+        try (Connection conn = getConnection();){
+            Statement stmt = conn.createStatement();
+            String sql = "CREATE DATABASE IF NOT EXISTS dbUndercooked;";
+            stmt.execute(sql);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     public static void createTableAccount(String tblName) {
         try (Connection conn = getConnection();) {
             Statement stmt = conn.createStatement();
