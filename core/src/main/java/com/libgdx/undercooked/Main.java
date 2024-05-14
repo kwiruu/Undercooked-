@@ -17,7 +17,7 @@ import static database.SQLOperations.*;
 
 public class Main extends Game implements SplashScreen.SplashScreenListener{
     private static final String TAG = Main.class.getSimpleName();
-    private EnumMap<ScreenType, Screen> screenCache;
+    private static EnumMap<ScreenType, Screen> screenCache;
 
     @Override
     public void create() {
@@ -62,6 +62,16 @@ public class Main extends Game implements SplashScreen.SplashScreenListener{
         } else {
             Gdx.app.debug(TAG, "Switching to screen: " + screenType);
             setScreen(screen);
+        }
+    }
+
+    public static void deleteScreen(ScreenType screenType) {
+        Screen screen = screenCache.remove(screenType);
+        if (screen != null) {
+            Gdx.app.debug(TAG, "Disposing screen: " + screenType);
+            screen.dispose();
+        } else {
+            Gdx.app.debug(TAG, "Screen not found in cache: " + screenType);
         }
     }
     public String getUsername() {

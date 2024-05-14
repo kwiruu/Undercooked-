@@ -17,10 +17,9 @@ import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Station;
-
 import java.util.HashMap;
 import java.util.Map;
-
+import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class PlayerManager implements Runnable {
@@ -29,13 +28,12 @@ public class PlayerManager implements Runnable {
     static Body itemBox;
     static String hasItemz = "";
     private TextureAtlas textureAtlas;
-    private SpriteBatch playerBatch;
+    private static SpriteBatch playerBatch;
     private String lastDirection;
     private Map<String, Animation<TextureRegion>> animations = new HashMap<>();
     public boolean isLifting;
     private float currentTime;
     private boolean spacePressed = false;
-    private boolean exPressed = false;
     private float spaceCooldown = 1f;
     private float deltaTimes;
     public boolean playerLocked = false;
@@ -44,10 +42,16 @@ public class PlayerManager implements Runnable {
     private Animation<TextureAtlas.AtlasRegion> smokeAnimation;
     private float stateTime;
 
+    public static int x;
+
+    public static int y;
+
+
     @Override
     public void run(){
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
-        player = createBox(world, 8, 2, 16, 8, false);
+        setLocation();
+        player = createBox(world, x, y, 16, 8, false);
         itemBox = createBox(world,8,10,16,16,false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
@@ -58,7 +62,19 @@ public class PlayerManager implements Runnable {
         currentTime = 0;
         stateTime = 0;
     }
-
+    public void setLocation(){
+        String selectedMap = getSelectedMap();
+        switch (selectedMap){
+            case "Map1":
+               PlayerManager.x = 8;
+               PlayerManager.y = 2;
+                break;
+            case "Map2":
+                PlayerManager.x = 18;
+                PlayerManager.y = 12;
+                break;
+        }
+    }
     public PlayerManager(World world) {
         this.world = world;
 
@@ -83,14 +99,13 @@ public class PlayerManager implements Runnable {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
             spacePressed = true;
             Station st = entityList.pointStation(getInteractPos());
-            // Station st = entityList.pointStation(debugInteractPos());
             if (st != null) {
                 st.interact(this);
                 if(!playerLocked && !isLifting){
                     playerLocked = true;
                 }
-                isLifting = !isLifting; // Toggle lifting state
-                currentTime = 0; // Reset animation time
+                isLifting = !isLifting;
+                currentTime = 0;
             } else {
                 System.out.println("pointed at nothing");
                 Gdx.input.setCursorPosition((int) getInteractPos().x, (int) getInteractPos().y);
@@ -148,8 +163,6 @@ public class PlayerManager implements Runnable {
         return pBody;
     }
 
-
-
     public Animation<TextureRegion> determineCurrentAnimation() {
         String lastDir = getLastDirection();
 
@@ -158,7 +171,7 @@ public class PlayerManager implements Runnable {
 
         if (isLifting) {
             Animation<TextureRegion> liftingAnimation = animations.get("lifting_" + lastDir);
-            // Check if lifting animation is close to finishing based on a threshold
+
             if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                     setLastDirection("top");
@@ -180,13 +193,11 @@ public class PlayerManager implements Runnable {
             }
         }
 
-        // Check if any movement keys are pressed
         if (Gdx.input.isKeyPressed(Input.Keys.W) ||
             Gdx.input.isKeyPressed(Input.Keys.A) ||
             Gdx.input.isKeyPressed(Input.Keys.S) ||
             Gdx.input.isKeyPressed(Input.Keys.D)) {
 
-            // If movement keys are pressed, return the corresponding running animation
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 setLastDirection("top");
                 if (isLifting) {
@@ -205,7 +216,7 @@ public class PlayerManager implements Runnable {
                     return animations.get("running_lifting_down");
                 }
                 return animations.get("running_down");
-            } else { // Gdx.input.isKeyPressed(Input.Keys.D)
+            } else {
                 setLastDirection("right");
                 if (isLifting) {
                     return animations.get("running_lifting_right");
@@ -259,8 +270,6 @@ public class PlayerManager implements Runnable {
         animations.put("running_lifting_top", new Animation<>(0.09f, textureAtlas.findRegions("running_lifting_top")));
         animations.put("running_lifting_left", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_left")));
         animations.put("running_lifting_right", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_right")));
-        //H
-
     }
 
     public Vector2 getInteractPos() {
@@ -284,18 +293,9 @@ public class PlayerManager implements Runnable {
         System.out.println(point);
         return point;
     }
-    private Vector2 debugInteractPos() {
-        Vector2 point = new Vector2(545, 407);
-        System.out.println(point);
-        return point;
-    }
     private void debugKeys() {
         if (Gdx.input.isKeyPressed(Input.Keys.X)) {
-            if(isLifting){
-                exPressed = true;
-            }
             System.out.println("Removing: " + heldItem);
-
             removeHeldItem();
             isLifting = false;
         }
@@ -331,42 +331,37 @@ public class PlayerManager implements Runnable {
 
     private void initializeSmokeAnimation() {
         TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("assets/fx_sprites/fxAtlas.atlas"));
-        Array<TextureAtlas.AtlasRegion> smokeRegions = smokeAtlas.findRegions("poof"); // Assuming "poof" is the name of your region
+        Array<TextureAtlas.AtlasRegion> smokeRegions = smokeAtlas.findRegions("poof");
         smokeAnimation = new Animation<>(0.15f, smokeRegions);
     }
 
     public void renderItem(SpriteBatch batch, float elapsedTime){
         if (!hasItemz.isEmpty()) {
             Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + hasItemz + ".png"));
-            float itemX = (player.getPosition().x - 0.5f) * PPM; // Adjust X position to center above the player
+            float itemX = (player.getPosition().x - 0.5f) * PPM;
 
-            // Calculate Y position using a sine function for smooth oscillating motion
-            float amplitude = 0.05f; // Adjust the amplitude of the oscillation
-            float frequency = 1.6f; // Adjust the frequency of the oscillation
-            float phase = MathUtils.PI2 * stateTime; // Adjust the phase of the oscillation
-            float offsetY = amplitude * MathUtils.sin(phase * frequency); // Smooth oscillating motion
+            float amplitude = 0.05f;
+            float frequency = 1.6f;
+            float phase = MathUtils.PI2 * stateTime;
+            float offsetY = amplitude * MathUtils.sin(phase * frequency);
 
-            float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM; // Adjust Y position to above the player
+            float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM;
 
             // Ensure texture is loaded
             if (!texture.getTextureData().isPrepared()) {
                 texture.getTextureData().prepare();
             }
 
-            // Check if the texture fits within the viewport
             if (itemX >= 0 && itemX <= Gdx.graphics.getWidth() && itemY >= 0 && itemY <= Gdx.graphics.getHeight()) {
                 batch.draw(texture, itemX, itemY);
             } else {
-                // Log a warning if the texture is outside the viewport
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
             if(spacePressed || Gdx.input.isKeyPressed(Input.Keys.X)) {
-                // Draw the current frame of the smoke animation at the specified position
                 TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
                 batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
 
-                // Check if the animation has finished playing
                 if (smokeAnimation.isAnimationFinished(stateTime)) {
                     stateTime = 0;
                 }

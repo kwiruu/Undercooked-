@@ -94,7 +94,6 @@ public class SelectionScreen implements Screen {
         stage.dispose();
         skin.dispose();
     }
-
     public static String getSelectedMap(){
         return selectedMap;
     }

@@ -15,6 +15,9 @@ import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
 import com.libgdx.undercooked.PlayerManager;
 
+import static com.libgdx.undercooked.PlayerManager.x;
+import static com.libgdx.undercooked.PlayerManager.y;
+import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
     public class GameScreen extends ScreenAdapter {
@@ -26,7 +29,7 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
         private PlayerManager player;
         private SpriteBatch batch;
         private float elapsedTime = 0f;
-        private boolean initialized = false; // To track initialization
+        private boolean initialized = false;
         private FitViewport viewport;
         private GameUI gameUI;
 
@@ -39,26 +42,18 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
             if (!initialized) {
                 float w = Gdx.graphics.getWidth();
                 float h = Gdx.graphics.getHeight();
-
                 camera = new OrthographicCamera();
                 float SCALE = 1.5f;
                 camera.setToOrtho(false, w / SCALE, h / SCALE);
-
                 world = new World(new Vector2(0f, 0f), false);
                 b2dr = new Box2DDebugRenderer();
-
                 player = new PlayerManager(world);
                 player.run();
                 batch = player.getBatch();
-
                 map = new MapManager(world, batch);
-
                 player.setEntityList(map.getEntityList());
-
                 viewport = new FitViewport(1400, 800);
-
                 gameUI = new GameUI(context);
-
                 initialized = true;
             }
         }
@@ -66,26 +61,16 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
         @Override
         public void render(float deltaTime) {
             update(deltaTime);
-
             Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
             elapsedTime += Gdx.graphics.getDeltaTime();
-
             Animation<TextureRegion> currentAnimation = player.determineCurrentAnimation();
             TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
-
-
             batch.begin();
-
             batch.setProjectionMatrix(camera.combined);
-
             map.drawLayerTextures(batch, currentFrame);
             player.renderItem(batch, elapsedTime);
-
             batch.end();
-
-
             gameUI.render();
         }
 
@@ -116,4 +101,5 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
         b2dr.dispose();
         batch.dispose();
     }
+
 }

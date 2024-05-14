@@ -14,14 +14,13 @@ import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
-import static com.libgdx.undercooked.PlayerManager.player;
+import static com.libgdx.undercooked.PlayerManager.*;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 public class MapManager {
-
     private final TiledMap map;
     private final Texture[] test_map_textures;
-    public OrthogonalTiledMapRenderer tmr;
+    public static OrthogonalTiledMapRenderer tmr;
     private final EntityList entityList;
 
     public MapManager(World world, SpriteBatch batch) {
@@ -45,8 +44,6 @@ public class MapManager {
 
     }
 
-
-
     public void drawLayerTextures(SpriteBatch batch, TextureRegion textregion) {
         for (int i = 0; i < test_map_textures.length; i++) {
             Texture texturez = test_map_textures[i];
@@ -58,7 +55,7 @@ public class MapManager {
         entityList.render();
     }
 
-    public void dispose() {
+    public static void dispose() {
         tmr.dispose();
     }
 

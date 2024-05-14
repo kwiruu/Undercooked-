@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
+import com.libgdx.undercooked.MapManager;
+import com.libgdx.undercooked.PlayerManager;
 
 public class LoadingScreen implements Screen {
     public Skin skin;
@@ -45,11 +47,14 @@ public class LoadingScreen implements Screen {
 
         TextButton startButton = new TextButton("Start", skin);
         TextButton optionsButton = new TextButton("Options", skin);
+        TextButton selectMapButton = new TextButton("Back To Menu", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         root.add(startButton).width(100).fillX().uniformX().padBottom(20);
         root.row();
         root.add(optionsButton).width(100).fillX().uniformX().padBottom(20);
+        root.row();
+        root.add(selectMapButton).width(200).fillX().uniformX().padBottom(20);
         root.row();
         root.add(exitButton).width(100).fillX().uniformX().padBottom(20);
         root.row();
@@ -67,6 +72,16 @@ public class LoadingScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 context.setScreen(ScreenType.OPTIONS);
+            }
+        });
+
+        selectMapButton.setDisabled(true);
+        selectMapButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                context.setScreen(ScreenType.SELECTMAP);
+                MapManager.dispose();
+                Main.deleteScreen(ScreenType.GAME);
             }
         });
 
