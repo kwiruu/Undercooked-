@@ -26,7 +26,6 @@ public class FoodSource extends Station {
         } else if(foodType.equals(FoodType.pickle)){
             floatingIconFrames = floating_iconAtlas.findRegions("pickle_icon");
         }
-
     }
     public void render() {
         // Update stateTime
@@ -35,9 +34,6 @@ public class FoodSource extends Station {
         TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
         batch.draw(currentFrame, getX(), getY());
     }
-    // TODO station to continue
-    // when containedItem is taken, generate a new one
-
     /* TODO :
         1. to change the type of icon the food source make we need to find it in the region,
          so just pass the string name of the region for the foodsource to render for!
@@ -46,10 +42,6 @@ public class FoodSource extends Station {
     @Override
     public void interact(PlayerManager p) {
         System.out.println("interacted with a foodSource for - " + containedItem);
-        // case 1 no p item
-        // set player item to contained item
-        // case 2
-        // do nothing
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);
         }
