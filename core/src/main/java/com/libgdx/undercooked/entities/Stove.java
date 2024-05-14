@@ -32,24 +32,39 @@ public class Stove extends Station {
     public void interact(PlayerManager p) {
         System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
-            // case 1 no item, p item
-                // set cooking timer based on foodItem
-                // need to check if valid foodItem
-            if (p.getHeldItem() == FoodType.tomato && p.getHeldItem() == FoodType.chopped_tomato) {
-                containedItem = FoodType.tomato_soup;
+            if (validate(p.getHeldItem())) {
                 timer = 500;
-                p.removeHeldItem();
             }
-        } else if (timer == 0 && !p.hasHeldItem()) {
-            // case 2 done cooking, no p item
+        } else if (containedItem != null && timer == 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
         }
-        // case 3-5 - do nothing
-        // cooking
-        // no item, no p item
-        // done cooking, p item
-    }
 
-    // TODO station to continue needs implementations
+    }
+    private boolean validate(FoodType ft) {
+        switch (ft) {
+            case tomato:
+            case onion:
+            case pickle:
+            case meat:
+            case fish:
+                return true;
+        }
+        return false;
+    }
+    private FoodType transmute(FoodType ft) {
+        switch (ft) {
+            case tomato:
+                return FoodType.chopped_tomato;
+            case onion:
+                return FoodType.chopped_onion;
+            case pickle:
+                return FoodType.chopped_pickle;
+            case meat:
+                return FoodType.chopped_meat;
+            case fish:
+                return FoodType.chopped_fish;
+        }
+        return null;
+    }
 }
