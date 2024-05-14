@@ -29,7 +29,7 @@ public class ChoppingBoard extends Station {
             // start chop
             if (validate(p.getHeldItem())) {
                 timer = 500;
-                transmute(p.getHeldItem());
+                p.setHeldItem(transmute(p.getHeldItem()));
                 p.removeHeldItem();
                 // trap player here
             }
@@ -51,23 +51,19 @@ public class ChoppingBoard extends Station {
         }
         return false;
     }
-    private void transmute(FoodType ft) {
+    private FoodType transmute(FoodType ft) {
         switch (ft) {
             case tomato:
-                ft = FoodType.chopped_tomato;
-                return;
+                return FoodType.chopped_tomato;
             case onion:
-                ft = FoodType.chopped_onion;
-                return;
+                return FoodType.chopped_onion;
             case pickle:
-                ft = FoodType.chopped_pickle;
-                return;
+                return FoodType.chopped_pickle;
             case meat:
-                ft = FoodType.chopped_meat;
-                return;
+                return FoodType.chopped_meat;
             case fish:
-                ft = FoodType.chopped_fish;
-                return;
+                return FoodType.chopped_fish;
         }
+        return null;
     }
 }
