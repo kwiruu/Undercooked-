@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="objects" tilewidth="96" tileheight="96" tilecount="15" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="objects" tilewidth="96" tileheight="96" tilecount="16" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0" type="stove">
   <image width="32" height="64" source="stations/stove-on.png"/>
@@ -20,7 +20,7 @@
   <image width="32" height="64" source="stations/food_source2.png"/>
  </tile>
  <tile id="6" type="food_source_04">
-  <image width="64" height="64" source="stations/food_source3.png"/>
+  <image width="96" height="64" source="stations/food_source3.png"/>
  </tile>
  <tile id="7" type="dough_source">
   <image width="32" height="64" source="stations/dough_source.png"/>
@@ -45,5 +45,8 @@
  </tile>
  <tile id="14" type="deliver_station2">
   <image width="96" height="64" source="stations/deliver_station2.png"/>
+ </tile>
+ <tile id="16" type="delivery_station">
+  <image width="32" height="96" source="stations/delivery_station.png"/>
  </tile>
 </tileset>
