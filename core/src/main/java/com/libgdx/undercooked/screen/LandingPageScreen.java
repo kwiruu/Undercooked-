@@ -94,7 +94,7 @@ public class LandingPageScreen implements Screen {
 
                 }
                 else if(!username.isEmpty()){
-                    context.setScreen(ScreenType.GAME);
+                    context.setScreen(ScreenType.SELECTMAP);
                 }
             }
         });

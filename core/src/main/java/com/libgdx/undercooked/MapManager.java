@@ -15,6 +15,7 @@ import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static com.libgdx.undercooked.PlayerManager.player;
+import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 public class MapManager {
 
@@ -24,17 +25,20 @@ public class MapManager {
     private final EntityList entityList;
 
     public MapManager(World world, SpriteBatch batch) {
-        map = new TmxMapLoader().load("assets/maps/map1.tmx");
+
+        String selectedMap = getSelectedMap();
+        System.out.println(selectedMap);
+        map = new TmxMapLoader().load("assets/maps/"+selectedMap+".tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("collision_layer").getObjects());
 
         test_map_textures = new Texture[] {
-            new Texture("assets/maps/map1/blackwall.png"),
-            new Texture("assets/maps/map1/wall.png"),
-            new Texture("assets/maps/map1/furnitures.png"),
-            new Texture("assets/maps/map1/on_top.png"),
-            new Texture("assets/maps/map1/behind_player.png"),
+            new Texture("assets/maps/"+selectedMap+"/blackwall.png"),
+            new Texture("assets/maps/"+selectedMap+"/wall.png"),
+            new Texture("assets/maps/"+selectedMap+"/furnitures.png"),
+            new Texture("assets/maps/"+selectedMap+"/on_top.png"),
+            new Texture("assets/maps/"+selectedMap+"/behind_player.png"),
         };
 
         entityList = new EntityList(map, batch);
