@@ -29,25 +29,37 @@ public class RiceCooker extends Station {
     @Override
     public void interact(PlayerManager p) {
         System.out.println("interacted with rice cooker");
-        if (containedItem == null && p.hasHeldItem()) {
-            // case 1 no item, p item
-            // set cooking timer based on foodItem
-            // need to check if valid foodItem
-            if (p.getHeldItem() == FoodType.tomato && p.getHeldItem() == FoodType.chopped_tomato) {
-                containedItem = FoodType.tomato_soup;
-                timer = 500;
-                p.removeHeldItem();
-            }
-        } else if (timer == 0 && !p.hasHeldItem()) {
-            // case 2 done cooking, no p item
-            // note: contained item not changed
-            p.setHeldItem(containedItem);
-            containedItem = null;
+        if (!p.hasHeldItem()) {
+            p.setHeldItem(FoodType.rice);
+        } else if (timer == 0 && validate(p.getHeldItem())) {
+            p.setHeldItem(transmute(p.getHeldItem()));
+            // timer = 500;
+        } else {
+            // show invalid sign
         }
-        // case 3-5 - do nothing
-        // cooking
-        // no item, no p item
-        // done cooking, p item
     }
-    // TODO station to continue
+    private boolean validate(FoodType ft) {
+        switch (ft) {
+            case cooked_meat:
+            case cooked_fish:
+            case chopped_tomato:
+            case chopped_onion:
+            case chopped_pickle:
+                return true;
+        }
+        return false;
+    }
+    private FoodType transmute(FoodType ft) {
+        switch (ft) {
+            case cooked_meat:
+                return FoodType.meat_meal;
+            case cooked_fish:
+                return FoodType.fish_meal;
+            case chopped_tomato:
+            case chopped_onion:
+            case chopped_pickle:
+                return FoodType.struggle_meal;
+        }
+        return null;
+    }
 }
