@@ -35,6 +35,8 @@ public class ChoppingBoard extends Station {
             }
         } else if (!p.hasHeldItem()) {
             // trap player and continue timer here
+        } else {
+            // show invalid sign
         }
     }
 
