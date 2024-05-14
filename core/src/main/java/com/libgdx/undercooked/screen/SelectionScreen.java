@@ -25,7 +25,7 @@ public class SelectionScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("metal-ui.json"));
+        skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         Table root = new Table();
         root.setFillParent(true);
@@ -45,7 +45,7 @@ public class SelectionScreen implements Screen {
                     context.setScreen(ScreenType.GAME);
                 }
             });
-            mapTable.add(mapButton).pad(10);
+            mapTable.add(mapButton).width(300F).pad(20);
             mapTable.row();
         }
 
@@ -53,7 +53,7 @@ public class SelectionScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                context.setScreen(ScreenType.GAME);
+                context.setScreen(ScreenType.LANDING);
             }
         });
 
