@@ -83,7 +83,7 @@ public class EntityList {
                     FoodSource onion = new FoodSource(x, y, (int) width, (int) height, batch, FoodType.onion);
                     stationArray.add(onion); // Add onion to the array
                 } else if (object.getName().equals("meat_source")) {
-                    x = object.getProperties().get("x", Float.class) + 16;
+                    x = object.getProperties().get("x", Float.class) + 48;
                     y = object.getProperties().get("y", Float.class) + 40;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
