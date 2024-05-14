@@ -1,8 +1,6 @@
 package com.libgdx.undercooked.entities;
 
 public enum FoodType {
-
-
     tomato, chopped_tomato, tomato_soup,
     onion, chopped_onion,
     meat, chopped_meat, cooked_meat,
