@@ -99,11 +99,11 @@ public class PlayerManager implements Runnable {
             if (st != null) {
                 st.interact(this);
                 playerLock = 1f;
-                isLifting = false;
+                isLifting = true;
                 currentTime = 0;
             } else {
                 System.out.println("pointed at nothing");
-                Gdx.input.setCursorPosition((int) getInteractPos().x*32, (int) getInteractPos().y*32);
+                Gdx.input.setCursorPosition((int) getInteractPos().x * 32, (int) getInteractPos().y * 32);
             }
         }
         debugKeys();
@@ -111,20 +111,20 @@ public class PlayerManager implements Runnable {
         if (playerLock > 0) {
             playerLock -= .03f;
         } else {
-            if (isLifting) {
+            if (heldItem == null) {
                 isLifting = false;
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && playerLock == 0) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && playerLock <= 0) {
             verticalForce += 1;
-        } if (Gdx.input.isKeyPressed(Input.Keys.A) && playerLock == 0) {
+        } if (Gdx.input.isKeyPressed(Input.Keys.A) && playerLock <= 0) {
             horizontalForce -= 1;
-        } if (Gdx.input.isKeyPressed(Input.Keys.S) && playerLock == 0) {
+        } if (Gdx.input.isKeyPressed(Input.Keys.S) && playerLock <= 0) {
             verticalForce -= 1;
-        } if (Gdx.input.isKeyPressed(Input.Keys.D) && playerLock == 0) {
+        } if (Gdx.input.isKeyPressed(Input.Keys.D) && playerLock <= 0) {
             horizontalForce += 1;
-        } if ((horizontalForce != 0 && verticalForce != 0)&& playerLock == 0) {
+        } if ((horizontalForce != 0 && verticalForce != 0) && playerLock <= 0) {
             verticalForce *= 0.7F;
             horizontalForce *= 0.7F;
         }
@@ -274,6 +274,8 @@ public class PlayerManager implements Runnable {
             System.out.println("Removing: " + heldItem);
             removeHeldItem();
             isLifting = false;
+            playerLock = 1f;
+            currentTime = 0;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             System.out.println("Item check: " + heldItem);
@@ -334,7 +336,7 @@ public class PlayerManager implements Runnable {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
-            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
                 TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
                 batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
 
