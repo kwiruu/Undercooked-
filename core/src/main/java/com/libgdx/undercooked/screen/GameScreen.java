@@ -15,9 +15,6 @@ import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
 import com.libgdx.undercooked.PlayerManager;
 
-import static com.libgdx.undercooked.PlayerManager.x;
-import static com.libgdx.undercooked.PlayerManager.y;
-import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
@@ -69,7 +66,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         map.drawLayerTextures(batch, currentFrame);
-        player.renderItem(batch, elapsedTime);
+        player.renderItem(batch);
         batch.end();
         gameUI.render();
     }

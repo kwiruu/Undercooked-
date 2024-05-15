@@ -41,16 +41,16 @@ public class PlayerManager implements Runnable {
     private float stateTime;
 
     public static int x;
-
     public static int y;
-
+    private boolean isSmokeAnimationPlaying = false;
+    private boolean shouldRemoveHeldItemAfterAnimation;
 
     @Override
     public void run() {
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         setLocation();
         player = createBox(world, x, y, 16, 8, false);
-        itemBox = createBox(world,8,10,16,16,false);
+        itemBox = createBox(world, 8, 10, 16, 16, false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
         animations = new HashMap<>();
@@ -60,12 +60,13 @@ public class PlayerManager implements Runnable {
         currentTime = 0;
         stateTime = 0;
     }
+
     public void setLocation() {
         String selectedMap = getSelectedMap();
-        switch (selectedMap){
+        switch (selectedMap) {
             case "Map1":
-               PlayerManager.x = 8;
-               PlayerManager.y = 2;
+                PlayerManager.x = 8;
+                PlayerManager.y = 2;
                 break;
             case "Map2":
                 PlayerManager.x = 18;
@@ -73,9 +74,9 @@ public class PlayerManager implements Runnable {
                 break;
         }
     }
+
     public PlayerManager(World world) {
         this.world = world;
-
     }
 
     public SpriteBatch getBatch() {
@@ -87,10 +88,11 @@ public class PlayerManager implements Runnable {
         float verticalForce = 0;
         currentTime += deltaTime;
         deltaTimes = deltaTime;
+        stateTime += deltaTime; // Increment stateTime here
 
         if (hasHeldItem()) {
             hasItemz = getHeldItem() + "";
-        } else{
+        } else {
             hasItemz = "";
         }
 
@@ -118,13 +120,17 @@ public class PlayerManager implements Runnable {
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && playerLock <= 0) {
             verticalForce += 1;
-        } if (Gdx.input.isKeyPressed(Input.Keys.A) && playerLock <= 0) {
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && playerLock <= 0) {
             horizontalForce -= 1;
-        } if (Gdx.input.isKeyPressed(Input.Keys.S) && playerLock <= 0) {
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && playerLock <= 0) {
             verticalForce -= 1;
-        } if (Gdx.input.isKeyPressed(Input.Keys.D) && playerLock <= 0) {
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && playerLock <= 0) {
             horizontalForce += 1;
-        } if ((horizontalForce != 0 && verticalForce != 0) && playerLock <= 0) {
+        }
+        if ((horizontalForce != 0 && verticalForce != 0) && playerLock <= 0) {
             verticalForce *= 0.7F;
             horizontalForce *= 0.7F;
         }
@@ -152,7 +158,6 @@ public class PlayerManager implements Runnable {
 
     public Animation<TextureRegion> determineCurrentAnimation() {
         String lastDir = getLastDirection();
-
         float animationSpeed = animations.get("lifting_" + lastDir).getAnimationDuration();
         currentTime += deltaTimes * animationSpeed;
 
@@ -168,10 +173,10 @@ public class PlayerManager implements Runnable {
                 } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                     setLastDirection("down");
                     return animations.get("running_lifting_down");
-                } else if (Gdx.input.isKeyPressed(Input.Keys.D)){
+                } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
                     setLastDirection("right");
                     return animations.get("running_lifting_right");
-                } else{
+                } else {
                     return animations.get("idle_lifting_" + lastDir);
                 }
             } else {
@@ -260,28 +265,30 @@ public class PlayerManager implements Runnable {
                 point.add(0, displacement);
                 break;
             case "left":
-                point.add(-displacement,0);
+                point.add(-displacement, 0);
                 break;
             case "right":
-                point.add(displacement,0);
+                point.add(displacement, 0);
                 break;
         }
         System.out.println(point);
         return point;
     }
+
     private void debugKeys() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            System.out.println("Removing: " + heldItem);
-            removeHeldItem();
-            isLifting = false;
-            playerLock = 1f;
-            currentTime = 0;
+            if (hasHeldItem()) {
+                System.out.println("Removing: " + heldItem);
+                isSmokeAnimationPlaying = true;
+                stateTime = 0;
+                shouldRemoveHeldItemAfterAnimation = true; // Set flag to remove item after animation
+                removeHeldItem(); // Remove the item immediately
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             System.out.println("Item check: " + heldItem);
         }
     }
-
 
     public boolean hasHeldItem() {
         return getHeldItem() != null;
@@ -291,7 +298,7 @@ public class PlayerManager implements Runnable {
         return heldItem;
     }
 
-    public String getItemName(){
+    public String getItemName() {
         return heldItem + "";
     }
 
@@ -313,19 +320,27 @@ public class PlayerManager implements Runnable {
         smokeAnimation = new Animation<>(0.15f, smokeRegions);
     }
 
-    public void renderItem(SpriteBatch batch, float elapsedTime){
+    private void renderPoofAnimation(SpriteBatch batch, float itemX, float itemY) {
+        if (isSmokeAnimationPlaying) {
+            TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, false); // false to stop looping
+            batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
+
+            if (smokeAnimation.isAnimationFinished(stateTime)) {
+                isSmokeAnimationPlaying = false;
+            }
+        }
+    }
+
+    public void renderItem(SpriteBatch batch) {
+        float itemX = (player.getPosition().x - 0.5f) * PPM;
+        float amplitude = 0.08f;
+        float frequency = 4.0f;
+        float offsetY = amplitude * MathUtils.sin(frequency * stateTime);
+        float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM;
+
         if (!hasItemz.isEmpty()) {
             Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + hasItemz + ".png"));
-            float itemX = (player.getPosition().x - 0.5f) * PPM;
 
-            float amplitude = 0.05f;
-            float frequency = 1.6f;
-            float phase = MathUtils.PI2 * stateTime;
-            float offsetY = amplitude * MathUtils.sin(phase * frequency);
-
-            float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM;
-
-            // Ensure texture is loaded
             if (!texture.getTextureData().isPrepared()) {
                 texture.getTextureData().prepare();
             }
@@ -335,20 +350,20 @@ public class PlayerManager implements Runnable {
             } else {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
+        }
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-                TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
-                batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
+        // Call the new renderPoofAnimation function
+        renderPoofAnimation(batch, itemX, itemY);
+    }
 
-                if (smokeAnimation.isAnimationFinished(stateTime)) {
-                    stateTime = 0;
-                }
-            }
+    public void renderItemUpdate(float elapsedTime) {
+        if (isSmokeAnimationPlaying) {
+            stateTime += elapsedTime;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            stateTime = 0;  // Reset state time to start the animation from the beginning
+            isSmokeAnimationPlaying = true;
         }
     }
-
-    public void renderItemUpdate(float elapsedTime){
-        // Update the elapsed time for the smoke animation
-        stateTime += elapsedTime;
-    }
 }
+
