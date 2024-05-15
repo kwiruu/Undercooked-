@@ -9,7 +9,7 @@ import com.libgdx.undercooked.PlayerManager;
 
 import java.awt.Rectangle;
 
-public class Stove extends Station {
+public class Stove extends Station implements canUpdate {
     private SpriteBatch batch;
     int timer;
 
@@ -32,11 +32,18 @@ public class Stove extends Station {
         System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
+                p.setHeldItem(transmute(p.getHeldItem()));
                 timer = 500;
+            } else {
+                // show invalid sign
+                System.out.println("invalid");
             }
         } else if (containedItem != null && timer == 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
+        } else {
+            // show invalid sign
+            System.out.println("invalid");
         }
     }
     private boolean validate(FoodType ft) {
@@ -64,5 +71,10 @@ public class Stove extends Station {
                 return FoodType.chopped_fish;
         }
         return null;
+    }
+
+    @Override
+    public void update() {
+        if (timer > 0) timer--;
     }
 }

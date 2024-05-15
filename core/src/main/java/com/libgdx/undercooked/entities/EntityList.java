@@ -20,8 +20,15 @@ public class EntityList {
         renderEntity(map);
     }
     public void render() {
-        for (Station stove : stationArray) {
-            stove.render();
+        for (Station st : stationArray) {
+            st.render();
+        }
+    }
+    public void update() {
+        for (Station st : stationArray) {
+            if (st instanceof canUpdate) {
+                ((canUpdate) st).update();
+            }
         }
     }
 
@@ -45,8 +52,7 @@ public class EntityList {
 
                     Stove stove = new Stove(x, y, (int) width, (int) height, batch);
                     stationArray.add(stove); // Add stove to the array
-                }
-                if (object.getName().equals("chopping_board")) {
+                } if (object.getName().equals("chopping_board")) {
                     x = object.getProperties().get("x", Float.class) + 70;
                     y = object.getProperties().get("y", Float.class) + 25;
                     width = object.getProperties().get("width", Float.class);
@@ -54,8 +60,7 @@ public class EntityList {
 
                     ChoppingBoard choppingBoard = new ChoppingBoard(x, y, (int) width, (int) height, batch);
                     stationArray.add(choppingBoard); // Add stove to the array
-                }
-                if (object.getName().equals("rice_cooker")) {
+                } if (object.getName().equals("rice_cooker")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 40;
                     width = object.getProperties().get("width", Float.class);
@@ -63,8 +68,7 @@ public class EntityList {
 
                     RiceCooker riceCooker = new RiceCooker(x, y, (int) width, (int) height, batch);
                     stationArray.add(riceCooker); // Add stove to the array
-                }
-                if (object.getName().equals("counter")) {
+                } if (object.getName().equals("counter")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 400;
                     width = object.getProperties().get("width", Float.class);
