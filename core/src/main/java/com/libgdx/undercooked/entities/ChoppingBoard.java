@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.libgdx.undercooked.PlayerManager;
 
-public class ChoppingBoard extends Station implements canUpdate {
+public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int timer;
     boolean playerOn;
     public ChoppingBoard(float x, float y, int width, int height, SpriteBatch batch) {
@@ -79,5 +79,10 @@ public class ChoppingBoard extends Station implements canUpdate {
     @Override
     public void update() {
         if (playerOn && timer > 0) timer--;
+    }
+
+    @Override
+    public void lockPlayer() {
+
     }
 }

@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Station;
+import com.libgdx.undercooked.entities.animLocker;
+
 import java.util.HashMap;
 import java.util.Map;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
@@ -35,6 +37,7 @@ public class PlayerManager implements Runnable {
     private float currentTime;
     private float deltaTimes;
     public float playerLock;
+    private animLocker animLock;
     private FoodType heldItem;
     private EntityList entityList;
     private Animation<TextureAtlas.AtlasRegion> smokeAnimation;
