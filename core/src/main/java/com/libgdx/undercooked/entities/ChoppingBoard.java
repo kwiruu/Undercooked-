@@ -6,12 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.libgdx.undercooked.PlayerManager;
 
 public class ChoppingBoard extends Station {
-    private SpriteBatch batch;
     int timer;
 
     public ChoppingBoard(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
+        super(x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("chop_icon"); // Assuming "clock_icon" is the name of the animation
     }

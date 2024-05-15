@@ -16,8 +16,7 @@ public class Stove extends Station {
     // spriteBatch is used to add a TextureRegion to a certain batch./
     // then the spriteBatch is then rendered!
     public Stove(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
+        super(x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }
@@ -39,7 +38,6 @@ public class Stove extends Station {
             p.setHeldItem(containedItem);
             containedItem = null;
         }
-
     }
     private boolean validate(FoodType ft) {
         switch (ft) {

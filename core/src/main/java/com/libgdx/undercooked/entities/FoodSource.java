@@ -6,25 +6,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.libgdx.undercooked.PlayerManager;
 
 public class FoodSource extends Station {
-
-    private SpriteBatch batch;
     public FoodSource(float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
-        super(x, y, width, height);
+        super(x, y, width, height, batch);
         containedItem = foodType;
-        this.batch = batch;
-
-        // different classes different icons!
-        // this else statement is para sa icon name depending on the foodtype!
-        if(foodType.equals(FoodType.tomato)){
-            floatingIconFrames = floating_iconAtlas.findRegions("tomato_icon");
-        } else if(foodType.equals(FoodType.onion)){
-            floatingIconFrames = floating_iconAtlas.findRegions("onion_icon");
-        } else if(foodType.equals(FoodType.meat)){
-            floatingIconFrames = floating_iconAtlas.findRegions("meat_icon");
-        } else if(foodType.equals(FoodType.fish)){
-            floatingIconFrames = floating_iconAtlas.findRegions("fish_icon");
-        } else if(foodType.equals(FoodType.pickle)){
-            floatingIconFrames = floating_iconAtlas.findRegions("pickle_icon");
+        switch(foodType) {
+            case tomato:
+                floatingIconFrames = floating_iconAtlas.findRegions("tomato_icon");
+                break;
+            case meat:
+                floatingIconFrames = floating_iconAtlas.findRegions("meat_icon");
+                break;
+            case fish:
+                floatingIconFrames = floating_iconAtlas.findRegions("fish_icon");
+                break;
+            case pickle:
+                floatingIconFrames = floating_iconAtlas.findRegions("pickle_icon");
+                break;
         }
     }
     public void render() {

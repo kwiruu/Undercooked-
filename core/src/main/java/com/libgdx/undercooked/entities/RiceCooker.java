@@ -10,12 +10,10 @@ import com.libgdx.undercooked.PlayerManager;
 import java.awt.Rectangle;
 
 public class RiceCooker extends Station {
-    private SpriteBatch batch;
     int timer;
 
     public RiceCooker(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
+        super(x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }

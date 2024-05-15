@@ -20,9 +20,6 @@ public class EntityList {
         renderEntity(map);
     }
     public void render() {
-
-        // call each object added to the array of different stations!
-        // array stoves, chopping_boards, rice_cookers, food_sources!
         for (Station stove : stationArray) {
             stove.render();
         }
@@ -66,6 +63,15 @@ public class EntityList {
 
                     RiceCooker riceCooker = new RiceCooker(x, y, (int) width, (int) height, batch);
                     stationArray.add(riceCooker); // Add stove to the array
+                }
+                if (object.getName().equals("counter")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 400;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
+
+                    Counter counter = new Counter(x, y, (int) width, (int) height, batch);
+                    stationArray.add(counter); // Add stove to the array
                 }
 
                 //--------------------IMPORTANT-----------------------//
