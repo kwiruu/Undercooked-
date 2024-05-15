@@ -8,7 +8,6 @@ import com.libgdx.undercooked.PlayerManager;
 public class ChoppingBoard extends Station implements canUpdate {
     int timer;
     boolean playerOn;
-
     public ChoppingBoard(float x, float y, int width, int height, SpriteBatch batch) {
         super(x, y, width, height, batch);
         // different classes different icons!
@@ -40,6 +39,11 @@ public class ChoppingBoard extends Station implements canUpdate {
             // show invalid sign
             System.out.println("invalid");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Chopping Board";
     }
 
     private boolean validate(FoodType ft) {

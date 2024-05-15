@@ -10,9 +10,7 @@ import com.libgdx.undercooked.PlayerManager;
 import java.awt.Rectangle;
 
 public class Stove extends Station implements canUpdate {
-    private SpriteBatch batch;
     int timer;
-
     // spriteBatch is used to add a TextureRegion to a certain batch./
     // then the spriteBatch is then rendered!
     public Stove(float x, float y, int width, int height, SpriteBatch batch) {
@@ -46,6 +44,12 @@ public class Stove extends Station implements canUpdate {
             System.out.println("invalid");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Stove";
+    }
+
     private boolean validate(FoodType ft) {
         switch (ft) {
             case tomato:

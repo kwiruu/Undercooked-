@@ -33,10 +33,8 @@ public class PlayerManager implements Runnable {
     private Map<String, Animation<TextureRegion>> animations = new HashMap<>();
     public boolean isLifting;
     private float currentTime;
-    private boolean spacePressed = false;
-    private float spaceCooldown = 1f;
     private float deltaTimes;
-    public boolean playerLocked = false;
+    public float playerLock;
     private FoodType heldItem;
     private EntityList entityList;
     private Animation<TextureAtlas.AtlasRegion> smokeAnimation;
@@ -48,7 +46,7 @@ public class PlayerManager implements Runnable {
 
 
     @Override
-    public void run(){
+    public void run() {
         textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
         setLocation();
         player = createBox(world, x, y, 16, 8, false);
@@ -62,7 +60,7 @@ public class PlayerManager implements Runnable {
         currentTime = 0;
         stateTime = 0;
     }
-    public void setLocation(){
+    public void setLocation() {
         String selectedMap = getSelectedMap();
         switch (selectedMap){
             case "Map1":
@@ -90,52 +88,43 @@ public class PlayerManager implements Runnable {
         currentTime += deltaTime;
         deltaTimes = deltaTime;
 
-        if(hasHeldItem()){
+        if (hasHeldItem()) {
             hasItemz = getHeldItem() + "";
-        }else{
+        } else{
             hasItemz = "";
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spacePressed) {
-            spacePressed = true;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Station st = entityList.pointStation(getInteractPos());
             if (st != null) {
                 st.interact(this);
-                if(!playerLocked && !isLifting){
-                    playerLocked = true;
-                }
-                isLifting = !isLifting;
+                playerLock = 1f;
+                isLifting = false;
                 currentTime = 0;
             } else {
                 System.out.println("pointed at nothing");
-                Gdx.input.setCursorPosition((int) getInteractPos().x, (int) getInteractPos().y);
+                Gdx.input.setCursorPosition((int) getInteractPos().x*32, (int) getInteractPos().y*32);
             }
         }
         debugKeys();
 
-        if (spacePressed) {
-            spaceCooldown -= 0.03f;
-            if (spaceCooldown <= 0) {
-                spacePressed = false;
-                if(playerLocked){
-                    playerLocked = false;
-                }
-                spaceCooldown = 1f;
+        if (playerLock > 0) {
+            playerLock -= .03f;
+        } else {
+            if (isLifting) {
+                isLifting = false;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && !playerLocked) {
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && playerLock == 0) {
             verticalForce += 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && !playerLocked) {
+        } if (Gdx.input.isKeyPressed(Input.Keys.A) && playerLock == 0) {
             horizontalForce -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && !playerLocked) {
+        } if (Gdx.input.isKeyPressed(Input.Keys.S) && playerLock == 0) {
             verticalForce -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && !playerLocked) {
+        } if (Gdx.input.isKeyPressed(Input.Keys.D) && playerLock == 0) {
             horizontalForce += 1;
-        }
-        if ((horizontalForce != 0 && verticalForce != 0)&& !playerLocked) {
+        } if ((horizontalForce != 0 && verticalForce != 0)&& playerLock == 0) {
             verticalForce *= 0.7F;
             horizontalForce *= 0.7F;
         }
@@ -146,10 +135,8 @@ public class PlayerManager implements Runnable {
         Body pBody;
         BodyDef def = new BodyDef();
 
-        if (isStatic)
-            def.type = BodyDef.BodyType.StaticBody;
-        else
-            def.type = BodyDef.BodyType.DynamicBody;
+        if (isStatic) def.type = BodyDef.BodyType.StaticBody;
+        else def.type = BodyDef.BodyType.DynamicBody;
 
         def.position.set(x, y);
         def.fixedRotation = true;
@@ -171,7 +158,6 @@ public class PlayerManager implements Runnable {
 
         if (isLifting) {
             Animation<TextureRegion> liftingAnimation = animations.get("lifting_" + lastDir);
-
             if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                     setLastDirection("top");
@@ -200,34 +186,24 @@ public class PlayerManager implements Runnable {
 
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 setLastDirection("top");
-                if (isLifting) {
-                    return animations.get("running_lifting_top");
-                }
+                if (isLifting) return animations.get("running_lifting_top");
                 return animations.get("running_top");
             } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                 setLastDirection("left");
-                if (isLifting) {
-                    return animations.get("running_lifting_left");
-                }
+                if (isLifting) return animations.get("running_lifting_left");
                 return animations.get("running_left");
             } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 setLastDirection("down");
-                if (isLifting) {
-                    return animations.get("running_lifting_down");
-                }
+                if (isLifting) return animations.get("running_lifting_down");
                 return animations.get("running_down");
             } else {
                 setLastDirection("right");
-                if (isLifting) {
-                    return animations.get("running_lifting_right");
-                }
+                if (isLifting) return animations.get("running_lifting_right");
                 return animations.get("running_right");
             }
         } else {
             // If no movement keys are pressed, return the corresponding idle animation
-            if (isLifting) {
-                return animations.get("idle_lifting_" + lastDir);
-            }
+            if (isLifting) return animations.get("idle_lifting_" + lastDir);
             return animations.get("idle_" + lastDir);
         }
     }
@@ -294,7 +270,7 @@ public class PlayerManager implements Runnable {
         return point;
     }
     private void debugKeys() {
-        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Removing: " + heldItem);
             removeHeldItem();
             isLifting = false;
@@ -358,7 +334,7 @@ public class PlayerManager implements Runnable {
                 Gdx.app.log("Warning", "Texture outside viewport");
             }
 
-            if(spacePressed || Gdx.input.isKeyPressed(Input.Keys.X)) {
+            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
                 TextureRegion currentFrame = smokeAnimation.getKeyFrame(stateTime, true); // true to allow looping
                 batch.draw(currentFrame, itemX - 8, itemY - 8, 48, 48);
 

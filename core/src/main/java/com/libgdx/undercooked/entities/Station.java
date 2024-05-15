@@ -44,7 +44,5 @@ public abstract class Station {
     public abstract void interact(PlayerManager p);
 
     @Override
-    public String toString() {
-        return containedItem + "oten";
-    }
+    public abstract String toString();
 }

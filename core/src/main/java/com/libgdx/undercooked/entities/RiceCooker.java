@@ -14,7 +14,7 @@ public class RiceCooker extends Station implements canUpdate {
 
     public RiceCooker(float x, float y, int width, int height, SpriteBatch batch) {
         super(x, y, width, height, batch);
-        // different classes different icons!
+        containedItem = FoodType.rice;
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }
     public void render() {
@@ -38,6 +38,12 @@ public class RiceCooker extends Station implements canUpdate {
             System.out.println("invalid");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Rice Cooker";
+    }
+
     private boolean validate(FoodType ft) {
         switch (ft) {
             case cooked_meat:

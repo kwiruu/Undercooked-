@@ -27,6 +27,12 @@ public class Counter extends Station {
             // counter edit
         }
     }
+
+    @Override
+    public String toString() {
+        return "Counter";
+    }
+
     private boolean validate(FoodType ft) {
         switch (ft) {
             case tomato:

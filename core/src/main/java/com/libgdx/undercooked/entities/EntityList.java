@@ -133,7 +133,7 @@ public class EntityList {
         Rectangle r;
         float displacement = 48F;
         for (Station s: stationArray) {
-            System.out.println(s + " checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
+            System.out.println(s + "(" + s.containedItem + ") checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
             // needs tweaking
             r = new Rectangle(s.getX(), s.getY(), 32f, 64f);
             if (r.contains(v2)) {
