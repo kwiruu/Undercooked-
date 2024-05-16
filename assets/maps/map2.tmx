@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="51">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="52">
  <tileset firstgid="1" source="Interiors_32x32.tsx"/>
  <tileset firstgid="17025" source="Room_Builder_32x32.tsx"/>
  <tileset firstgid="25309" source="../objects.tsx"/>
@@ -162,13 +162,14 @@
  <objectgroup id="9" name="station_layer" class="station_layer">
   <object id="38" name="meat_source" gid="25321" x="256" y="96" width="64" height="96"/>
   <object id="39" name="dough_source" gid="25320" x="192" y="96" width="64" height="64"/>
+  <object id="51" name="dough_source" gid="25320" x="192" y="96" width="64" height="64"/>
   <object id="40" name="cheese_source" gid="25319" x="320" y="128" width="32" height="64"/>
-  <object id="41" name="rice_cooker" gid="25311" x="704" y="160" width="32" height="48"/>
-  <object id="42" name="rice_cooker" gid="25311" x="704" y="96" width="32" height="48"/>
-  <object id="43" name="stove" gid="25309" x="608" y="96" width="32" height="64"/>
-  <object id="44" name="stove" gid="25309" x="576" y="96" width="32" height="64"/>
-  <object id="45" name="stove" gid="25309" x="544" y="96" width="32" height="64"/>
+  <object id="41" name="station_rice_cooker" gid="25311" x="704" y="160" width="32" height="48"/>
+  <object id="42" name="station_rice_cooker" gid="25311" x="704" y="96" width="32" height="48"/>
+  <object id="43" name="station_stove" gid="25309" x="608" y="96" width="32" height="64"/>
+  <object id="44" name="station_stove" gid="25309" x="576" y="96" width="32" height="64"/>
+  <object id="45" name="station_stove" gid="25309" x="544" y="96" width="32" height="64"/>
   <object id="49" name="delivery_station" gid="2147508973" x="576" y="352" width="32" height="96"/>
-  <object id="50" name="delivery_station" gid="2147508973" x="576" y="352" width="32" height="96"/>
+  <object id="50" name="station_counter" gid="2147508973" x="576" y="352" width="32" height="96"/>
  </objectgroup>
 </map>

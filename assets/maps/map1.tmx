@@ -125,12 +125,12 @@
   <object id="28" x="192.182" y="608" width="95.6364" height="10.5455"/>
  </objectgroup>
  <objectgroup id="30" name="station_layer">
-  <object id="44" name="stove" gid="25309" x="192" y="128" width="32" height="64"/>
-  <object id="45" name="stove" gid="25309" x="224" y="128" width="32" height="64"/>
-  <object id="46" name="stove" gid="25309" x="256" y="128" width="32" height="64"/>
-  <object id="63" name="chopping_board" gid="25310" x="192" y="192" width="96" height="32"/>
-  <object id="64" name="rice_cooker" gid="25311" x="288" y="96" width="32" height="48"/>
-  <object id="65" name="rice_cooker" gid="25311" x="320" y="96" width="32" height="48"/>
+  <object id="44" name="station_stove" gid="25309" x="192" y="128" width="32" height="64"/>
+  <object id="45" name="station_stove" gid="25309" x="224" y="128" width="32" height="64"/>
+  <object id="46" name="station_stove" gid="25309" x="256" y="128" width="32" height="64"/>
+  <object id="63" name="station_chopping_board" gid="25310" x="192" y="192" width="96" height="32"/>
+  <object id="64" name="station_rice_cooker" gid="25311" x="288" y="96" width="32" height="48"/>
+  <object id="65" name="station_rice_cooker" gid="25311" x="320" y="96" width="32" height="48"/>
   <object id="66" name="fish_tank_source" gid="25312" x="448" y="512" width="96" height="96"/>
   <object id="76" name="fish_tank_source" gid="25312" x="448" y="512" width="96" height="96"/>
   <object id="67" name="tomato_source" gid="25313" x="544" y="416" width="32" height="64"/>
@@ -138,7 +138,7 @@
   <object id="72" name="pickle_source" gid="25313" x="544" y="288" width="32" height="64"/>
   <object id="80" gid="25315" x="480" y="160" width="96" height="64"/>
   <object id="81" name="meat_source" gid="25315" x="480" y="160" width="96" height="64"/>
-  <object id="82" name="deliver_station" gid="25325" x="288" y="352" width="32" height="96"/>
+  <object id="82" name="station_counter " gid="25325" x="288" y="352" width="32" height="96"/>
  </objectgroup>
  <layer id="22" name="on_top" width="25" height="20">
   <data encoding="csv">
