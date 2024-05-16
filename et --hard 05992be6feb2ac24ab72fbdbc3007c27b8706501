@@ -1,0 +1,281 @@
+[33mcommit 2da1679e3ffb6172b04f8bcc6aa18fbf317054f6[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 20:39:00 2024 +0800
+
+    added food_sprites (no rice yet)
+
+[33mcommit 6fcaee69523848e210aa78313027e602c86d7e16[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 19:22:38 2024 +0800
+
+    updated tmx: changed station names
+
+[33mcommit 05992be6feb2ac24ab72fbdbc3007c27b8706501[m
+Merge: 2e08183 3badde5
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 19:15:12 2024 +0800
+
+    Merge branch 'master' of https://github.com/kwiruu/Undercooked-
+
+[33mcommit 2e0818381b198c73bd2f47af360f60fab0b0b264[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 19:14:51 2024 +0800
+
+    added deliver station object in tmx
+
+[33mcommit 3badde597fe1944d286655ad3130b93199c7759f[m
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Thu May 16 19:09:31 2024 +0800
+
+    added timer +working
+
+[33mcommit 6efda3462b1a22127dc5083204b94f611cf61b77[m
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Thu May 16 17:58:06 2024 +0800
+
+    changed stuff
+
+[33mcommit 638f5dd9c5c46c59f1e8130336f5a1cd55cd258d[m
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Thu May 16 16:39:14 2024 +0800
+
+    manipulated player mas libog na :((
+
+[33mcommit 6a32e04e9eb3583835ad1730a52dde47d39dbe12[m
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Thu May 16 15:10:35 2024 +0800
+
+    changed sound
+
+[33mcommit c0c551492393466b602323370b369f0da55c5ecd[m
+Merge: 67c2c2c 28c1ecb
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Thu May 16 15:10:10 2024 +0800
+
+    Merge branch 'master' of https://github.com/kwiruu/Undercooked-
+
+[33mcommit 67c2c2ce118d13157ce90f96c6811c5f28e4dd59[m
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Thu May 16 15:09:36 2024 +0800
+
+    i dunno what this
+
+[33mcommit 28c1ecbbf61895491b57ede79991d2fc6b38d68d[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 10:32:23 2024 +0800
+
+    otin ni mars
+
+[33mcommit e662e87186195d7ba3ff59787d4e5f2f66b189c6[m
+Author: griin <greinofrais@gmail.com>
+Date:   Thu May 16 07:41:20 2024 +0800
+
+    animlocker
+
+[33mcommit 5325a825017ffaf7afebaf5d18d68dc7293ca20e[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 00:52:51 2024 +0800
+
+    updated animation for pick-up and delete, problem: mu animate ang poof bisag asa aahahhaah
+
+[33mcommit 80b9a8e7f8f60b725ee213bf26b33e131212bcea[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Thu May 16 00:43:45 2024 +0800
+
+    updated assets
+
+[33mcommit 45e665ecdc4444a1cea11650cc33571273d71b42[m
+Author: griin <greinofrais@gmail.com>
+Date:   Wed May 15 22:14:41 2024 +0800
+
+    updated stations 4
+
+[33mcommit 8542904075a3d2c0698a1ad8a5614ec3d272a5ac[m
+Author: griin <greinofrais@gmail.com>
+Date:   Wed May 15 21:59:24 2024 +0800
+
+    updated stations 3
+
+[33mcommit ff184a1fad3a052191f99aa474416f1df03c817e[m
+Author: griin <greinofrais@gmail.com>
+Date:   Wed May 15 21:19:04 2024 +0800
+
+    updated stations 2
+
+[33mcommit 823408d6ca724e4f4517f959643b6d4dcd6163e9[m
+Author: griin <greinofrais@gmail.com>
+Date:   Wed May 15 20:25:44 2024 +0800
+
+    updated stations
+
+[33mcommit 666626e59b31dd7d1c63d2c61786c3925a9e3993[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 18:00:35 2024 +0800
+
+    Update Stove.java
+
+[33mcommit 927d0215ec399dd4e456a5a7a17c5579024478fc[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 17:59:12 2024 +0800
+
+    updated map2
+
+[33mcommit 72d2ba06cfb4a88f1561f0b3a23eb76dbae9bbcc[m
+Merge: 92c2812 4479161
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 17:56:57 2024 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 92c2812a296b4976bef43125801cb54f4996d816[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 17:55:38 2024 +0800
+
+    updated map2
+
+[33mcommit 4479161036437215ef3fec3c47f5205a1d53f006[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:54:58 2024 +0800
+
+    Update RiceCooker.java
+
+[33mcommit 0ed46aa0f5065b04a443a965c26b4d514ccd3002[m
+Merge: 4dd24b0 9422a52
+Author: LAB14_USER ON WS39 <L14Y15W39@citulab.net>
+Date:   Tue May 14 17:54:45 2024 +0800
+
+    Merge branch 'master' of https://github.com/kwiruu/Undercooked-
+
+[33mcommit 4dd24b0ea43bfcf2ca7efb49fab75097b20664f9[m
+Author: LAB14_USER ON WS39 <L14Y15W39@citulab.net>
+Date:   Tue May 14 17:54:27 2024 +0800
+
+    switching screens done
+
+[33mcommit 9422a52cbd2ea44d9ee973522d5b342ea61a16ab[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:53:08 2024 +0800
+
+    struggle meal
+
+[33mcommit 93a5c721d22decd7efbdd526e5acfd154907f55f[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:51:30 2024 +0800
+
+    Update ChoppingBoard.java
+
+[33mcommit 0384fa8bea09c46113f2beaa3e3206e36fc07402[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:49:32 2024 +0800
+
+    Update ChoppingBoard.java
+
+[33mcommit 22d4a28aadb07bc03698514387a815a2a43429ee[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:44:05 2024 +0800
+
+    Update ChoppingBoard.java
+
+[33mcommit fa71eb7c485f431fe771e11523da7e6ce11a31c1[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:40:14 2024 +0800
+
+    Update FoodSource.java
+
+[33mcommit a55ce0cda37651522d2810f4bbe022fcde760dbd[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:39:26 2024 +0800
+
+    Update ChoppingBoard.java
+
+[33mcommit 1f9af89b25f3f05dac3d31a8e13737d978ab0f27[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:38:27 2024 +0800
+
+    Updated ChoppingBoard.java
+
+[33mcommit d3c6ad8ecd23492c5205310211b5b3b86ae6e8a5[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:26:02 2024 +0800
+
+    added more foodtypes
+
+[33mcommit 4c38900a315b2fe580b016dfe2c7b86d32a2a441[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:25:11 2024 +0800
+
+    added more FoodTypes
+
+[33mcommit d24358ced37f8be556cc5888bf782fda6b27ba6f[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:11:15 2024 +0800
+
+    Create recipe.txt
+
+[33mcommit c926d3d12c1ac8214272400314fc3360a97ca9f6[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 17:07:49 2024 +0800
+
+    updated map2
+
+[33mcommit 91412f558e09c162f88a44a316c3b72cafadea60[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 17:06:35 2024 +0800
+
+    updated map2
+
+[33mcommit efeb8b2027d1178763d28547a23bd6edad3c7087[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 17:03:46 2024 +0800
+
+    added station
+
+[33mcommit 38f1030b5f920f389baccf6f5f09b8c84c8ad510[m
+Author: soal-ec <165453551+soal-ec@users.noreply.github.com>
+Date:   Tue May 14 17:01:10 2024 +0800
+
+    Deleted Player.java
+
+[33mcommit 60eed4640d6be9d18382e6cab48d739cc0b67764[m
+Author: LAB14_USER ON WS39 <L14Y15W39@citulab.net>
+Date:   Tue May 14 16:48:27 2024 +0800
+
+    lawabalo
+
+[33mcommit 86bb5b01b306b01b2093516693c39c3c248f4ec9[m
+Author: LAB14_USER ON WS39 <L14Y15W39@citulab.net>
+Date:   Tue May 14 16:38:48 2024 +0800
+
+    ako lang naman to
+
+[33mcommit 3b897484cdc179738987584f679eba466d0ea4d9[m
+Author: LAB14_USER ON WS39 <L14Y15W39@citulab.net>
+Date:   Tue May 14 16:12:03 2024 +0800
+
+    revised map
+
+[33mcommit 2da61a21159e8656d586a10e3586a1883d222b28[m
+Author: LAB14_USER ON WS39 <L14Y15W39@citulab.net>
+Date:   Tue May 14 15:30:17 2024 +0800
+
+    fix meat source
+
+[33mcommit 122e9dcda46aa915a68371f267fc3630b4f79e02[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 00:21:31 2024 +0800
+
+    added floating stuff
+
+[33mcommit cfb3434b2a80f1edd4163e37f207692c6c794c4a[m
+Author: kwiruu <keiru277@gmail.com>
+Date:   Tue May 14 00:09:07 2024 +0800
+
+    added floating stuff
+
+[33mcommit 14884b0e7d4494f50d3a8a084639665be04fab35[m
+Author: Ceven <valmykelcevenbolante@gmail.com>
+Date:   Tue May 14 00:03:56 2024 +0800
+
+    parrtial sound pero sleep nako PE pako sowi
+
+[33mcommit 

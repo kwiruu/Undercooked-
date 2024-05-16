@@ -44,7 +44,7 @@ public class EntityList {
             String objectName = object.getName();
             if (objectName != null) {
                 // if the object is named stove in the tiled map then mu create siyag new nga stove!
-                if (object.getName().equals("stove")) {
+                if (object.getName().equals("station_stove")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
                     width = object.getProperties().get("width", Float.class);
@@ -52,7 +52,7 @@ public class EntityList {
 
                     Stove stove = new Stove(x, y, (int) width, (int) height, batch);
                     stationArray.add(stove); // Add stove to the array
-                } if (object.getName().equals("chopping_board")) {
+                } if (object.getName().equals("station_chopping_board")) {
                     x = object.getProperties().get("x", Float.class) + 70;
                     y = object.getProperties().get("y", Float.class) + 25;
                     width = object.getProperties().get("width", Float.class);
@@ -60,7 +60,7 @@ public class EntityList {
 
                     ChoppingBoard choppingBoard = new ChoppingBoard(x, y, (int) width, (int) height, batch);
                     stationArray.add(choppingBoard); // Add stove to the array
-                } if (object.getName().equals("rice_cooker")) {
+                } if (object.getName().equals("station_rice_cooker")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 40;
                     width = object.getProperties().get("width", Float.class);
@@ -68,7 +68,7 @@ public class EntityList {
 
                     RiceCooker riceCooker = new RiceCooker(x, y, (int) width, (int) height, batch);
                     stationArray.add(riceCooker); // Add stove to the array
-                } if (object.getName().equals("counter")) {
+                } if (object.getName().equals("station_counter")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 400;
                     width = object.getProperties().get("width", Float.class);
