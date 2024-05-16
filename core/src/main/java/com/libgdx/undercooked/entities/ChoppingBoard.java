@@ -5,13 +5,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.libgdx.undercooked.PlayerManager;
 
-public class ChoppingBoard extends Station {
-    private SpriteBatch batch;
+public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int timer;
-
+    boolean playerOn;
     public ChoppingBoard(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
+        super(x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("chop_icon"); // Assuming "clock_icon" is the name of the animation
     }
@@ -26,20 +24,30 @@ public class ChoppingBoard extends Station {
     public void interact(PlayerManager p) {
         System.out.println("interacted with chopping board");
         if (timer == 0 && p.hasHeldItem()) {
-            // start chop
             if (validate(p.getHeldItem())) {
+                playerOn = true;
                 timer = 500;
                 p.setHeldItem(transmute(p.getHeldItem()));
                 // trap player here
+            } else {
+                // show invalid sign
+                System.out.println("invalid");
             }
-        } else if (!p.hasHeldItem()) {
-            // trap player and continue timer here
+        } else if (containedItem != null && !p.hasHeldItem()) {
+            playerOn = true;
         } else {
             // show invalid sign
+            System.out.println("invalid");
         }
     }
 
+    @Override
+    public String toString() {
+        return "Chopping Board";
+    }
+
     private boolean validate(FoodType ft) {
+        if (ft == null) return false;
         switch (ft) {
             case tomato:
             case onion:
@@ -64,5 +72,18 @@ public class ChoppingBoard extends Station {
                 return FoodType.chopped_fish;
         }
         return null;
+    }
+
+    public void stopChopping() {
+        playerOn = false;
+    }
+    @Override
+    public void update() {
+        if (playerOn && timer > 0) timer--;
+    }
+
+    @Override
+    public float lockPlayer() {
+        return 500f;
     }
 }

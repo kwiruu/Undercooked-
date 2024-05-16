@@ -9,14 +9,12 @@ import com.libgdx.undercooked.PlayerManager;
 
 import java.awt.Rectangle;
 
-public class RiceCooker extends Station {
-    private SpriteBatch batch;
+public class RiceCooker extends Station implements canUpdate {
     int timer;
 
     public RiceCooker(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
-        // different classes different icons!
+        super(x, y, width, height, batch);
+        containedItem = FoodType.rice;
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }
     public void render() {
@@ -29,16 +27,25 @@ public class RiceCooker extends Station {
     @Override
     public void interact(PlayerManager p) {
         System.out.println("interacted with rice cooker");
-        if (!p.hasHeldItem()) {
+        if (timer == 0 && p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
+            timer = 500;
         } else if (timer == 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
-            // timer = 500;
+            timer = 500;
         } else {
             // show invalid sign
+            System.out.println("invalid");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Rice Cooker";
+    }
+
     private boolean validate(FoodType ft) {
+        if (ft == null) return true;
         switch (ft) {
             case cooked_meat:
             case cooked_fish:
@@ -50,6 +57,7 @@ public class RiceCooker extends Station {
         return false;
     }
     private FoodType transmute(FoodType ft) {
+        if (ft == null) return FoodType.rice;
         switch (ft) {
             case cooked_meat:
                 return FoodType.meat_meal;
@@ -61,5 +69,10 @@ public class RiceCooker extends Station {
                 return FoodType.struggle_meal;
         }
         return null;
+    }
+
+    @Override
+    public void update() {
+        if (timer > 0) timer--;
     }
 }

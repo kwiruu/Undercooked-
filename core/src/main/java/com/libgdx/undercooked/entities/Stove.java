@@ -9,15 +9,12 @@ import com.libgdx.undercooked.PlayerManager;
 
 import java.awt.Rectangle;
 
-public class Stove extends Station {
-    private SpriteBatch batch;
+public class Stove extends Station implements canUpdate {
     int timer;
-
     // spriteBatch is used to add a TextureRegion to a certain batch./
     // then the spriteBatch is then rendered!
     public Stove(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
+        super(x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }
@@ -33,19 +30,29 @@ public class Stove extends Station {
         System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
+                p.setHeldItem(transmute(p.getHeldItem()));
                 timer = 500;
+            } else {
+                // show invalid sign
+                System.out.println("invalid");
             }
         } else if (containedItem != null && timer == 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
+        } else {
+            // show invalid sign
+            System.out.println("invalid");
         }
-
     }
+
+    @Override
+    public String toString() {
+        return "Stove";
+    }
+
     private boolean validate(FoodType ft) {
+        if (ft == null) return false;
         switch (ft) {
-            case tomato:
-            case onion:
-            case pickle:
             case meat:
             case fish:
                 return true;
@@ -54,17 +61,16 @@ public class Stove extends Station {
     }
     private FoodType transmute(FoodType ft) {
         switch (ft) {
-            case tomato:
-                return FoodType.chopped_tomato;
-            case onion:
-                return FoodType.chopped_onion;
-            case pickle:
-                return FoodType.chopped_pickle;
             case meat:
                 return FoodType.chopped_meat;
             case fish:
                 return FoodType.chopped_fish;
         }
         return null;
+    }
+
+    @Override
+    public void update() {
+        if (timer > 0) timer--;
     }
 }
