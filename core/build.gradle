@@ -20,5 +20,5 @@ dependencies {
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
   implementation "mysql:mysql-connector-java:8.0.27"
-
+  implementation "com.badlogicgames.gdx:gdx-freetype:1.9.12"
 }

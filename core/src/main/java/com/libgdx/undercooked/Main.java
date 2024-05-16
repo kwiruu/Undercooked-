@@ -7,26 +7,45 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
+import com.libgdx.undercooked.screen.LandingPageScreen;
 import com.libgdx.undercooked.screen.ScreenType;
+import com.libgdx.undercooked.screen.SplashScreen;
 
 import java.util.EnumMap;
 
 import static database.SQLOperations.*;
 
-public class Main extends Game {
+public class Main extends Game implements SplashScreen.SplashScreenListener{
     private static final String TAG = Main.class.getSimpleName();
-    private EnumMap<ScreenType, Screen> screenCache;
+    private static EnumMap<ScreenType, Screen> screenCache;
 
     @Override
     public void create() {
 
-        createTableHighScore();
+
+//        createDatabase();
+//        createTableAccount("tblAccount");
+//        createTableMap();
+//        createTableHighScore();
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         screenCache = new EnumMap<ScreenType, Screen>(ScreenType.class);
-        setScreen(ScreenType.LOADING);
+
+        SplashScreen splashScreen = new SplashScreen(this);
+        splashScreen.setListener(new SplashScreen.SplashScreenListener() {
+            @Override
+            public void onSplashScreenFinished() {
+                setScreen(ScreenType.LANDING);
+            }
+        });
+        setScreen(splashScreen);
     }
 
+    @Override
+    public void onSplashScreenFinished() {
+        // Transition to GameScreen after splash animation completes
+        setScreen(ScreenType.LANDING);
+    }
 
     public void setScreen(final ScreenType screenType) {
         final Screen screen = screenCache.get(screenType);
@@ -46,5 +65,17 @@ public class Main extends Game {
         }
     }
 
+    public static void deleteScreen(ScreenType screenType) {
+        Screen screen = screenCache.remove(screenType);
+        if (screen != null) {
+            Gdx.app.debug(TAG, "Disposing screen: " + screenType);
+            screen.dispose();
+        } else {
+            Gdx.app.debug(TAG, "Screen not found in cache: " + screenType);
+        }
+    }
+    public String getUsername() {
+        return LandingPageScreen.getUsername();
+    }
 
 }

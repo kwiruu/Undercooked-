@@ -10,31 +10,34 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
-import static com.libgdx.undercooked.PlayerManager.player;
+import static PlayerManager.Player.*;
+import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
-
 public class MapManager {
-
     private final TiledMap map;
     private final Texture[] test_map_textures;
-    public OrthogonalTiledMapRenderer tmr;
+    public static OrthogonalTiledMapRenderer tmr;
     private final EntityList entityList;
 
     public MapManager(World world, SpriteBatch batch) {
-        map = new TmxMapLoader().load("assets/maps/test_map.tmx");
+
+        String selectedMap = getSelectedMap();
+        System.out.println(selectedMap);
+        map = new TmxMapLoader().load("assets/maps/"+selectedMap+".tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("collision_layer").getObjects());
 
         test_map_textures = new Texture[] {
-            new Texture("assets/maps/test_map/test_map_blackwall.png"),
-            new Texture("assets/maps/test_map/test_map_wall.png"),
-            new Texture("assets/maps/test_map/test_map_furnitures.png"),
-            new Texture("assets/maps/test_map/test_map_on-top.png"),
-            new Texture("assets/maps/test_map/test_map_behind_player.png"),
+            new Texture("assets/maps/"+selectedMap+"/blackwall.png"),
+            new Texture("assets/maps/"+selectedMap+"/wall.png"),
+            new Texture("assets/maps/"+selectedMap+"/furnitures.png"),
+            new Texture("assets/maps/"+selectedMap+"/on_top.png"),
+            new Texture("assets/maps/"+selectedMap+"/behind_player.png"),
         };
 
         entityList = new EntityList(map, batch);
+
     }
 
     public void drawLayerTextures(SpriteBatch batch, TextureRegion textregion) {
@@ -47,8 +50,7 @@ public class MapManager {
         }
         entityList.render();
     }
-
-    public void dispose() {
+    public static void dispose() {
         tmr.dispose();
     }
 
@@ -60,3 +62,4 @@ public class MapManager {
         return entityList;
     }
 }
+

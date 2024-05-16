@@ -3,47 +3,87 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.libgdx.undercooked.PlayerManager;
+import PlayerManager.Player;
 
-public class ChoppingBoard extends Station {
-    private SpriteBatch batch;
+public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int timer;
-
+    boolean playerOn;
     public ChoppingBoard(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height);
-        this.batch = batch;
+        super(x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("chop_icon"); // Assuming "clock_icon" is the name of the animation
     }
     public void render() {
         // Update stateTime
-        stateTime += (float) (Gdx.graphics.getDeltaTime() + .5);
+        stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
         TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
         batch.draw(currentFrame, getX(), getY());
     }
 
     @Override
-    public void interact(PlayerManager p) {
-        System.out.println("chopping board");
-        if (containedItem == null && p.hasHeldItem()) {
-            // case 1 no item, p item
-                // set chopping timer based on foodItem
-                // need to check if valid foodItem
-            if (p.getHeldItem() == FoodType.tomato && p.getHeldItem() == FoodType.chopped_tomato) {
-                containedItem = FoodType.chopped_tomato;
+    public void interact(Player p) {
+        System.out.println("interacted with chopping board");
+        if (timer == 0 && p.hasHeldItem()) {
+            if (validate(p.getHeldItem())) {
+                playerOn = true;
                 timer = 500;
-                p.removeHeldItem();
+                p.setHeldItem(transmute(p.getHeldItem()));
+                // trap player here
+            } else {
+                // show invalid sign
+                System.out.println("invalid");
             }
-        } else if (timer == 0 && !p.hasHeldItem()) {
-            // case 2 has item, any p item
-                // continue chopping
-            // filler code
-            timer+=1;
+        } else if (containedItem != null && !p.hasHeldItem()) {
+            playerOn = true;
+        } else {
+            // show invalid sign
+            System.out.println("invalid");
         }
-        // case 3-5 - do nothing
-        // cooking
-        // no item, no p item
-        // done cooking, p item
     }
-    // TODO station to continue
+
+    @Override
+    public String toString() {
+        return "Chopping Board";
+    }
+
+    private boolean validate(FoodType ft) {
+        if (ft == null) return false;
+        switch (ft) {
+            case tomato:
+            case onion:
+            case pickle:
+            case meat:
+            case fish:
+                return true;
+        }
+        return false;
+    }
+    private FoodType transmute(FoodType ft) {
+        switch (ft) {
+            case tomato:
+                return FoodType.chopped_tomato;
+            case onion:
+                return FoodType.chopped_onion;
+            case pickle:
+                return FoodType.chopped_pickle;
+            case meat:
+                return FoodType.chopped_meat;
+            case fish:
+                return FoodType.chopped_fish;
+        }
+        return null;
+    }
+
+    public void stopChopping() {
+        playerOn = false;
+    }
+    @Override
+    public void update() {
+        if (playerOn && timer > 0) timer--;
+    }
+
+    @Override
+    public float lockPlayer() {
+        return 500f;
+    }
 }

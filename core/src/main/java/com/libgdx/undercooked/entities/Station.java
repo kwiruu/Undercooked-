@@ -1,8 +1,9 @@
 package com.libgdx.undercooked.entities;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import com.libgdx.undercooked.PlayerManager;
+import PlayerManager.Player;
 
 public abstract class Station {
     //temporarily stopped extends Entity
@@ -14,15 +15,17 @@ public abstract class Station {
     protected TextureAtlas floating_iconAtlas;
     protected float frameDuration;
     protected float stateTime; // Time elapsed since the start of the animation
+    SpriteBatch batch;
     protected Array<TextureAtlas.AtlasRegion> floatingIconFrames;
 
     // TODO popup (progress bar for non-source stations)
 
-    public Station(float x, float y, int width, int height) {
+    public Station(float x, float y, int width, int height, SpriteBatch batch) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.batch = batch;
         Array<TextureAtlas.AtlasRegion> floatingIconFrames;
         floating_iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
         frameDuration = 1f; // Set the duration of each frame (adjust as needed)
@@ -38,5 +41,8 @@ public abstract class Station {
     }
 
     public abstract void render();
-    public abstract void interact(PlayerManager p);
+    public abstract void interact(Player p);
+
+    @Override
+    public abstract String toString();
 }
