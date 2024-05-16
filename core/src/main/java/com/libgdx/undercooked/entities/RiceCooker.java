@@ -45,6 +45,7 @@ public class RiceCooker extends Station implements canUpdate {
     }
 
     private boolean validate(FoodType ft) {
+        if (ft == null) return true;
         switch (ft) {
             case cooked_meat:
             case cooked_fish:
@@ -56,6 +57,7 @@ public class RiceCooker extends Station implements canUpdate {
         return false;
     }
     private FoodType transmute(FoodType ft) {
+        if (ft == null) return FoodType.rice;
         switch (ft) {
             case cooked_meat:
                 return FoodType.meat_meal;

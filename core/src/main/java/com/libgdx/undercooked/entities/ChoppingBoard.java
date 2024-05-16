@@ -47,6 +47,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     }
 
     private boolean validate(FoodType ft) {
+        if (ft == null) return false;
         switch (ft) {
             case tomato:
             case onion:
@@ -82,7 +83,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     }
 
     @Override
-    public void lockPlayer() {
-
+    public float lockPlayer() {
+        return 500f;
     }
 }

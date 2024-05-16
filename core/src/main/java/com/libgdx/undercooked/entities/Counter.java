@@ -34,6 +34,7 @@ public class Counter extends Station {
     }
 
     private boolean validate(FoodType ft) {
+        if (ft == null) return false;
         switch (ft) {
             case tomato:
             case pickle:

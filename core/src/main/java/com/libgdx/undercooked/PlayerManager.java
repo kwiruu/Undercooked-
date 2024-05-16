@@ -28,7 +28,6 @@ public class PlayerManager implements Runnable {
     private final World world;
     static Body player;
     static Body itemBox;
-    static String hasItemz = "";
     private TextureAtlas textureAtlas;
     private static SpriteBatch playerBatch;
     private String lastDirection;
@@ -37,6 +36,7 @@ public class PlayerManager implements Runnable {
     private float currentTime;
     private float deltaTimes;
     public float playerLock;
+    private float poofFrames;
     private animLocker animLock;
     private FoodType heldItem;
     private EntityList entityList;
@@ -86,33 +86,8 @@ public class PlayerManager implements Runnable {
         return playerBatch;
     }
 
-    public void inputUpdate(float deltaTime) {
-        float horizontalForce = 0;
-        float verticalForce = 0;
-        currentTime += deltaTime;
-        deltaTimes = deltaTime;
-        stateTime += deltaTime; // Increment stateTime here
-
-        if (hasHeldItem()) {
-            hasItemz = getHeldItem() + "";
-        } else {
-            hasItemz = "";
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            Station st = entityList.pointStation(getInteractPos());
-            if (st != null) {
-                st.interact(this);
-                playerLock = 1f;
-                isLifting = true;
-                currentTime = 0;
-            } else {
-                System.out.println("pointed at nothing");
-                Gdx.input.setCursorPosition((int) getInteractPos().x * 32, (int) getInteractPos().y * 32);
-            }
-        }
-        debugKeys();
-
+    private void timeUpdate() {
+        poofFrames-=.02f;
         if (playerLock > 0) {
             playerLock -= .03f;
         } else {
@@ -120,6 +95,37 @@ public class PlayerManager implements Runnable {
                 isLifting = false;
             }
         }
+    }
+    public void inputUpdate(float deltaTime) {
+        float horizontalForce = 0;
+        float verticalForce = 0;
+        currentTime += deltaTime;
+        deltaTimes = deltaTime;
+        stateTime += deltaTime; // Increment stateTime here
+        timeUpdate();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            Station st = entityList.pointStation(getInteractPos());
+            FoodType oft = heldItem;
+            if (st != null) {
+                st.interact(this);
+                if (st instanceof animLocker) {
+                    ((animLocker) st).lockPlayer();
+                    animLock = ((animLocker) st);
+                }
+                playerLock = 1f;
+                currentTime = 0;
+                if (oft != heldItem){
+                    poofFrames = 1f;
+                    isLifting = true;
+                }
+            } else {
+                System.out.println("pointed at nothing");
+                Gdx.input.setCursorPosition((int) getInteractPos().x * 32, (int) getInteractPos().y * 32);
+            }
+        }
+        debugKeys();
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && playerLock <= 0) {
             verticalForce += 1;
@@ -262,8 +268,6 @@ public class PlayerManager implements Runnable {
         float displacement = 32;
         switch (lastDirection) {
             case "top":
-                point.add(0, displacement);
-                break;
             case "down":
                 point.add(0, displacement);
                 break;
@@ -284,8 +288,9 @@ public class PlayerManager implements Runnable {
                 System.out.println("Removing: " + heldItem);
                 isSmokeAnimationPlaying = true;
                 stateTime = 0;
+                poofFrames = 1f;
                 shouldRemoveHeldItemAfterAnimation = true; // Set flag to remove item after animation
-                removeHeldItem(); // Remove the item immediately
+                removeHeldItem();
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
@@ -341,13 +346,12 @@ public class PlayerManager implements Runnable {
         float offsetY = amplitude * MathUtils.sin(frequency * stateTime);
         float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM;
 
-        if (!hasItemz.isEmpty()) {
-            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + hasItemz + ".png"));
-
+        // igo rani mu animate sa up and down
+        if (heldItem != null) {
+            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + heldItem + ".png"));
             if (!texture.getTextureData().isPrepared()) {
                 texture.getTextureData().prepare();
             }
-
             if (itemX >= 0 && itemX <= Gdx.graphics.getWidth() && itemY >= 0 && itemY <= Gdx.graphics.getHeight()) {
                 batch.draw(texture, itemX, itemY);
             } else {
@@ -355,15 +359,16 @@ public class PlayerManager implements Runnable {
             }
         }
 
-        // Call the new renderPoofAnimation function
-        renderPoofAnimation(batch, itemX, itemY);
+        if (poofFrames > 0) {
+            renderPoofAnimation(batch, itemX, itemY);
+        }
     }
 
     public void renderItemUpdate(float elapsedTime) {
         if (isSmokeAnimationPlaying) {
             stateTime += elapsedTime;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             stateTime = 0;  // Reset state time to start the animation from the beginning
             isSmokeAnimationPlaying = true;
         }
