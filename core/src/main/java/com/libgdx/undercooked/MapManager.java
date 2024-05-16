@@ -24,10 +24,9 @@ public class MapManager {
     private final Texture[] test_map_textures;
     public static OrthogonalTiledMapRenderer tmr;
     private final EntityList entityList;
-    private final Npc npcManager;  // Add NPC manager reference
+
 
     public MapManager(World world, SpriteBatch batch, Npc npcManager) {  // Add NPC manager to constructor
-        this.npcManager = npcManager;  // Initialize NPC manager
 
         String selectedMap = getSelectedMap();
         System.out.println(selectedMap);
@@ -56,17 +55,9 @@ public class MapManager {
             batch.draw(texturez, 0, 0);
         }
         entityList.render();
-        renderNpcs(batch);  // Render NPCs
     }
 
-    private void renderNpcs(SpriteBatch batch) {
-        for (Entity entity : npcManager.getEntities()) {
-            NpcComponent npcComponent = entity.getComponent(NpcComponent.class);
-            if (npcComponent != null) {
-                npcComponent.sprite.draw(batch);
-            }
-        }
-    }
+
 
     public static void dispose() {
         tmr.dispose();

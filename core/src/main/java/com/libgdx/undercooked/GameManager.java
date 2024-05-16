@@ -1,5 +1,7 @@
 package com.libgdx.undercooked;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,7 +43,7 @@ public class GameManager implements Disposable {
             Sprite npcSprite = new Sprite(npcTexture);
 
             // Create NPC with sprite
-            createAndAddNpc(new Vector2(8, 2), npcSprite);
+            createAndAddNpc(new Vector2(96, 72), npcSprite);
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
             playerManager.setEntityList(mapManager.getEntityList());
@@ -61,22 +63,18 @@ public class GameManager implements Disposable {
 //            timesUp = true;
 //            return;
 //        }
-
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
-
         mapManager.getEntityList().update();
         // Add any necessary updates for NPCs here
     }
 
-    public void render() {
-        batch.begin();
-        mapManager.drawLayerTextures(batch, playerManager.determineCurrentAnimation().getKeyFrame(elapsedTime, true));
-        playerManager.renderItem(batch);
+    public void render(TextureRegion currentFrame) {
+        getMapManager().drawLayerTextures(batch, currentFrame);
+        getPlayerManager().renderItem(batch);
         npcManager.render(batch);
-        batch.end();
     }
 
     public Player getPlayerManager() {

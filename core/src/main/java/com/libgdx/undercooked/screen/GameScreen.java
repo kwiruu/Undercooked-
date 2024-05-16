@@ -46,8 +46,10 @@ public class GameScreen extends ScreenAdapter {
             Animation<TextureRegion> currentAnimation = gameManager.getPlayerManager().determineCurrentAnimation();
             TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
             SpriteBatch batch = gameManager.getBatch();
+            batch.begin();
             batch.setProjectionMatrix(camera.combined);
-            gameManager.render();
+            gameManager.render(currentFrame);
+            batch.end();
             gameUI.render();
         }catch (NullPointerException e){
             context.setScreen(ScreenType.SELECTMAP);

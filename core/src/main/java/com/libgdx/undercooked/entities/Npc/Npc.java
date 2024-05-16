@@ -33,8 +33,8 @@ public class Npc extends PooledEngine {
         npcB2D = this.createComponent(NpcB2D.class);
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody; // Use DynamicBody instead of StaticBody
-        bodyDef.position.set(npcSpawnLocation.x / PPM, npcSpawnLocation.y / PPM);
+        bodyDef.type = BodyDef.BodyType.StaticBody; // Use DynamicBody instead of StaticBody
+        bodyDef.position.set(npcSpawnLocation.x, npcSpawnLocation.y);
         Body npcBody = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
@@ -57,9 +57,9 @@ public class Npc extends PooledEngine {
     public void render(SpriteBatch batch) {
         // Render the sprite at the NPC's position
         if (sprite != null && npcB2D != null) {
-            batch.draw(sprite, npcB2D.getNpcBody().getPosition().x - sprite.getWidth() / 2,
-                npcB2D.getNpcBody().getPosition().y - sprite.getHeight() / 2);
-            System.out.println("OTEN: " + npcB2D.getNpcBody().getPosition().y);
+            batch.draw(sprite, npcB2D.getNpcBody().getPosition().x + 32,
+                npcB2D.getNpcBody().getPosition().y + 32);
+            System.out.println("X: " + npcB2D.getNpcBody().getPosition().x + "\nY : " + npcB2D.getNpcBody().getPosition().y);
         }
     }
 
@@ -67,13 +67,10 @@ public class Npc extends PooledEngine {
         // You can add any necessary update logic here
         // For example, you could move the NPC horizontally
         // You should adjust this based on your game's logic
-        float speed = 1.0f; // Adjust speed as needed
+        float speed = 4.0f; // Adjust speed as needed
         Vector2 velocity = npcB2D.getNpcBody().getLinearVelocity();
         velocity.x = speed; // Move horizontally at constant speed
-        npcB2D.getNpcBody().setLinearVelocity(velocity);
+        npcB2D.getNpcBody().setLinearVelocity(speed * 4,speed * 4);
     }
 
-    public NpcB2D getNpcB2D() {
-        return npcB2D;
-    }
 }
