@@ -46,11 +46,8 @@ public class GameScreen extends ScreenAdapter {
             Animation<TextureRegion> currentAnimation = gameManager.getPlayerManager().determineCurrentAnimation();
             TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
             SpriteBatch batch = gameManager.getBatch();
-            batch.begin();
             batch.setProjectionMatrix(camera.combined);
-            gameManager.getMapManager().drawLayerTextures(batch, currentFrame);
-            gameManager.getPlayerManager().renderItem(batch);
-            batch.end();
+            gameManager.render();
             gameUI.render();
         }catch (NullPointerException e){
             context.setScreen(ScreenType.SELECTMAP);
@@ -65,12 +62,12 @@ public class GameScreen extends ScreenAdapter {
         MapManager.tmr.setView(camera);
         gameManager.getMapManager().getEntityList().update();
         gameUI.update(gameManager.getPlayerManager());
-        if (timesUp) {
-            timesUp = false;
-            System.out.println("Time's up! Switching to SELECTMAP screen.");
-            gameManager.dispose();
-            gameManager = null;
-        }
+//        if (timesUp) {
+//            timesUp = false;
+//            System.out.println("Time's up! Switching to SELECTMAP screen.");
+//            gameManager.dispose();
+//            gameManager = null;
+//        }
 
     }
 

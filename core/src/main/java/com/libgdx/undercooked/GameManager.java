@@ -41,10 +41,11 @@ public class GameManager implements Disposable {
             Sprite npcSprite = new Sprite(npcTexture);
 
             // Create NPC with sprite
-            createAndAddNpc(new Vector2(100, 100), npcSprite);
+            createAndAddNpc(new Vector2(8, 2), npcSprite);
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
             playerManager.setEntityList(mapManager.getEntityList());
+
             initialized = true;
         }
     }
@@ -54,16 +55,18 @@ public class GameManager implements Disposable {
     }
 
     public void update(float deltaTime) {
-        elapsedTime += deltaTime; // Increment elapsed time
-        TIME_LIMIT -= deltaTime;
-        if (TIME_LIMIT < elapsedTime) {
-            timesUp = true;
-            return;
-        }
+//        elapsedTime += deltaTime; // Increment elapsed time
+//        TIME_LIMIT -= deltaTime;
+//        if (TIME_LIMIT < elapsedTime) {
+//            timesUp = true;
+//            return;
+//        }
 
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
+        npcManager.update(deltaTime);
+
         mapManager.getEntityList().update();
         // Add any necessary updates for NPCs here
     }
@@ -72,6 +75,7 @@ public class GameManager implements Disposable {
         batch.begin();
         mapManager.drawLayerTextures(batch, playerManager.determineCurrentAnimation().getKeyFrame(elapsedTime, true));
         playerManager.renderItem(batch);
+        npcManager.render(batch);
         batch.end();
     }
 
@@ -93,7 +97,7 @@ public class GameManager implements Disposable {
 
     @Override
     public void dispose() {
-        mapManager.dispose();
+        MapManager.dispose();
         world.dispose();
         batch.dispose();
         npcTexture.dispose();

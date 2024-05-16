@@ -3,6 +3,7 @@ package com.libgdx.undercooked.entities.Npc;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
@@ -14,13 +15,15 @@ public class Npc extends PooledEngine {
 
     private World world;
     private NpcB2D npcB2D;
+    private Sprite sprite;
 
     public Npc(World world) {
         super();
         this.world = world;
     }
 
-    public void createNpc(final Vector2 npcSpawnLocation, final Sprite sprite) {
+    public void createNpc(Vector2 npcSpawnLocation, final Sprite sprite) {
+        this.sprite = sprite; // Set the sprite
 
         final Entity entity = this.createEntity();
 
@@ -30,7 +33,7 @@ public class Npc extends PooledEngine {
         npcB2D = this.createComponent(NpcB2D.class);
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody; // Use DynamicBody instead of StaticBody
         bodyDef.position.set(npcSpawnLocation.x / PPM, npcSpawnLocation.y / PPM);
         Body npcBody = world.createBody(bodyDef);
 
@@ -49,6 +52,25 @@ public class Npc extends PooledEngine {
         entity.add(npcB2D);
 
         this.addEntity(entity);
+    }
+
+    public void render(SpriteBatch batch) {
+        // Render the sprite at the NPC's position
+        if (sprite != null && npcB2D != null) {
+            batch.draw(sprite, npcB2D.getNpcBody().getPosition().x - sprite.getWidth() / 2,
+                npcB2D.getNpcBody().getPosition().y - sprite.getHeight() / 2);
+            System.out.println("OTEN: " + npcB2D.getNpcBody().getPosition().y);
+        }
+    }
+
+    public void update(float deltaTime) {
+        // You can add any necessary update logic here
+        // For example, you could move the NPC horizontally
+        // You should adjust this based on your game's logic
+        float speed = 1.0f; // Adjust speed as needed
+        Vector2 velocity = npcB2D.getNpcBody().getLinearVelocity();
+        velocity.x = speed; // Move horizontally at constant speed
+        npcB2D.getNpcBody().setLinearVelocity(velocity);
     }
 
     public NpcB2D getNpcB2D() {

@@ -100,7 +100,7 @@ public class LandingPageScreen implements Screen {
         });
 
         // Start the sound in a new thread
-        new Thread(mainMenuSound).start();
+     //   new Thread(mainMenuSound).start();
     }
 
     @Override
