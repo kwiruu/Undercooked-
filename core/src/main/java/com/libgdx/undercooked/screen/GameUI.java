@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
-import com.libgdx.undercooked.PlayerManager;
+import PlayerManager.Player;
 
 public class GameUI{
     private final Main context;
@@ -105,7 +105,7 @@ public class GameUI{
         }
     }
 
-    public void update(PlayerManager player){
+    public void update(Player player){
         playerPos.set((player.getPosition().x), player.getPosition().y);
         usernameLabel.setText("Position: " + playerPos);
     }

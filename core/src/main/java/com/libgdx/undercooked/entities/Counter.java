@@ -3,7 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.libgdx.undercooked.PlayerManager;
+import PlayerManager.Player;
 
 public class Counter extends Station {
     public Counter(float x, float y, int width, int height, SpriteBatch batch) {
@@ -20,13 +20,15 @@ public class Counter extends Station {
     }
 
     @Override
-    public void interact(PlayerManager p) {
+    public void interact(Player p) {
         System.out.println("interacted with stove");
         if (validate(p.getHeldItem())) {
             p.removeHeldItem();
             // counter edit
         }
     }
+
+
 
     @Override
     public String toString() {

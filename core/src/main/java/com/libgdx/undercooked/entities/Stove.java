@@ -2,12 +2,8 @@ package com.libgdx.undercooked.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-import com.libgdx.undercooked.PlayerManager;
-
-import java.awt.Rectangle;
+import PlayerManager.Player;
 
 public class Stove extends Station implements canUpdate {
     int timer;
@@ -26,7 +22,7 @@ public class Stove extends Station implements canUpdate {
     }
 
     @Override
-    public void interact(PlayerManager p) {
+    public void interact(Player p) {
         System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {

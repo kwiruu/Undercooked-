@@ -3,7 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.libgdx.undercooked.PlayerManager;
+import PlayerManager.Player;
 
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int timer;
@@ -21,7 +21,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     }
 
     @Override
-    public void interact(PlayerManager p) {
+    public void interact(Player p) {
         System.out.println("interacted with chopping board");
         if (timer == 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {

@@ -3,7 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.libgdx.undercooked.PlayerManager;
+import PlayerManager.Player;
 
 public class FoodSource extends Station {
     public FoodSource(float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
@@ -50,7 +50,7 @@ public class FoodSource extends Station {
         2. foodSource object naming must be different on tiled since per map we need at most 3 foodsource!
     */
     @Override
-    public void interact(PlayerManager p) {
+    public void interact(Player p) {
         System.out.println("interacted with a foodSource for - " + containedItem);
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);

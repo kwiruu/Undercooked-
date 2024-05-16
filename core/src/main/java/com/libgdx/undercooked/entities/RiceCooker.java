@@ -2,12 +2,8 @@ package com.libgdx.undercooked.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-import com.libgdx.undercooked.PlayerManager;
-
-import java.awt.Rectangle;
+import PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     int timer;
@@ -25,7 +21,7 @@ public class RiceCooker extends Station implements canUpdate {
     }
 
     @Override
-    public void interact(PlayerManager p) {
+    public void interact(Player p) {
         System.out.println("interacted with rice cooker");
         if (timer == 0 && p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
