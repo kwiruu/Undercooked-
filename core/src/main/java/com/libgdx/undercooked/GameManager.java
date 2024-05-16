@@ -19,11 +19,6 @@ public class GameManager implements Disposable{
         initialize();
     }
 
-//
-//    public void run() {
-//        initialize();
-//    }
-
     private void initialize() {
         if (!initialized) {
             playerManager = new Player(world);
@@ -53,7 +48,6 @@ public class GameManager implements Disposable{
 
     @Override
     public void dispose() {
-       // player.dispose();
         MapManager.dispose();
         world.dispose();
         batch.dispose();

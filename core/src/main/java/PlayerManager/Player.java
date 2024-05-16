@@ -21,21 +21,18 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class Player implements Runnable {
     private final World world;
+
     public static Body player;
-    static Body itemBox;
-    private static SpriteBatch playerBatch;
+    private SpriteBatch playerBatch;
     private String lastDirection;
     private PlayerAnimations playerAnimations;
-
     float poofFrames;
-
     private FoodType heldItem;
     EntityList entityList;
 
     public static int x;
 
     public static int y;
-
     PlayerControls playerControls;
     boolean shouldRemoveHeldItemAfterAnimation;
 
@@ -51,7 +48,6 @@ public class Player implements Runnable {
         playerControls = new PlayerControls(this,playerAnimations);
         setLocation();
         player = createBox(world, x, y, 16, 8, false);
-        itemBox = createBox(world, 8, 10, 16, 16, false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
     }
@@ -143,6 +139,10 @@ public class Player implements Runnable {
         return heldItem;
     }
 
+    public SpriteBatch getPlayerBatch(){
+        return playerBatch;
+    }
+
     public String getItemName() {
         return heldItem + "";
     }
@@ -173,7 +173,6 @@ public class Player implements Runnable {
     public void renderItem(SpriteBatch batch) {
         float itemX = (player.getPosition().x - 0.5f) * PPM;
         float amplitude = 0.08f;
-        float frequency = 4.0f;
         float offsetY = amplitude * MathUtils.sin(playerAnimations.getStateTime());
         float itemY = (player.getPosition().y + 0.9f + offsetY) * PPM;
 
@@ -200,7 +199,7 @@ public class Player implements Runnable {
             playerAnimations.updateStateTime(elapsedTime);
         }
         if ((Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ) || Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            playerAnimations.resetStateTime();  // Reset state time to start the animation from the beginning
+            playerAnimations.resetStateTime();
             playerAnimations.setAnimationPlaying(true);
         }
     }

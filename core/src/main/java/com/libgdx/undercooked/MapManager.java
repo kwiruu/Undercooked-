@@ -50,7 +50,6 @@ public class MapManager {
         }
         entityList.render();
     }
-
     public static void dispose() {
         tmr.dispose();
     }

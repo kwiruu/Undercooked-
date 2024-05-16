@@ -70,8 +70,8 @@ public class PlayerControls {
             horizontalForce += 1;
         }
         if ((horizontalForce != 0 && verticalForce != 0) && playerLock <= 0) {
-            horizontalForce *= MathUtils.sin(MathUtils.PI2 / 4);
-            verticalForce *= MathUtils.sin(MathUtils.PI2 / 4);
+            horizontalForce *= MathUtils.sin(MathUtils.PI2 / 8);
+            verticalForce *= MathUtils.sin(MathUtils.PI2 / 8);
         }
 
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
@@ -128,7 +128,6 @@ public class PlayerControls {
                 return playerAnimations.getAnimation("running_right");
             }
         } else {
-            // If no movement keys are pressed, return the corresponding idle animation
             if (isLifting) return playerAnimations.getAnimation("idle_lifting_" + lastDir);
             return playerAnimations.getAnimation("idle_" + lastDir);
         }
@@ -141,7 +140,7 @@ public class PlayerControls {
                 playerAnimations.setAnimationPlaying(true);
                 playerAnimations.resetStateTime();
                 player.poofFrames = 1f;
-                player.shouldRemoveHeldItemAfterAnimation = true; // Set flag to remove item after animation
+                player.shouldRemoveHeldItemAfterAnimation = true;
                 player.removeHeldItem();
             }
         }

@@ -84,7 +84,6 @@ public class GameUI{
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        //Label usernameLabel = new Label("Username: " + context.getUsername(), skin);
         usernameLabel = new Label("Position: " + playerPos, skin);
         rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
 

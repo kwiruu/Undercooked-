@@ -1,6 +1,7 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,8 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.libgdx.undercooked.GameManager;
 import com.libgdx.undercooked.Main;
-import com.libgdx.undercooked.MapManager;
 
+import static com.libgdx.undercooked.MapManager.tmr;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
@@ -31,8 +32,6 @@ public class GameScreen extends ScreenAdapter {
     public void show() {
         if (gameManager == null) {
             gameManager = new GameManager();
-            //Thread gameThread = new Thread(gameManager);
-           // gameThread.start();
             float w = Gdx.graphics.getWidth();
             float h = Gdx.graphics.getHeight();
             camera = new OrthographicCamera();
@@ -58,6 +57,10 @@ public class GameScreen extends ScreenAdapter {
         gameManager.getPlayerManager().renderItem(batch);
         batch.end();
         gameUI.render();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            context.setScreen(ScreenType.LOADING);
+        }
     }
 
 
@@ -67,7 +70,7 @@ public class GameScreen extends ScreenAdapter {
         gameManager.getPlayerManager().inputUpdate(deltaTime);
         gameManager.getPlayerManager().renderItemUpdate(deltaTime);
         cameraUpdate(deltaTime);
-        MapManager.tmr.setView(camera);
+        tmr.setView(camera);
         gameManager.getMapManager().getEntityList().update();
         gameUI.update(gameManager.getPlayerManager());
     }

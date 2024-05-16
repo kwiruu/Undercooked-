@@ -1,9 +1,7 @@
 package PlayerManager;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,13 +13,6 @@ public class Animations {
     protected boolean isAnimationPlaying = false;
     public Animations() {
         stateTime = 0;
-    }
-
-    protected void initializeAnimations(TextureAtlas textureAtlas, String[] animationKeys, String[] animationRegions, float frameDuration) {
-        for (int i = 0; i < animationKeys.length; i++) {
-            Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(animationRegions[i]);
-            animations.put(animationKeys[i], new Animation<>(frameDuration, regions));
-        }
     }
 
     public Animation<TextureRegion> getAnimation(String key) {

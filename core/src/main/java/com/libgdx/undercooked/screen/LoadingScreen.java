@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
-import com.libgdx.undercooked.MapManager;
 
 public class LoadingScreen implements Screen {
     public Skin skin;
@@ -79,7 +78,6 @@ public class LoadingScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 context.setScreen(ScreenType.SELECTMAP);
-                MapManager.dispose();
                 Main.deleteScreen(ScreenType.GAME);
             }
         });
