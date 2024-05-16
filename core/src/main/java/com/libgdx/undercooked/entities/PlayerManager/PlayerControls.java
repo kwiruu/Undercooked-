@@ -1,4 +1,4 @@
-package PlayerManager;
+package com.libgdx.undercooked.entities.PlayerManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

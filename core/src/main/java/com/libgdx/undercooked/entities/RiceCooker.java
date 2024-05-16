@@ -3,7 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import PlayerManager.Player;
+import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     int timer;

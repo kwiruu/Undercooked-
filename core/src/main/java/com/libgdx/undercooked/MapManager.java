@@ -13,7 +13,9 @@ import com.libgdx.undercooked.entities.Npc.Npc;
 import com.libgdx.undercooked.entities.Npc.components.NpcComponent;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
-import static PlayerManager.Player.*;
+import com.libgdx.undercooked.entities.PlayerManager.Player;
+
+import static com.libgdx.undercooked.entities.PlayerManager.Player.player;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 

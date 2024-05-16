@@ -3,7 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import PlayerManager.Player;
+import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public abstract class Station {
     //temporarily stopped extends Entity

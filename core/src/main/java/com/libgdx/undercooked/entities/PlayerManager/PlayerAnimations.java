@@ -1,4 +1,4 @@
-package PlayerManager;
+package com.libgdx.undercooked.entities.PlayerManager;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

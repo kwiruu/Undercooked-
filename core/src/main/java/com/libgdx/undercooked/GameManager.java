@@ -1,6 +1,6 @@
 package com.libgdx.undercooked;
 
-import PlayerManager.Player;
+import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
