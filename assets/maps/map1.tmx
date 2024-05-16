@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="84">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="87">
  <tileset firstgid="1" source="Room_Builder_32x32.tsx"/>
  <tileset firstgid="8285" name="Interiors_32x32" tilewidth="32" tileheight="32" tilecount="17024" columns="16">
   <image source="../tilesets/Interiors_32x32.png" width="512" height="34048"/>
@@ -129,8 +129,8 @@
   <object id="45" name="station_stove" gid="25309" x="224" y="128" width="32" height="64"/>
   <object id="46" name="station_stove" gid="25309" x="256" y="128" width="32" height="64"/>
   <object id="63" name="station_chopping_board" gid="25310" x="192" y="192" width="96" height="32"/>
-  <object id="64" name="station_rice_cooker" gid="25311" x="288" y="96" width="32" height="48"/>
-  <object id="65" name="station_rice_cooker" gid="25311" x="320" y="96" width="32" height="48"/>
+  <object id="64" name="stationrice_cooker" gid="25311" x="288" y="96" width="32" height="48"/>
+  <object id="65" name="stationrice_cooker" gid="25311" x="320" y="96" width="32" height="48"/>
   <object id="66" name="fish_tank_source" gid="25312" x="448" y="512" width="96" height="96"/>
   <object id="76" name="fish_tank_source" gid="25312" x="448" y="512" width="96" height="96"/>
   <object id="67" name="tomato_source" gid="25313" x="544" y="416" width="32" height="64"/>
