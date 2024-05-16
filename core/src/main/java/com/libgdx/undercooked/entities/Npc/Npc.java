@@ -2,6 +2,7 @@ package com.libgdx.undercooked.entities.Npc;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
@@ -19,11 +20,12 @@ public class Npc extends PooledEngine {
         this.world = world;
     }
 
-    public void createNpc(final Vector2 npcSpawnLocation) {
+    public void createNpc(final Vector2 npcSpawnLocation, final Sprite sprite) {
 
         final Entity entity = this.createEntity();
 
-        entity.add(this.createComponent(NpcComponent.class));
+        NpcComponent npcComponent = new NpcComponent(sprite);
+        entity.add(npcComponent);
 
         npcB2D = this.createComponent(NpcB2D.class);
 

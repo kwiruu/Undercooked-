@@ -1,5 +1,6 @@
 package com.libgdx.undercooked;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,36 +9,40 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.EntityList;
+import com.libgdx.undercooked.entities.Npc.Npc;
+import com.libgdx.undercooked.entities.Npc.components.NpcComponent;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static PlayerManager.Player.*;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
+
 public class MapManager {
     private final TiledMap map;
     private final Texture[] test_map_textures;
     public static OrthogonalTiledMapRenderer tmr;
     private final EntityList entityList;
+    private final Npc npcManager;  // Add NPC manager reference
 
-    public MapManager(World world, SpriteBatch batch) {
+    public MapManager(World world, SpriteBatch batch, Npc npcManager) {  // Add NPC manager to constructor
+        this.npcManager = npcManager;  // Initialize NPC manager
 
         String selectedMap = getSelectedMap();
         System.out.println(selectedMap);
-        map = new TmxMapLoader().load("assets/maps/"+selectedMap+".tmx");
+        map = new TmxMapLoader().load("assets/maps/" + selectedMap + ".tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("collision_layer").getObjects());
 
-        test_map_textures = new Texture[] {
-            new Texture("assets/maps/"+selectedMap+"/blackwall.png"),
-            new Texture("assets/maps/"+selectedMap+"/wall.png"),
-            new Texture("assets/maps/"+selectedMap+"/furnitures.png"),
-            new Texture("assets/maps/"+selectedMap+"/on_top.png"),
-            new Texture("assets/maps/"+selectedMap+"/behind_player.png"),
+        test_map_textures = new Texture[]{
+            new Texture("assets/maps/" + selectedMap + "/blackwall.png"),
+            new Texture("assets/maps/" + selectedMap + "/wall.png"),
+            new Texture("assets/maps/" + selectedMap + "/furnitures.png"),
+            new Texture("assets/maps/" + selectedMap + "/on_top.png"),
+            new Texture("assets/maps/" + selectedMap + "/behind_player.png"),
         };
 
         entityList = new EntityList(map, batch);
-
     }
 
     public void drawLayerTextures(SpriteBatch batch, TextureRegion textregion) {
@@ -49,7 +54,18 @@ public class MapManager {
             batch.draw(texturez, 0, 0);
         }
         entityList.render();
+        renderNpcs(batch);  // Render NPCs
     }
+
+    private void renderNpcs(SpriteBatch batch) {
+        for (Entity entity : npcManager.getEntities()) {
+            NpcComponent npcComponent = entity.getComponent(NpcComponent.class);
+            if (npcComponent != null) {
+                npcComponent.sprite.draw(batch);
+            }
+        }
+    }
+
     public static void dispose() {
         tmr.dispose();
     }
@@ -62,4 +78,3 @@ public class MapManager {
         return entityList;
     }
 }
-
