@@ -1,7 +1,6 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,8 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.libgdx.undercooked.GameManager;
 import com.libgdx.undercooked.Main;
+import com.libgdx.undercooked.MapManager;
 
-import static com.libgdx.undercooked.MapManager.tmr;
+import static com.libgdx.undercooked.GameManager.timesUp;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
@@ -23,22 +23,16 @@ public class GameScreen extends ScreenAdapter {
     private GameUI gameUI;
     private GameManager gameManager;
     private float elapsedTime = 0f;
-
     public GameScreen(final Main context) {
         this.context = context;
     }
-
     @Override
     public void show() {
         if (gameManager == null) {
             gameManager = new GameManager();
-            float w = Gdx.graphics.getWidth();
-            float h = Gdx.graphics.getHeight();
-            camera = new OrthographicCamera();
-            float SCALE = 1.5f;
-            camera.setToOrtho(false, w / SCALE, h / SCALE);
-            viewport = new FitViewport(w / SCALE, h / SCALE, camera);
+            initCamera();
             gameUI = new GameUI(context);
+            Gdx.input.setInputProcessor(gameUI.getStage());
         }
     }
 
@@ -48,31 +42,36 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         elapsedTime += Gdx.graphics.getDeltaTime();
-        Animation<TextureRegion> currentAnimation = gameManager.getPlayerManager().determineCurrentAnimation();
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
-        SpriteBatch batch = gameManager.getBatch();
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        gameManager.getMapManager().drawLayerTextures(batch, currentFrame);
-        gameManager.getPlayerManager().renderItem(batch);
-        batch.end();
-        gameUI.render();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            context.setScreen(ScreenType.LOADING);
+        try {
+            Animation<TextureRegion> currentAnimation = gameManager.getPlayerManager().determineCurrentAnimation();
+            TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true); // 'true' for looping
+            SpriteBatch batch = gameManager.getBatch();
+            batch.begin();
+            batch.setProjectionMatrix(camera.combined);
+            gameManager.getMapManager().drawLayerTextures(batch, currentFrame);
+            gameManager.getPlayerManager().renderItem(batch);
+            batch.end();
+            gameUI.render();
+        }catch (NullPointerException e){
+            context.setScreen(ScreenType.SELECTMAP);
         }
     }
 
 
 
     private void update(float deltaTime) {
-        gameManager.getWorld().step(1 / 60f, 6, 2);
-        gameManager.getPlayerManager().inputUpdate(deltaTime);
-        gameManager.getPlayerManager().renderItemUpdate(deltaTime);
+        gameManager.update(deltaTime);
         cameraUpdate(deltaTime);
-        tmr.setView(camera);
+        MapManager.tmr.setView(camera);
         gameManager.getMapManager().getEntityList().update();
         gameUI.update(gameManager.getPlayerManager());
+        if (timesUp) {
+            timesUp = false;
+            System.out.println("Time's up! Switching to SELECTMAP screen.");
+            gameManager.dispose();
+            gameManager = null;
+        }
+
     }
 
     private void cameraUpdate(float deltaTime) {
@@ -86,8 +85,19 @@ public class GameScreen extends ScreenAdapter {
         viewport.update(width, height);
     }
 
+    public void initCamera(){
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera = new OrthographicCamera();
+        float SCALE = 1.5f;
+        camera.setToOrtho(false, w / SCALE, h / SCALE);
+        viewport = new FitViewport(w / SCALE, h / SCALE, camera);
+    }
+
     @Override
     public void dispose() {
-        gameManager.dispose();
+        if (gameManager != null) {
+            gameManager.dispose();
+        }
     }
 }

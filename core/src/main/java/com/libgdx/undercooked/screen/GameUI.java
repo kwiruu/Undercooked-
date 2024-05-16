@@ -1,5 +1,6 @@
 package com.libgdx.undercooked.screen;
 
+import PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,18 +17,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
-import PlayerManager.Player;
 
 public class GameUI{
     private final Main context;
-    private Stage stage;
+    private final Stage stage;
     private ImageButton pause_button;
-    private TextureAtlas atlas;
     private TextureRegion[] buttonRegions;
     private int currentIndex = 0;
     private boolean isHovered = false;
 
-    Label usernameLabel;
+    private float elapsedTime = 10f;
+    private Label timerLabel;
+
+    private Label usernameLabel;
 
     Vector2 playerPos = new Vector2();
 
@@ -36,7 +38,7 @@ public class GameUI{
         this.context = context;
 
         this.stage = new Stage(new ScreenViewport());
-        this.atlas = new TextureAtlas(Gdx.files.internal("assets/ui/buttonsAtlas.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("assets/ui/buttonsAtlas.atlas"));
         buttonRegions = new TextureRegion[2];
         buttonRegions[0] = atlas.findRegion("pause_button", 0); // Unclicked region
         buttonRegions[1] = atlas.findRegion("pause_button", 1); // Clicked region
@@ -87,6 +89,10 @@ public class GameUI{
         usernameLabel = new Label("Position: " + playerPos, skin);
         rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
 
+        timerLabel = new Label("", skin);
+        timerLabel.setPosition(10, Gdx.graphics.getHeight() - 30);
+        stage.addActor(timerLabel);
+
         stage.addActor(pause_button);
     }
 
@@ -107,5 +113,15 @@ public class GameUI{
     public void update(Player player){
         playerPos.set((player.getPosition().x), player.getPosition().y);
         usernameLabel.setText("Position: " + playerPos);
+
+
+        elapsedTime -= Gdx.graphics.getDeltaTime();
+        int minutes = (int) (elapsedTime / 60);
+        int seconds = (int) (elapsedTime % 60);
+        timerLabel.setText(String.format("Time Left: %02d:%02d", minutes, seconds));
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }
