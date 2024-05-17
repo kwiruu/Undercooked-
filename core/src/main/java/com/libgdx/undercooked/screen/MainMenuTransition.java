@@ -61,14 +61,14 @@ public class MainMenuTransition implements Screen {
         textSprite.setPosition(Gdx.graphics.getWidth() / 2f - textSprite.getWidth() / 2, Gdx.graphics.getHeight());
         cloud1Sprite.setPosition(-cloud1Sprite.getWidth(), Gdx.graphics.getHeight() / 2f - cloud1Sprite.getHeight() / 2);
         cloud2Sprite.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2f - cloud2Sprite.getHeight() / 2);
-        pressSprite.setPosition(Gdx.graphics.getWidth() / 2f - pressSprite.getWidth() / 2, Gdx.graphics.getHeight() / 6f);
+        pressSprite.setPosition(Gdx.graphics.getWidth() / 2f - pressSprite.getWidth() / 2, Gdx.graphics.getHeight() / 5f);
 
         // Create animations
         Tween.set(cloudSprite, SpriteAccessor.POS_Y).target(-cloudSprite.getHeight() * 0.8f).start(tweenManager);
         Tween.to(cloudSprite, SpriteAccessor.POS_Y, 2).target(Gdx.graphics.getHeight()).start(tweenManager);
 
         Tween.set(textSprite, SpriteAccessor.POS_Y).target(Gdx.graphics.getHeight()).start(tweenManager);
-        Tween.to(textSprite, SpriteAccessor.POS_Y, 2).target(Gdx.graphics.getHeight()*0.009f).start(tweenManager);
+        Tween.to(textSprite, SpriteAccessor.POS_Y, 2).target(Gdx.graphics.getHeight()*0.05f).start(tweenManager);
 
         // Tilt the textSprite left and right infinitely with a twisting effect
         Tween.to(textSprite, SpriteAccessor.ROTATION, 1)
