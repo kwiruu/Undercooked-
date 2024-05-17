@@ -9,6 +9,7 @@ import com.libgdx.undercooked.entities.PlayerManager.Player;
 public class Stove extends Station implements canUpdate {
     int timer;
     int max_timer;
+
     // spriteBatch is used to add a TextureRegion to a certain batch./
     // then the spriteBatch is then rendered!
     public Stove(World world, float x, float y, int width, int height, SpriteBatch batch) {

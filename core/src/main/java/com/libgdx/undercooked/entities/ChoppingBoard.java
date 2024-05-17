@@ -77,6 +77,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     public void stopChopping() {
         playerOn = false;
     }
+
     @Override
     public void update() {
         if (playerOn && timer > 0) timer--;

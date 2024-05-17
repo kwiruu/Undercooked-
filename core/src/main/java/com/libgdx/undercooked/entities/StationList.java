@@ -54,7 +54,7 @@ public class StationList {
                     Stove stove = new Stove(world, x, y, (int) width, (int) height, batch);
                     stationArray.add(stove); // Add stove to the array
                 } if (object.getName().equals("station_chopping_board")) {
-                    x = object.getProperties().get("x", Float.class) + 70;
+                    x = object.getProperties().get("x", Float.class) + 16;
                     y = object.getProperties().get("y", Float.class) + 25;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
