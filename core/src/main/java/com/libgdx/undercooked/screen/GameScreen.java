@@ -9,10 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.GameManager;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
 
+import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
+import static com.libgdx.undercooked.GameManager.score;
 import static com.libgdx.undercooked.GameManager.timesUp;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
@@ -29,9 +32,10 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         if (gameManager == null) {
-            gameManager = new GameManager();
+
             initCamera();
             gameUI = new GameUI(context);
+            gameManager = new GameManager(gameUI);
             Gdx.input.setInputProcessor(gameUI.getStage());
         }
     }
@@ -56,8 +60,6 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-
-
     private void update(float deltaTime) {
         gameManager.update(deltaTime);
         cameraUpdate(deltaTime);
@@ -68,13 +70,15 @@ public class GameScreen extends ScreenAdapter {
             System.out.println("Time's up! Switching to SELECTMAP screen.");
             gameManager.dispose();
             gameManager = null;
+            score = 0;
+            mapRunning = false;
+            MapSound.stop();
             try {
                 context.setScreen(SelectionScreen.class.newInstance());
+                Main.deleteScreen(ScreenType.GAME);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-
-
         }
 
     }

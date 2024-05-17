@@ -3,6 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.libgdx.undercooked.GameManager.score;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
@@ -86,6 +87,20 @@ public class Orders {
         }
     }
 
+    public void removeInactiveOrders() {
+        orderList.removeIf(order -> !order.getActive());
+    }
+    public ArrayList<FoodOrder> getActiveFoods() {
+        ArrayList<FoodOrder> activeFoods = new ArrayList<>();
+        for (FoodOrder order : orderList) {
+            if (order.getActive()) {
+                activeFoods.add(order);
+            }
+        }
+        return activeFoods;
+    }
+
+
     public static class FoodOrder {
         private final FoodType foodType;
         private final int timer;
@@ -112,6 +127,5 @@ public class Orders {
             this.active = false;
             activeOrderCount--;
         }
-
     }
 }

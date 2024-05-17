@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 
+import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
+
 public class SelectionScreen implements Screen {
 
     private final Main context;
@@ -46,7 +48,9 @@ public class SelectionScreen implements Screen {
                     setSelectedMap(mapText);
                     mapSound = new MapSound("assets/audio/" + mapText +"_sound.wav");
                     context.setScreen(ScreenType.GAME);
-                    mapSound.run();
+                    Thread mapSoundThread = new Thread(mapSound);
+                    mapRunning = true;
+                    mapSoundThread.start();
                 }
             });
             mapTable.add(mapButton).width(300F).pad(20);

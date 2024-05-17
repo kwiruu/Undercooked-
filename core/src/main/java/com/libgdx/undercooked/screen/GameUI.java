@@ -1,6 +1,9 @@
 package com.libgdx.undercooked.screen;
 
+import com.libgdx.undercooked.UIUpdater;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
+import com.libgdx.undercooked.entities.Orders;
+import com.libgdx.undercooked.entities.Orders.FoodOrder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,25 +21,25 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 
+import java.util.ArrayList;
+
 import static com.libgdx.undercooked.GameManager.score;
 
-public class GameUI{
+public class GameUI  implements UIUpdater {
     private final Main context;
     private final Stage stage;
-    private ImageButton pause_button;
+    private ImageButton pauseButton;
     private TextureRegion[] buttonRegions;
     private int currentIndex = 0;
     private boolean isHovered = false;
-
     private float elapsedTime = 10f;
     private Label timerLabel;
-    private Label usernameLabel;
-    Vector2 playerPos = new Vector2();
+    private Label scoreLabel;
+    private Table orderTable;
+    private Orders orders;
 
-
-    public GameUI(final Main context) {
+    public GameUI(final Main context){
         this.context = context;
-
         this.stage = new Stage(new ScreenViewport());
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("assets/ui/buttonsAtlas.atlas"));
         buttonRegions = new TextureRegion[2];
@@ -46,22 +49,17 @@ public class GameUI{
     }
 
     public void initializeComponents() {
-        pause_button = new ImageButton(
+        pauseButton = new ImageButton(
             new TextureRegionDrawable(buttonRegions[0]),
             new TextureRegionDrawable(buttonRegions[1])
         );
-
-        pause_button.setSize(64, 64);
-        pause_button.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72);
-
-
-
-        pause_button.addListener(new ClickListener() {
+        pauseButton.setSize(64, 64);
+        pauseButton.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72);
+        pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Toggle between unclicked and clicked regions
                 currentIndex = (currentIndex + 1) % 2;
-                pause_button.getStyle().imageUp = new TextureRegionDrawable(buttonRegions[currentIndex]);
+                pauseButton.getStyle().imageUp = new TextureRegionDrawable(buttonRegions[currentIndex]);
                 context.setScreen(ScreenType.LOADING);
             }
 
@@ -78,7 +76,6 @@ public class GameUI{
             }
         });
 
-
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         Table rootTable = new Table();
@@ -86,19 +83,27 @@ public class GameUI{
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        usernameLabel = new Label("Score: " + score, skin);
-        rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
+        scoreLabel = new Label("Score: " + score, skin);
+        rootTable.add(scoreLabel).pad(10).expandX().align(Align.right);
 
         timerLabel = new Label("", skin);
         timerLabel.setPosition(10, Gdx.graphics.getHeight() - 30);
         stage.addActor(timerLabel);
 
-        stage.addActor(pause_button);
+        // Initialize orders table
+        orderTable = new Table();
+        orderTable.top().right();
+        rootTable.row();
+        rootTable.add(orderTable).pad(10).align(Align.right);
+
+        stage.addActor(pauseButton);
+
+        orders = new Orders(); // Initialize orders
     }
 
     public void updateButtonPosition() {
         float displacement = isHovered ? 2.5f : 0f;
-        pause_button.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72 + displacement);
+        pauseButton.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72 + displacement);
     }
 
     public void render() {
@@ -110,18 +115,34 @@ public class GameUI{
         }
     }
 
-    public void update(Player player){
-        playerPos.set((player.getPosition().x), player.getPosition().y);
-        usernameLabel.setText("Score: " + score);
-
-
+    public void update(Player player) {
+        Vector2 playerPos = player.getPosition();
+        scoreLabel.setText("Score: " + score);
         elapsedTime -= Gdx.graphics.getDeltaTime();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("Time Left: %02d:%02d", minutes, seconds));
+
     }
+
+
 
     public Stage getStage() {
         return stage;
+    }
+
+    @Override
+    public void updateOrdersUI(Orders orders) {
+        orderTable.clear(); // Clear previous orders
+        orders.removeInactiveOrders();
+        ArrayList<FoodOrder> orderList = orders.getOrderList();
+
+        Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+
+        for (FoodOrder order : orderList) {
+            System.out.println(order.getFoodType().toString());
+            Label orderLabel = new Label(order.getFoodType().toString(), skin);
+            orderTable.add(orderLabel).pad(5).row();
+        }
     }
 }

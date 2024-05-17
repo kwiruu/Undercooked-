@@ -14,7 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
+
+import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 
 public class LoadingScreen implements Screen {
     public Skin skin;
@@ -79,6 +82,8 @@ public class LoadingScreen implements Screen {
             public void clicked(InputEvent event, float x, float y){
                 context.setScreen(ScreenType.SELECTMAP);
                 Main.deleteScreen(ScreenType.GAME);
+                mapRunning = false;
+                MapSound.stop();
             }
         });
 

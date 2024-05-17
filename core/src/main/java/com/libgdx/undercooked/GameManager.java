@@ -1,10 +1,9 @@
+
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.StationList;
-
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
@@ -28,7 +27,6 @@ public class GameManager implements Disposable {
     private float elapsedTime = 0f;
     private float TIME_LIMIT = 10f;
     public static boolean timesUp = false;
-
     public static int score = 0;
     public static NpcB2D npc;
     private Npc npcManager;
@@ -36,8 +34,11 @@ public class GameManager implements Disposable {
     private StationList stationList;
 
     private Orders orders;
-    public GameManager() {
+    private UIUpdater uiUpdater;
+
+    public GameManager(UIUpdater uiUpdater) {
         this.world = new World(new Vector2(0f, 0f), false);
+        this.uiUpdater = uiUpdater;
         initialize();
     }
 
@@ -47,12 +48,13 @@ public class GameManager implements Disposable {
             playerManager.run();
             batch = playerManager.getBatch();
             npcManager = new Npc(world);
+            score = 0;
 
             // Load NPC texture
             npcTexture = new Texture(Gdx.files.internal("assets/sprites/Chef2/idle_down_01.png"));
             Sprite npcSprite = new Sprite(npcTexture);
             createAndAddNpc(new Vector2(96, 72), npcSprite);
-            System.out.println("CReated ");
+            System.out.println("Created ");
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
 
@@ -66,31 +68,23 @@ public class GameManager implements Disposable {
     }
 
     private void createAndAddNpc(Vector2 spawnLocation, Sprite sprite) {
-       npcManager.createNpc(spawnLocation, sprite,false);
+        npcManager.createNpc(spawnLocation, sprite, false);
     }
 
     private void checkCompletion() {
-       if (activeOrderCount == 0) {
-           timesUp = true;
-       }
+        if (activeOrderCount == 0) {
+            timesUp = true;
+        }
     }
 
     public void update(float deltaTime) {
-//        elapsedTime += deltaTime; // Increment elapsed time
-//        TIME_LIMIT -= deltaTime;
-//        if (TIME_LIMIT < elapsedTime) {
-//            timesUp = true;
-//            return;
-//        }
-
-        System.out.println(orders.getOrderList());
         checkCompletion();
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
         stationList.update();
-        // Add any necessary updates for NPCs here
+        uiUpdater.updateOrdersUI(orders); // Update the orders UI
     }
 
     public void render(TextureRegion currentFrame) {
