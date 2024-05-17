@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
+import static com.libgdx.undercooked.GameManager.score;
+
 public class Counter extends Station {
     public Counter(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
@@ -22,8 +24,13 @@ public class Counter extends Station {
 
     @Override
     public void interact(Player p) {
-        System.out.println("interacted with stove");
+        System.out.println("interacted with counter");
         if (validate(p.getHeldItem())) {
+            String itemCheck = String.valueOf(p.getHeldItem());
+            switch (itemCheck){
+                case "cooked_fish": score += 10; break;
+                case "cooked_meat": score += 15; break;
+            }
             p.removeHeldItem();
             // counter edit
         }

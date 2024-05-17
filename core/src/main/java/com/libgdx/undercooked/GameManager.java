@@ -26,6 +26,7 @@ public class GameManager implements Disposable {
     private float TIME_LIMIT = 10f;
     public static boolean timesUp = false;
 
+    public static int score = 0;
     public static NpcB2D npc;
     private Npc npcManager;
     private Texture npcTexture;

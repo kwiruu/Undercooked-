@@ -71,7 +71,7 @@ public class StationList {
                     stationArray.add(riceCooker); // Add stove to the array
                 } if (object.getName().equals("station_counter")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 400;
+                    y = object.getProperties().get("y", Float.class) + 40;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 

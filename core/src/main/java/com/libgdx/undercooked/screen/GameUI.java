@@ -18,6 +18,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 
+import static com.libgdx.undercooked.GameManager.score;
+
 public class GameUI{
     private final Main context;
     private final Stage stage;
@@ -28,9 +30,7 @@ public class GameUI{
 
     private float elapsedTime = 10f;
     private Label timerLabel;
-
     private Label usernameLabel;
-
     Vector2 playerPos = new Vector2();
 
 
@@ -86,7 +86,7 @@ public class GameUI{
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        usernameLabel = new Label("Position: " + playerPos, skin);
+        usernameLabel = new Label("Score: " + score, skin);
         rootTable.add(usernameLabel).pad(10).expandX().align(Align.right);
 
         timerLabel = new Label("", skin);
@@ -112,7 +112,7 @@ public class GameUI{
 
     public void update(Player player){
         playerPos.set((player.getPosition().x), player.getPosition().y);
-        usernameLabel.setText("Position: " + playerPos);
+        usernameLabel.setText("Score: " + score);
 
 
         elapsedTime -= Gdx.graphics.getDeltaTime();

@@ -42,7 +42,6 @@ public class Npc extends PooledEngine {
         if (sprite != null && npcB2D != null) {
             batch.draw(sprite, npcB2D.getNpcBody().getPosition().x + 32,
                 npcB2D.getNpcBody().getPosition().y + 32);
-            System.out.println("X: " + npcB2D.getNpcBody().getPosition().x + "\nY: " + npcB2D.getNpcBody().getPosition().y);
         }
     }
 
