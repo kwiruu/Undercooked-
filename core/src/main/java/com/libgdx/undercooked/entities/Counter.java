@@ -9,8 +9,10 @@ import com.libgdx.undercooked.entities.PlayerManager.Player;
 import static com.libgdx.undercooked.GameManager.score;
 
 public class Counter extends Station {
-    public Counter(World world, float x, float y, int width, int height, SpriteBatch batch) {
+    Orders orders;
+    public Counter(World world, float x, float y, int width, int height, SpriteBatch batch, Orders orders) {
         super(world, x, y, width, height, batch);
+        this.orders = orders;
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }
@@ -26,12 +28,13 @@ public class Counter extends Station {
     public boolean interact(Player p) {
         System.out.println("interacted with counter");
         if (validate(p.getHeldItem())) {
-            String itemCheck = String.valueOf(p.getHeldItem());
-            switch (itemCheck){
-                case "cooked_fish": score += 10; break;
-                case "cooked_meat": score += 15; break;
+            for (Orders.FoodOrder f : orders.getOrderList()) {
+                if (p.getHeldItem() == f.getFoodType() && f.getActive()){
+                    orders.rewardPoints(p.getHeldItem());
+                    f.setInactive();
+                    p.removeHeldItem();
+                }
             }
-            p.removeHeldItem();
             // counter edit
             return true;
         }
@@ -47,19 +50,10 @@ public class Counter extends Station {
 
     private boolean validate(FoodType ft) {
         if (ft == null) return false;
-        switch (ft) {
-            case tomato:
-            case pickle:
-            case chopped_tomato:
-            case chopped_pickle:
-            case cooked_meat:
-            case cooked_fish:
-            case tomato_soup:
-            case rice:
-            case meat_meal:
-            case fish_meal:
-            case struggle_meal:
+        for (Orders.FoodOrder f : orders.getOrderList()) {
+            if (ft == f.getFoodType() && f.getActive()){
                 return true;
+            }
         }
         return false;
     }
