@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="objects" tilewidth="96" tileheight="96" tilecount="16" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="objects" tilewidth="96" tileheight="96" tilecount="17" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0" type="stove">
   <image width="32" height="64" source="stations/stove-on.png"/>
- </tile>
- <tile id="1" type="chopping_board">
-  <image width="96" height="32" source="stations/chopping_board.png"/>
  </tile>
  <tile id="2" type="rice_cooker">
   <image width="32" height="48" source="stations/rice_cooker.png"/>
@@ -48,5 +45,11 @@
  </tile>
  <tile id="16" type="delivery_station">
   <image width="32" height="96" source="stations/delivery_station.png"/>
+ </tile>
+ <tile id="17">
+  <image width="64" height="32" source="stations/chopping_board.png"/>
+ </tile>
+ <tile id="19" type="station_placemat">
+  <image width="32" height="32" source="stations/station_placemat.png"/>
  </tile>
 </tileset>
