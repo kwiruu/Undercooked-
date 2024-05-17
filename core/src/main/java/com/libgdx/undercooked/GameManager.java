@@ -1,7 +1,12 @@
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+<<<<<<< HEAD
 import com.libgdx.undercooked.entities.StationList;
+=======
+import com.badlogic.gdx.physics.box2d.Body;
+import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
+>>>>>>> cbbc0143ab5984dbc082dbc69848b3fde2adf83a
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,8 +26,9 @@ public class GameManager implements Disposable {
     private boolean initialized = false;
     private float elapsedTime = 0f;
     private float TIME_LIMIT = 10f;
-
     public static boolean timesUp = false;
+
+    public static NpcB2D npc;
     private Npc npcManager;
     private Texture npcTexture;
     private StationList stationList;
@@ -41,9 +47,8 @@ public class GameManager implements Disposable {
             // Load NPC texture
             npcTexture = new Texture(Gdx.files.internal("assets/sprites/Chef2/idle_down_01.png"));
             Sprite npcSprite = new Sprite(npcTexture);
-
-            // Create NPC with sprite
             createAndAddNpc(new Vector2(96, 72), npcSprite);
+            System.out.println("CReated ");
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
 
@@ -55,7 +60,7 @@ public class GameManager implements Disposable {
     }
 
     private void createAndAddNpc(Vector2 spawnLocation, Sprite sprite) {
-        npcManager.createNpc(spawnLocation, sprite);
+       npcManager.createNpc(spawnLocation, sprite,false);
     }
 
     public void update(float deltaTime) {
@@ -65,6 +70,7 @@ public class GameManager implements Disposable {
 //            timesUp = true;
 //            return;
 //        }
+
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
