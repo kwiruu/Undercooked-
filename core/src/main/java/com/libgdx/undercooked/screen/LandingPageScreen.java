@@ -74,6 +74,10 @@ public class LandingPageScreen implements Screen {
         final TextField usernameField = new TextField("", textFieldStyle);
 
 
+        MainMenuSound.running = true;
+        new Thread(mainMenuSound).start();
+
+
         // Create a TextButtonStyle without specifying a skin
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = yourFont; // Assign your font directly here
@@ -95,12 +99,13 @@ public class LandingPageScreen implements Screen {
                 }
                 else if(!username.isEmpty()){
                     context.setScreen(ScreenType.SELECTMAP);
+                    mainMenuSound.stop();
                 }
             }
         });
 
         // Start the sound in a new thread
-     //   new Thread(mainMenuSound).start();
+
     }
 
     @Override

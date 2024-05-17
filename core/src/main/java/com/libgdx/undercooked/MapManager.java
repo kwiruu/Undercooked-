@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.Npc.Npc;
+import com.libgdx.undercooked.screen.GameScreen;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
 
 import static com.libgdx.undercooked.entities.PlayerManager.Player.player;

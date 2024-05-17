@@ -62,7 +62,6 @@ public class GameScreen extends ScreenAdapter {
         gameManager.update(deltaTime);
         cameraUpdate(deltaTime);
         MapManager.tmr.setView(camera);
-        gameManager.getMapManager().getEntityList().update();
         gameUI.update(gameManager.getPlayerManager());
 //        if (timesUp) {
 //            timesUp = false;

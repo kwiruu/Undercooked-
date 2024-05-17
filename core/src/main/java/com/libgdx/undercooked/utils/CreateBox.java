@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
 
-public class CreateBox {
+public final class CreateBox {
 
     public static Body createBox(World world, int x, int y, int width, int height, boolean isStatic) {
         Body pBody;

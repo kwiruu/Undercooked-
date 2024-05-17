@@ -1,12 +1,10 @@
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-<<<<<<< HEAD
+
 import com.libgdx.undercooked.entities.StationList;
-=======
-import com.badlogic.gdx.physics.box2d.Body;
+
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
->>>>>>> cbbc0143ab5984dbc082dbc69848b3fde2adf83a
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

@@ -62,9 +62,9 @@ public class Stove extends Station implements canUpdate {
     private FoodType transmute(FoodType ft) {
         switch (ft) {
             case meat:
-                return FoodType.chopped_meat;
+                return FoodType.cooked_meat;
             case fish:
-                return FoodType.chopped_fish;
+                return FoodType.cooked_fish;
         }
         return null;
     }
