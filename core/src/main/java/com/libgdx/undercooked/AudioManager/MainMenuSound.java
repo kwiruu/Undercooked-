@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 
 public class MainMenuSound implements Runnable {
     private Sound startSound;
-    private boolean running = true;
+    public static boolean running = false;
     private float volume = .5f;
 
     public MainMenuSound() {
@@ -14,7 +14,9 @@ public class MainMenuSound implements Runnable {
 
     @Override
     public void run() {
-        startSound.play(volume);
+        if(running){
+            startSound.play(volume);
+        }
     }
 
     public void setVolume(float volume) {
@@ -37,10 +39,10 @@ public class MainMenuSound implements Runnable {
 
     public void stop() {
         running = false;
+        dispose();
     }
 
     public void dispose(){
         startSound.dispose();
-        stop();
     }
 }
