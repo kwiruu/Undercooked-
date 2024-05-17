@@ -33,6 +33,7 @@ public class Counter extends Station {
                     orders.rewardPoints(p.getHeldItem());
                     f.setInactive();
                     p.removeHeldItem();
+
                 }
             }
             // counter edit

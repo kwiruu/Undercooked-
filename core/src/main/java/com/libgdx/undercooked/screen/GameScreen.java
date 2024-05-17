@@ -63,12 +63,19 @@ public class GameScreen extends ScreenAdapter {
         cameraUpdate(deltaTime);
         MapManager.tmr.setView(camera);
         gameUI.update(gameManager.getPlayerManager());
-//        if (timesUp) {
-//            timesUp = false;
-//            System.out.println("Time's up! Switching to SELECTMAP screen.");
-//            gameManager.dispose();
-//            gameManager = null;
-//        }
+        if (timesUp) {
+            timesUp = false;
+            System.out.println("Time's up! Switching to SELECTMAP screen.");
+            gameManager.dispose();
+            gameManager = null;
+            try {
+                context.setScreen(SelectionScreen.class.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
     }
 

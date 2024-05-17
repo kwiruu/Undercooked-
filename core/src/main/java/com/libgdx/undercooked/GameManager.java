@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.libgdx.undercooked.entities.Npc.Npc;
 
+import static com.libgdx.undercooked.entities.Orders.activeOrderCount;
+
 public class GameManager implements Disposable {
 
     private final World world;
@@ -67,6 +69,12 @@ public class GameManager implements Disposable {
        npcManager.createNpc(spawnLocation, sprite,false);
     }
 
+    private void checkCompletion() {
+       if (activeOrderCount == 0) {
+           timesUp = true;
+       }
+    }
+
     public void update(float deltaTime) {
 //        elapsedTime += deltaTime; // Increment elapsed time
 //        TIME_LIMIT -= deltaTime;
@@ -76,7 +84,7 @@ public class GameManager implements Disposable {
 //        }
 
         System.out.println(orders.getOrderList());
-
+        checkCompletion();
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
