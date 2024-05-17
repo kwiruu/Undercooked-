@@ -3,6 +3,7 @@ package com.libgdx.undercooked.entities;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.libgdx.undercooked.GameManager.score;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
@@ -12,18 +13,22 @@ public class Orders {
     private ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
 
+    public static int activeOrderCount;
+
     public Orders() {
         orderList = new ArrayList<>();
         String selectedMap = getSelectedMap();
         switch (selectedMap) {
             case "Map1":
+                activeOrderCount = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 0));
-                orderList.add(new FoodOrder(FoodType.rice, 0));
-                orderList.add(new FoodOrder(FoodType.rice, 0));
-                orderList.add(new FoodOrder(FoodType.rice, 0));
+                orderList.add(new FoodOrder(FoodType.chopped_pickle, 5));
+                orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 5));
                 orderList.add(new FoodOrder(FoodType.rice, 1));
                 break;
             case "Map2":
+                activeOrderCount = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 5));
                 orderList.add(new FoodOrder(FoodType.tomato_soup, 5));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
@@ -82,6 +87,20 @@ public class Orders {
         }
     }
 
+    public void removeInactiveOrders() {
+        orderList.removeIf(order -> !order.getActive());
+    }
+    public ArrayList<FoodOrder> getActiveFoods() {
+        ArrayList<FoodOrder> activeFoods = new ArrayList<>();
+        for (FoodOrder order : orderList) {
+            if (order.getActive()) {
+                activeFoods.add(order);
+            }
+        }
+        return activeFoods;
+    }
+
+
     public static class FoodOrder {
         private final FoodType foodType;
         private final int timer;
@@ -106,7 +125,7 @@ public class Orders {
 
         void setInactive(){
             this.active = false;
+            activeOrderCount--;
         }
-
     }
 }

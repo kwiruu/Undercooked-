@@ -3,8 +3,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 public class MapSound implements Runnable{
-    private Sound startSound;
-    private boolean running = true;
+    private static Sound startSound;
+    public static boolean mapRunning = false;
     private float volume = .5f;
 
     public MapSound(String songpath) {
@@ -13,7 +13,9 @@ public class MapSound implements Runnable{
 
     @Override
     public void run() {
-        startSound.play(volume);
+        if(mapRunning){
+            startSound.play(volume);
+        }
     }
 
     public void setVolume(float volume) {
@@ -34,13 +36,13 @@ public class MapSound implements Runnable{
         return duration;
     }
 
-    public void stop() {
-        running = false;
-        dispose();
+    public static void stop() {
+        if(!mapRunning){
+            dispose();
+        }
     }
 
-    public void dispose(){
+    public static void dispose(){
         startSound.dispose();
-        stop();
     }
 }
