@@ -3,11 +3,12 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class FoodSource extends Station {
-    public FoodSource(float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
-        super(x, y, width, height, batch);
+    public FoodSource(World world, float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
+        super(world, x, y, width, height, batch);
         containedItem = foodType;
         // different classes different icons!
         // this else statement is para sa icon name depending on the foodtype!

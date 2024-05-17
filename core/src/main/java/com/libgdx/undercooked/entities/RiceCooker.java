@@ -3,13 +3,14 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     int timer;
 
-    public RiceCooker(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height, batch);
+    public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
+        super(world, x, y, width, height, batch);
         containedItem = FoodType.rice;
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }

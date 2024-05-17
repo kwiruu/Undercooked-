@@ -3,14 +3,16 @@ package com.libgdx.undercooked.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class Stove extends Station implements canUpdate {
     int timer;
+    int max_timer;
     // spriteBatch is used to add a TextureRegion to a certain batch./
     // then the spriteBatch is then rendered!
-    public Stove(float x, float y, int width, int height, SpriteBatch batch) {
-        super(x, y, width, height, batch);
+    public Stove(World world, float x, float y, int width, int height, SpriteBatch batch) {
+        super(world, x, y, width, height, batch);
         // different classes different icons!
         floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
     }
@@ -28,13 +30,15 @@ public class Stove extends Station implements canUpdate {
             if (validate(p.getHeldItem())) {
                 p.setHeldItem(transmute(p.getHeldItem()));
                 timer = 500;
+                max_timer = 500;
             } else {
                 // show invalid sign
                 System.out.println("invalid");
             }
-        } else if (containedItem != null && timer == 0 && !p.hasHeldItem()) {
+        } else if (containedItem != null && timer == 0 && max_timer != 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
+            max_timer = 0;
         } else {
             // show invalid sign
             System.out.println("invalid");

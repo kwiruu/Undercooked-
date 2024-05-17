@@ -1,6 +1,5 @@
 package com.libgdx.undercooked;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,12 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.Npc.Npc;
-import com.libgdx.undercooked.entities.Npc.components.NpcComponent;
 import com.libgdx.undercooked.utils.TiledObjectUtil;
-
-import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 import static com.libgdx.undercooked.entities.PlayerManager.Player.player;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
@@ -23,7 +18,6 @@ public class MapManager {
     private final TiledMap map;
     private final Texture[] test_map_textures;
     public static OrthogonalTiledMapRenderer tmr;
-    private final EntityList entityList;
 
 
     public MapManager(World world, SpriteBatch batch, Npc npcManager) {  // Add NPC manager to constructor
@@ -43,7 +37,6 @@ public class MapManager {
             new Texture("assets/maps/" + selectedMap + "/behind_player.png"),
         };
 
-        entityList = new EntityList(map, batch);
     }
 
     public void drawLayerTextures(SpriteBatch batch, TextureRegion textregion) {
@@ -54,7 +47,6 @@ public class MapManager {
             }
             batch.draw(texturez, 0, 0);
         }
-        entityList.render();
     }
 
 
@@ -67,7 +59,4 @@ public class MapManager {
         return map;
     }
 
-    public EntityList getEntityList() {
-        return entityList;
-    }
 }

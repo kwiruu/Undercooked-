@@ -10,11 +10,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.entities.EntityList;
+import com.libgdx.undercooked.entities.StationList;
 import com.libgdx.undercooked.entities.FoodType;
+import com.libgdx.undercooked.utils.CreateBox;
 
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 import static com.libgdx.undercooked.utils.Constants.PPM;
@@ -28,7 +27,7 @@ public class Player implements Runnable {
     private PlayerAnimations playerAnimations;
     float poofFrames;
     private FoodType heldItem;
-    EntityList entityList;
+    StationList stationList;
 
     public static int x;
 
@@ -47,7 +46,7 @@ public class Player implements Runnable {
         playerAnimations = new PlayerAnimations(textureAtlas, smokeAtlas);
         playerControls = new PlayerControls(this,playerAnimations);
         setLocation();
-        player = createBox(world, x, y, 16, 8, false);
+        player = CreateBox.createBox(world, x, y, 16, 8, false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
     }
@@ -81,24 +80,6 @@ public class Player implements Runnable {
         }
     }
 
-    private Body createBox(World world, int x, int y, int width, int height, boolean isStatic) {
-        Body pBody;
-        BodyDef def = new BodyDef();
-
-        if (isStatic) def.type = BodyDef.BodyType.StaticBody;
-        else def.type = BodyDef.BodyType.DynamicBody;
-
-        def.position.set(x, y);
-        def.fixedRotation = true;
-        pBody = world.createBody(def);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) width / 2 / PPM, (float) height / 2 / PPM);
-
-        pBody.createFixture(shape, 1.0f);
-
-        shape.dispose();
-        return pBody;
-    }
 
     public Vector2 getInteractPos() {
         // find station position
@@ -155,8 +136,8 @@ public class Player implements Runnable {
         this.heldItem = heldItem;
     }
 
-    public void setEntityList(EntityList entityList) {
-        this.entityList = entityList;
+    public void setEntityList(StationList stationList) {
+        this.stationList = stationList;
     }
 
     private void renderPoofAnimation(SpriteBatch batch, float itemX, float itemY) {

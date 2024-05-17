@@ -1,7 +1,7 @@
 package com.libgdx.undercooked;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.libgdx.undercooked.entities.StationList;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,7 +25,7 @@ public class GameManager implements Disposable {
     public static boolean timesUp = false;
     private Npc npcManager;
     private Texture npcTexture;
-
+    private StationList stationList;
     public GameManager() {
         this.world = new World(new Vector2(0f, 0f), false);
         initialize();
@@ -46,7 +46,9 @@ public class GameManager implements Disposable {
             createAndAddNpc(new Vector2(96, 72), npcSprite);
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
-            playerManager.setEntityList(mapManager.getEntityList());
+
+            stationList = new StationList(world, mapManager.getMap(), batch);
+            playerManager.setEntityList(stationList);
 
             initialized = true;
         }
@@ -67,7 +69,7 @@ public class GameManager implements Disposable {
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
-        mapManager.getEntityList().update();
+        stationList.update();
         // Add any necessary updates for NPCs here
     }
 
@@ -75,6 +77,7 @@ public class GameManager implements Disposable {
         getMapManager().drawLayerTextures(batch, currentFrame);
         getPlayerManager().renderItem(batch);
         npcManager.render(batch);
+        stationList.render();
     }
 
     public Player getPlayerManager() {

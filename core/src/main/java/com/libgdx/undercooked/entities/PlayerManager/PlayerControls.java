@@ -36,7 +36,7 @@ public class PlayerControls {
         player.timeUpdate();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            Station st = player.entityList.pointStation(player.getInteractPos());
+            Station st = player.stationList.pointStation(player.getInteractPos());
             FoodType oft = player.getHeldItem();
             if (st != null) {
                 st.interact(player);
