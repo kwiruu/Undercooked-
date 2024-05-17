@@ -55,6 +55,7 @@ public class FoodSource extends Station {
         System.out.println("interacted with a foodSource for - " + containedItem);
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);
+            return true;
         }
         System.out.println("invalid");
         return false;
