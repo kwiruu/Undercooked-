@@ -53,7 +53,7 @@ public abstract class Station {
     }
 
     public abstract void render();
-    public abstract void interact(Player p);
+    public abstract boolean interact(Player p);
 
     @Override
     public abstract String toString();

@@ -22,7 +22,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     }
 
     @Override
-    public void interact(Player p) {
+    public boolean interact(Player p) {
         System.out.println("interacted with chopping board");
         if (timer == 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
@@ -30,16 +30,15 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
                 timer = 500;
                 p.setHeldItem(transmute(p.getHeldItem()));
                 // trap player here
-            } else {
-                // show invalid sign
-                System.out.println("invalid");
+                return true;
             }
         } else if (containedItem != null && !p.hasHeldItem()) {
             playerOn = true;
-        } else {
-            // show invalid sign
-            System.out.println("invalid");
+            return true;
         }
+        // show invalid sign
+        System.out.println("invalid");
+        return false;
     }
 
     @Override

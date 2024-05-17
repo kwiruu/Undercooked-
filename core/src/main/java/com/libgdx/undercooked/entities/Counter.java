@@ -21,12 +21,14 @@ public class Counter extends Station {
     }
 
     @Override
-    public void interact(Player p) {
+    public boolean interact(Player p) {
         System.out.println("interacted with stove");
         if (validate(p.getHeldItem())) {
             p.removeHeldItem();
             // counter edit
         }
+        System.out.println("invalid");
+        return false;
     }
 
 

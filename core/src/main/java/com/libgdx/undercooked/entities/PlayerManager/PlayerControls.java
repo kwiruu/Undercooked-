@@ -39,16 +39,21 @@ public class PlayerControls {
             Station st = player.stationList.pointStation(player.getInteractPos());
             FoodType oft = player.getHeldItem();
             if (st != null) {
-                st.interact(player);
-                if (st instanceof animLocker) {
-                    ((animLocker) st).lockPlayer();
-                    animLock = ((animLocker) st);
-                }
-                playerLock = 1f;
-                currentTime = 0;
-                if (oft != player.getHeldItem()) {
-                    player.poofFrames = 1f;
-                    isLifting = true;
+                if (st.interact(player)) {
+                    if (st instanceof animLocker) {
+                        ((animLocker) st).lockPlayer();
+                        animLock = ((animLocker) st);
+
+                    }
+                    playerLock = 1f;
+                    currentTime = 0;
+                    if (oft != player.getHeldItem()) {
+                        player.poofFrames = 1f;
+                        isLifting = true;
+                    }
+                } else {
+                    // invalid thing
+
                 }
             } else {
                 System.out.println("pointed at nothing");
