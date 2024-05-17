@@ -24,25 +24,23 @@ public class Stove extends Station implements canUpdate {
     }
 
     @Override
-    public void interact(Player p) {
+    public boolean interact(Player p) {
         System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 p.setHeldItem(transmute(p.getHeldItem()));
                 timer = 500;
                 max_timer = 500;
-            } else {
-                // show invalid sign
-                System.out.println("invalid");
+                return true;
             }
         } else if (containedItem != null && timer == 0 && max_timer != 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
             max_timer = 0;
-        } else {
-            // show invalid sign
-            System.out.println("invalid");
+            return true;
         }
+        System.out.println("invalid");
+        return false;
     }
 
     @Override

@@ -51,11 +51,13 @@ public class FoodSource extends Station {
         2. foodSource object naming must be different on tiled since per map we need at most 3 foodsource!
     */
     @Override
-    public void interact(Player p) {
+    public boolean interact(Player p) {
         System.out.println("interacted with a foodSource for - " + containedItem);
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);
         }
+        System.out.println("invalid");
+        return false;
     }
 
     @Override
