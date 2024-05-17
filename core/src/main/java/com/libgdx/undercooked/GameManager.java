@@ -2,6 +2,7 @@ package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.StationList;
 
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
@@ -31,6 +32,8 @@ public class GameManager implements Disposable {
     private Npc npcManager;
     private Texture npcTexture;
     private StationList stationList;
+
+    private Orders orders;
     public GameManager() {
         this.world = new World(new Vector2(0f, 0f), false);
         initialize();
@@ -51,7 +54,9 @@ public class GameManager implements Disposable {
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
 
-            stationList = new StationList(world, mapManager.getMap(), batch);
+            orders = new Orders();
+
+            stationList = new StationList(world, mapManager.getMap(), batch, orders);
             playerManager.setEntityList(stationList);
 
             initialized = true;
@@ -69,6 +74,8 @@ public class GameManager implements Disposable {
 //            timesUp = true;
 //            return;
 //        }
+
+        System.out.println(orders.getOrderList());
 
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);

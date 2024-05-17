@@ -14,9 +14,12 @@ public class StationList {
     private final Array<Station> stationArray;
     private final TiledMap map;
 
-    public StationList(World world, TiledMap map, SpriteBatch batch) {
+    private Orders orders;
+
+    public StationList(World world, TiledMap map, SpriteBatch batch, Orders orders) {
         this.map = map;
         this.batch = batch;
+        this.orders = orders;
         stationArray = new Array<>();
         renderEntity(world, map);
     }
@@ -54,7 +57,7 @@ public class StationList {
                     Stove stove = new Stove(world, x, y, (int) width, (int) height, batch);
                     stationArray.add(stove); // Add stove to the array
                 } if (object.getName().equals("station_chopping_board")) {
-                    x = object.getProperties().get("x", Float.class) + 70;
+                    x = object.getProperties().get("x", Float.class) + 16;
                     y = object.getProperties().get("y", Float.class) + 25;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
@@ -71,11 +74,11 @@ public class StationList {
                     stationArray.add(riceCooker); // Add stove to the array
                 } if (object.getName().equals("station_counter")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 40;
+                    y = object.getProperties().get("y", Float.class) + 70;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
-                    Counter counter = new Counter(world, x, y, (int) width, (int) height, batch);
+                    Counter counter = new Counter(world, x, y, (int) width, (int) height, batch, orders);
                     stationArray.add(counter); // Add stove to the array
                 }
 
