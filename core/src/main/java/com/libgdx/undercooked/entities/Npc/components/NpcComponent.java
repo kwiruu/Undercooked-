@@ -16,7 +16,6 @@ public class NpcComponent implements Component, Pool.Poolable {
         this.sprite = sprite;
     }
 
-
     public boolean isWaiting() {
         return isWaiting;
     }
