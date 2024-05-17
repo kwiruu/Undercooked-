@@ -23,7 +23,7 @@ public class Counter extends Station {
     }
 
     @Override
-    public void interact(Player p) {
+    public boolean interact(Player p) {
         System.out.println("interacted with counter");
         if (validate(p.getHeldItem())) {
             String itemCheck = String.valueOf(p.getHeldItem());
@@ -33,7 +33,9 @@ public class Counter extends Station {
             }
             p.removeHeldItem();
             // counter edit
+            return true;
         }
+        return false;
     }
 
 

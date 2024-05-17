@@ -49,6 +49,7 @@ public class Player implements Runnable {
         player = CreateBox.createBox(world, x, y, 16, 8, false);
         playerBatch = new SpriteBatch();
         lastDirection = "down";
+
     }
 
     public void setLocation() {
