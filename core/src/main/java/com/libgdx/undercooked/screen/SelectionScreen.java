@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 
 public class SelectionScreen implements Screen {
@@ -15,6 +16,7 @@ public class SelectionScreen implements Screen {
     private final Main context;
     private Stage stage;
     private Skin skin;
+    private MapSound mapSound;
 
     private static String selectedMap;
 
@@ -42,7 +44,9 @@ public class SelectionScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     String mapText = mapButton.getText().toString().replaceAll("\\s", "");
                     setSelectedMap(mapText);
+                    mapSound = new MapSound("assets/audio/" + mapText +"_sound.wav");
                     context.setScreen(ScreenType.GAME);
+                    mapSound.run();
                 }
             });
             mapTable.add(mapButton).width(300F).pad(20);
