@@ -18,6 +18,7 @@ public class PlayerControls {
     private float deltaTimes;
     public animLocker animLock;
     public float playerLock;
+    public int invalidTimer;
 
     PlayerAnimations playerAnimations;
 
@@ -34,6 +35,7 @@ public class PlayerControls {
         deltaTimes = deltaTime;
         playerAnimations.updateStateTime(deltaTime); // Increment stateTime here
         player.timeUpdate();
+        invalidTimer--;
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Station st = player.stationList.pointStation(player.getInteractPos());
@@ -53,7 +55,7 @@ public class PlayerControls {
                     }
                 } else {
                     // invalid thing
-
+                    invalidTimer = 20;
                 }
             } else {
                 System.out.println("pointed at nothing");

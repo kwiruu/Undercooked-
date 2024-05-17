@@ -151,8 +151,13 @@ public class Player implements Runnable {
             }
         }
     }
+    private void renderInvalidAnimation(SpriteBatch batch, float itemX, float itemY) {
+        if (playerControls.invalidTimer > 0) {
+            batch.draw(playerAnimations.getInvalidIcon(), itemX, itemY);
+        }
+    }
 
-    public void renderItem(SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         float itemX = (player.getPosition().x - 0.5f) * PPM;
         float amplitude = 0.08f;
         float offsetY = amplitude * MathUtils.sin(playerAnimations.getStateTime());
@@ -173,6 +178,9 @@ public class Player implements Runnable {
 
         if (poofFrames > 0) {
             renderPoofAnimation(batch, itemX, itemY);
+        }
+        if (playerControls.invalidTimer > 0) {
+            renderInvalidAnimation(batch, itemX, itemY);
         }
     }
 

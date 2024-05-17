@@ -1,14 +1,18 @@
 package com.libgdx.undercooked.entities.PlayerManager;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class PlayerAnimations extends Animations {
     private Animation<TextureAtlas.AtlasRegion> smokeAnimation;
+    private Texture invalidIcon;
 
     public PlayerAnimations(TextureAtlas playerAtlas, TextureAtlas smokeAtlas) {
         initializePlayerAnimations(playerAtlas);
         initializeSmokeAnimation(smokeAtlas);
+        initInvalidIcon();
     }
 
     private void initializePlayerAnimations(TextureAtlas textureAtlas) {
@@ -45,5 +49,12 @@ public class PlayerAnimations extends Animations {
 
     public Animation<TextureAtlas.AtlasRegion> getSmokeAnimation() {
         return smokeAnimation;
+    }
+    private void initInvalidIcon() {
+        invalidIcon = new Texture(Gdx.files.internal("assets/floating_icons/null.png"));
+    }
+
+    public Texture getInvalidIcon() {
+        return invalidIcon;
     }
 }

@@ -80,9 +80,9 @@ public class GameManager implements Disposable {
 
     public void render(TextureRegion currentFrame) {
         getMapManager().drawLayerTextures(batch, currentFrame);
-        getPlayerManager().renderItem(batch);
         npcManager.render(batch);
         stationList.render();
+        getPlayerManager().render(batch);
     }
 
     public Player getPlayerManager() {
