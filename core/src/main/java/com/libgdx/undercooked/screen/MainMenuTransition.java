@@ -207,7 +207,7 @@ public class MainMenuTransition implements Screen {
             .start(tweenManager);
 
         // Fade out pressSprite
-        Tween.to(pressSprite, SpriteAccessor.ALPHA, duration)
+        Tween.to(pressSprite, SpriteAccessor.ALPHA, duration-0.5f)
             .target(0)
             .start(tweenManager);
 
