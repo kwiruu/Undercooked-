@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
+import com.libgdx.undercooked.entities.PlayerManager.PlayerControls;
 
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int timer;
     boolean playerOn;
+    Player pon;
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         // different classes different icons!
@@ -16,9 +18,12 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     }
     public void render() {
         // Update stateTime
-        stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
-        TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
-        batch.draw(currentFrame, getX(), getY());
+        if (!playerOn) {
+            stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
+            TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
+            batch.draw(currentFrame, getX(), getY());
+        }
+
     }
 
     @Override
@@ -27,13 +32,15 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         if (timer == 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 playerOn = true;
-                timer = 500;
-                p.setHeldItem(transmute(p.getHeldItem()));
-                // trap player here
+                timer = 200;
+                containedItem = transmute(p.getHeldItem());
+                p.removeHeldItem();
+                pon = p;
                 return true;
             }
         } else if (containedItem != null && !p.hasHeldItem()) {
             playerOn = true;
+            pon = p;
             return true;
         }
         return false;
@@ -72,17 +79,24 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         return null;
     }
 
-    public void stopChopping() {
-        playerOn = false;
-    }
-
     @Override
     public void update() {
-        if (playerOn && timer > 0) timer--;
+        if (playerOn) {
+            if (timer > 0) {
+                timer--;
+                System.out.println(timer);
+            } else {
+                pon.setHeldItem(containedItem);
+                pon.removeAnimLocker();
+                containedItem = null;
+                exitPlayer();
+            }
+        }
     }
 
     @Override
-    public float lockPlayer() {
-        return 500f;
+    public void exitPlayer() {
+        pon = null;
+        playerOn = false;
     }
 }

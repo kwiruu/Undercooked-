@@ -13,8 +13,8 @@ import com.libgdx.undercooked.entities.animLocker;
 public class PlayerControls {
 
     Player player;
-    float tempX;
-    float tempY;
+//    float tempX;
+//    float tempY;
     public boolean isLifting;
     private float currentTime;
     private float deltaTimes;
@@ -40,48 +40,57 @@ public class PlayerControls {
         invalidTimer--;
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            Station st = player.stationList.pointStation(player.getInteractPos());
-            FoodType oft = player.getHeldItem();
-            if (st != null) {
-                if (st.interact(player)) {
-                    if (st instanceof animLocker) {
-                        ((animLocker) st).lockPlayer();
-                        animLock = ((animLocker) st);
-
-                    }
-                    playerLock = 1f;
-                    currentTime = 0;
-                    if (oft != player.getHeldItem()) {
-                        player.poofFrames = 1f;
-                        isLifting = true;
+            if (animLock == null) {
+                Station st = player.stationList.pointStation(player.getInteractPos());
+                FoodType oft = player.getHeldItem();
+                if (st != null) {
+                    if (st.interact(player)) {
+                        if (st instanceof animLocker) {
+                            System.out.println("interacted with animLocker");
+                            animLock = ((animLocker) st);
+//                            tempX = getPosition().x;
+//                            tempY = getPosition().y;
+                        }
+                        playerLock = 1f;
+                        currentTime = 0;
+                        if (oft != player.getHeldItem()) {
+                            player.poofFrames = 1f;
+                            isLifting = true;
+                        }
+                    } else {
+                        invalidTimer = 20;
                     }
                 } else {
-                    invalidTimer = 20;
+                    System.out.println("pointed at nothing");
+                    Gdx.input.setCursorPosition((int) player.getInteractPos().x * 32, (int) player.getInteractPos().y * 32);
                 }
             } else {
-                System.out.println("pointed at nothing");
-                Gdx.input.setCursorPosition((int) player.getInteractPos().x * 32, (int) player.getInteractPos().y * 32);
+                animLock.exitPlayer();
+                animLock = null;
+//                getPosition().x = tempX;
+//                getPosition().y = tempY;
             }
         }
         debugKeys();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && playerLock <= 0) {
-            verticalForce += 1;
+        if (playerLock <= 0 && animLock == null) {
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                verticalForce += 1;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                horizontalForce -= 1;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                verticalForce -= 1;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                horizontalForce += 1;
+            }
+            if ((horizontalForce != 0 && verticalForce != 0)) {
+                horizontalForce *= MathUtils.sin(MathUtils.PI2 / 8);
+                verticalForce *= MathUtils.sin(MathUtils.PI2 / 8);
+            }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && playerLock <= 0) {
-            horizontalForce -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && playerLock <= 0) {
-            verticalForce -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && playerLock <= 0) {
-            horizontalForce += 1;
-        }
-        if ((horizontalForce != 0 && verticalForce != 0) && playerLock <= 0) {
-            horizontalForce *= MathUtils.sin(MathUtils.PI2 / 8);
-            verticalForce *= MathUtils.sin(MathUtils.PI2 / 8);
-        }
-
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
     }
 
@@ -113,10 +122,10 @@ public class PlayerControls {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) ||
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) ||
             Gdx.input.isKeyPressed(Input.Keys.A) ||
             Gdx.input.isKeyPressed(Input.Keys.S) ||
-            Gdx.input.isKeyPressed(Input.Keys.D)) {
+            Gdx.input.isKeyPressed(Input.Keys.D)) && animLock == null) {
 
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 player.setLastDirection("top");
@@ -152,12 +161,12 @@ public class PlayerControls {
                 player.removeHeldItem();
             }
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-            System.out.println("Item check: " + player.getHeldItem());
-        }
     }
 
     public Vector2 getPosition() {
         return player.getPosition();
+    }
+    public void removeAnimLocker() {
+        animLock = null;
     }
 }
