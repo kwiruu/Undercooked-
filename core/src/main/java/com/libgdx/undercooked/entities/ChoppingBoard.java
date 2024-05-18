@@ -24,14 +24,17 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         // stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
-        if (!playerOn && containedItem == null) {
-            System.out.println("fif0");
+        // TODO this
+        // it runs thrice for some reason
+        System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
+        if (!playerOn && timer <= 0){
+            System.out.println("idle");
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         } else if (playerOn) {
-            System.out.println("fif1");
+            System.out.println("chopping");
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         } else {
-            System.out.println("fif2");
+            System.out.println("cut progress");
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
         }
         batch.draw(currentFrame, getX(), getY());
