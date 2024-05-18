@@ -9,7 +9,7 @@ public class MainMenuSound implements Runnable {
     private float volume = .5f;
 
     public MainMenuSound() {
-        startSound = Gdx.audio.newSound(Gdx.files.internal("assets/audio/mainTrack.wav"));
+        startSound = Gdx.audio.newSound(Gdx.files.internal("assets/audio/mainTrack.mp3"));
     }
 
     @Override
