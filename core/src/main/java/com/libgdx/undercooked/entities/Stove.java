@@ -40,7 +40,6 @@ public class Stove extends Station implements canUpdate {
             max_timer = 0;
             return true;
         }
-        System.out.println("invalid");
         return false;
     }
 

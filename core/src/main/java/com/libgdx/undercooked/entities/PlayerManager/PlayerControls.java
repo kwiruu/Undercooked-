@@ -13,6 +13,8 @@ import com.libgdx.undercooked.entities.animLocker;
 public class PlayerControls {
 
     Player player;
+    float tempX;
+    float tempY;
     public boolean isLifting;
     private float currentTime;
     private float deltaTimes;
@@ -54,7 +56,6 @@ public class PlayerControls {
                         isLifting = true;
                     }
                 } else {
-                    // invalid thing
                     invalidTimer = 20;
                 }
             } else {

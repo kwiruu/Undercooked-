@@ -28,9 +28,7 @@ public class Player implements Runnable {
     float poofFrames;
     private FoodType heldItem;
     StationList stationList;
-
     public static int x;
-
     public static int y;
     PlayerControls playerControls;
     boolean shouldRemoveHeldItemAfterAnimation;
@@ -123,10 +121,6 @@ public class Player implements Runnable {
 
     public SpriteBatch getPlayerBatch(){
         return playerBatch;
-    }
-
-    public String getItemName() {
-        return heldItem + "";
     }
 
     public void removeHeldItem() {
