@@ -13,6 +13,7 @@ import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.GameManager;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.MapManager;
+import com.libgdx.undercooked.entities.Orders;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static com.libgdx.undercooked.GameManager.score;
@@ -66,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
         MapManager.tmr.setView(camera);
         gameUI.update(gameManager.getPlayerManager());
         if (timesUp) {
+            Orders.freeOrderList();
             timesUp = false;
             System.out.println("Time's up! Switching to SELECTMAP screen.");
             gameManager.dispose();

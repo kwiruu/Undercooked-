@@ -10,7 +10,7 @@ import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 
 public class Orders {
 
-    private ArrayList<FoodOrder> orderList;
+    private static ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
 
     public static int activeOrderCount;
@@ -71,6 +71,9 @@ public class Orders {
                 System.out.println("Unknown food type...");
                 break;
         }
+    }
+    public static void freeOrderList() {
+        orderList.clear();
     }
 
     public FoodOrder getCurrentOrder() {

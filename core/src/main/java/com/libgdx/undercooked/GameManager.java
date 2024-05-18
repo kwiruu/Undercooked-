@@ -21,7 +21,7 @@ public class GameManager implements Disposable {
 
     private final World world;
 
-    public static boolean checkEntry = false;
+    public static boolean checkEntry;
     private MapManager mapManager;
     private Player playerManager;
     private SpriteBatch batch;
@@ -66,6 +66,7 @@ public class GameManager implements Disposable {
             playerManager.setEntityList(stationList);
 
             initialized = true;
+            checkEntry = true;
         }
     }
 
@@ -75,7 +76,9 @@ public class GameManager implements Disposable {
 
     private void checkCompletion() {
         if (activeOrderCount == 0) {
+            Orders.freeOrderList();
             timesUp = true;
+            checkEntry = true;
         }
     }
 
