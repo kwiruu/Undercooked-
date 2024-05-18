@@ -80,6 +80,14 @@ public class StationList {
 
                     Counter counter = new Counter(world, x, y, (int) width, (int) height, batch, orders);
                     stationArray.add(counter); // Add stove to the array
+                } if (object.getName().equals("station_placemat")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class) + 80;
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
+
+                    Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch);
+                    stationArray.add(placemat); // Add stove to the array
                 }
 
                 //--------------------IMPORTANT-----------------------//

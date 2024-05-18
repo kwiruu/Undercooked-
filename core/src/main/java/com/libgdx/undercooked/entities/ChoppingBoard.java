@@ -36,8 +36,6 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
             playerOn = true;
             return true;
         }
-        // show invalid sign
-        System.out.println("invalid");
         return false;
     }
 

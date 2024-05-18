@@ -33,7 +33,6 @@ public class RiceCooker extends Station implements canUpdate {
             timer = 500;
             return true;
         }
-        System.out.println("invalid");
         return false;
     }
 

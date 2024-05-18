@@ -42,9 +42,6 @@ public class Counter extends Station {
         }
         return false;
     }
-
-
-
     @Override
     public String toString() {
         return "Counter";

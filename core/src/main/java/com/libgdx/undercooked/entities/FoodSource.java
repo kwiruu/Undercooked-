@@ -57,7 +57,6 @@ public class FoodSource extends Station {
             p.setHeldItem(containedItem);
             return true;
         }
-        System.out.println("invalid");
         return false;
     }
 
