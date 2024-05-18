@@ -121,7 +121,6 @@ public class GameUI  implements UIUpdater {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("Time Left: %02d:%02d", minutes, seconds));
-
     }
 
     public Stage getStage() {
