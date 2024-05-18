@@ -13,12 +13,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Timer;
 import com.libgdx.undercooked.Main;
 
 public class MainMenuTransition implements Screen {
     private SpriteBatch batch;
     private Sprite bgSprite, cloudSprite, textSprite, cloud1Sprite, cloud2Sprite;
-    private Sprite button1, button2, button3;
+    private Sprite playButton, settingsButton, exitButton;
     private TweenManager tweenManager;
     private final Main context;
     private Sprite pressSprite;
@@ -26,6 +27,8 @@ public class MainMenuTransition implements Screen {
     private boolean transitionStarted = false;
     private boolean initialAnimationComplete = false;
     private boolean buttonsVisible = false;
+    private Texture playTexture,playClickedTexture,settingsClickedTexture,settingsTexture,exitTexture,exitClickedTexture, profileTexture, profileClickedTexture;
+    private Sprite profileButton;
 
     public MainMenuTransition(final Main context) {
         this.context = context;
@@ -34,8 +37,8 @@ public class MainMenuTransition implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        tweenManager = new TweenManager();
-        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+        tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor()); // This should be after tweenManager initialization
 
         // Load textures
         Texture bgTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
@@ -45,10 +48,17 @@ public class MainMenuTransition implements Screen {
         Texture cloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/clouds2.png"));
         Texture pressTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/press_text.png"));
 
+
         // Load button textures
-        Texture playTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/play.png"));
-        Texture settingsTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/settings.png"));
-        Texture exitTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/exit.png"));
+        playTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/play.png"));
+        playClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/play_clicked.png"));
+        settingsTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/settings.png"));
+        settingsClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/settings_clicked.png"));
+        exitTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/exit.png"));
+        exitClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/exit_clicked.png"));
+        profileTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/profiles.png"));
+        profileClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/profiles_clicked.png"));
+
 
         // Create sprites
         bgSprite = new Sprite(bgTexture);
@@ -57,9 +67,11 @@ public class MainMenuTransition implements Screen {
         cloud1Sprite = new Sprite(cloud1Texture);
         cloud2Sprite = new Sprite(cloud2Texture);
         pressSprite = new Sprite(pressTexture);
-        button1 = new Sprite(playTexture);
-        button2 = new Sprite(settingsTexture);
-        button3 = new Sprite(exitTexture);
+        playButton = new Sprite(playTexture);
+        settingsButton = new Sprite(settingsTexture);
+        exitButton = new Sprite(exitTexture);
+        profileButton = new Sprite(profileTexture);
+
 
         // Multiply sizes by 4
         bgSprite.setSize(bgTexture.getWidth() * 4, bgTexture.getHeight() * 4);
@@ -68,9 +80,11 @@ public class MainMenuTransition implements Screen {
         cloud1Sprite.setSize(cloud1Texture.getWidth() * 4, cloud1Texture.getHeight() * 4);
         cloud2Sprite.setSize(cloud2Texture.getWidth() * 4, cloud2Texture.getHeight() * 4);
         pressSprite.setSize(pressTexture.getWidth() * 1.5f, pressTexture.getHeight() * 1.5f);
-        button1.setSize(playTexture.getWidth() * 2, playTexture.getHeight() * 2);
-        button2.setSize(settingsTexture.getWidth() * 2, settingsTexture.getHeight() * 2);
-        button3.setSize(exitTexture.getWidth() * 2, exitTexture.getHeight() * 2);
+        playButton.setSize(playTexture.getWidth() * 2, playTexture.getHeight() * 2);
+        settingsButton.setSize(settingsTexture.getWidth() * 2, settingsTexture.getHeight() * 2);
+        exitButton.setSize(exitTexture.getWidth() * 2, exitTexture.getHeight() * 2);
+        profileButton.setSize(profileTexture.getWidth() * 2, profileTexture.getHeight() * 2);
+
 
         // Set sprite positions
         bgSprite.setPosition(0, 0);
@@ -79,11 +93,12 @@ public class MainMenuTransition implements Screen {
         cloud1Sprite.setPosition(-cloud1Sprite.getWidth(), Gdx.graphics.getHeight() / 2f - cloud1Sprite.getHeight() / 2);
         cloud2Sprite.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2f - cloud2Sprite.getHeight() / 2);
         pressSprite.setPosition(Gdx.graphics.getWidth() / 2f - pressSprite.getWidth() / 2, Gdx.graphics.getHeight() / 5f);
+        profileButton.setPosition(Gdx.graphics.getWidth() - profileButton.getWidth() * 1.5f, -profileButton.getHeight());
 
         // Position buttons off-screen initially
-        button1.setPosition(Gdx.graphics.getWidth() / 2f - button1.getWidth() / 2, -button1.getHeight());
-        button2.setPosition(Gdx.graphics.getWidth() / 2f - button2.getWidth() / 2, -button2.getHeight());
-        button3.setPosition(Gdx.graphics.getWidth() / 2f - button3.getWidth() / 2, -button3.getHeight());
+        playButton.setPosition(Gdx.graphics.getWidth() / 2f - playButton.getWidth() / 2, -playButton.getHeight());
+        settingsButton.setPosition(Gdx.graphics.getWidth() / 2f - settingsButton.getWidth() / 2, -settingsButton.getHeight());
+        exitButton.setPosition(Gdx.graphics.getWidth() / 2f - exitButton.getWidth() / 2, -exitButton.getHeight());
 
         // Create animations
         Tween.set(cloudSprite, SpriteAccessor.POS_Y).target(-cloudSprite.getHeight() * 0.8f).start(tweenManager);
@@ -149,36 +164,51 @@ public class MainMenuTransition implements Screen {
         }
 
         // Input processor to handle clicks
-        // Input processor to handle clicks
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (buttonsVisible) {
                     screenY = Gdx.graphics.getHeight() - screenY; // Invert Y coordinate
-                    if (button1.getBoundingRectangle().contains(screenX, screenY)) {
-                        // Set clicked texture for button1
-                        button1.setTexture(new Texture(Gdx.files.internal("assets/screens/title_screen/play_clicked.png")));
+                    if (playButton.getBoundingRectangle().contains(screenX, screenY)) {
+                        playButton.setTexture(playClickedTexture);
+                        revertTexture(playButton, playTexture);
                         context.setScreen(new LandingPageScreen(context));
                         return true;
                     }
-                    if (button2.getBoundingRectangle().contains(screenX, screenY)) {
-                        // Set clicked texture for button2
-                        button2.setTexture(new Texture(Gdx.files.internal("assets/screens/title_screen/settings_clicked.png")));
-
+                    if (profileButton.getBoundingRectangle().contains(screenX, screenY)) {
+                        profileButton.setTexture(profileClickedTexture);
+                        revertTexture(profileButton, profileTexture);
                         return true;
                     }
-                    if (button3.getBoundingRectangle().contains(screenX, screenY)) {
-                        // Set clicked texture for button3
-                        button3.setTexture(new Texture(Gdx.files.internal("assets/screens/title_screen/exit_clicked.png")));
-
+                    if (settingsButton.getBoundingRectangle().contains(screenX, screenY)) {
+                        settingsButton.setTexture(settingsClickedTexture);
+                        // Perform settings action here
+                        revertTexture(settingsButton, settingsTexture);
+                        return true;
+                    }
+                    if (exitButton.getBoundingRectangle().contains(screenX, screenY)) {
+                        exitButton.setTexture(exitClickedTexture);
+                        // Perform exit action here
+                        revertTexture(exitButton, exitTexture);
                         return true;
                     }
                 }
                 return false;
             }
         });
-
     }
+
+
+    private void revertTexture(final Sprite button, final Texture originalTexture) {
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                button.setTexture(originalTexture);
+            }
+        }, 0.2f); // 0.2 seconds delay
+    }
+
+
 
     private void startTransitionAnimation() {
         float duration = 1.5f;
@@ -220,18 +250,22 @@ public class MainMenuTransition implements Screen {
         float buttonSpacing = 20f; // Space between buttons
 
         // Calculate positions for buttons
-        float button1Y = Gdx.graphics.getHeight() / 3f + button1.getHeight() + buttonSpacing;
+        float button1Y = Gdx.graphics.getHeight() / 3f + playButton.getHeight() + buttonSpacing;
         float button2Y = Gdx.graphics.getHeight() / 3f;
-        float button3Y = Gdx.graphics.getHeight() / 3f - button1.getHeight() - buttonSpacing;
+        float button3Y = Gdx.graphics.getHeight() / 3f - playButton.getHeight() - buttonSpacing;
+        float profileButtonY = Gdx.graphics.getHeight() / 25f;
 
+        Tween.to(profileButton, SpriteAccessor.POS_Y, duration)
+            .target(profileButtonY)
+            .start(tweenManager);
         // Move buttons to their positions
-        Tween.to(button1, SpriteAccessor.POS_Y, duration)
+        Tween.to(playButton, SpriteAccessor.POS_Y, duration)
             .target(button1Y)
             .start(tweenManager);
-        Tween.to(button2, SpriteAccessor.POS_Y, duration)
+        Tween.to(settingsButton, SpriteAccessor.POS_Y, duration)
             .target(button2Y)
             .start(tweenManager);
-        Tween.to(button3, SpriteAccessor.POS_Y, duration)
+        Tween.to(exitButton, SpriteAccessor.POS_Y, duration)
             .target(button3Y)
             .start(tweenManager);
 
@@ -262,10 +296,12 @@ public class MainMenuTransition implements Screen {
         cloud2Sprite.draw(batch);
         pressSprite.draw(batch);
 
+
         if (buttonsVisible) {
-            button1.draw(batch);
-            button2.draw(batch);
-            button3.draw(batch);
+            playButton.draw(batch);
+            settingsButton.draw(batch);
+            exitButton.draw(batch);
+            profileButton.draw(batch);
         }
 
         batch.end();
