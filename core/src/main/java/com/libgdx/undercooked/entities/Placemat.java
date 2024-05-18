@@ -24,6 +24,7 @@ public class Placemat extends Station {
         } else if (containedItem != null && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
+            return true;
         }
         return false;
     }

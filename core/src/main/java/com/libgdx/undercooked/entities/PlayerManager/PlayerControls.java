@@ -54,8 +54,7 @@ public class PlayerControls {
                         playerLock = 1f;
                         currentTime = 0;
                         if (oft != player.getHeldItem()) {
-                            player.poofFrames = 1f;
-                            isLifting = true;
+                            poof();
                         }
                     } else {
                         invalidTimer = 20;
@@ -74,17 +73,19 @@ public class PlayerControls {
         debugKeys();
 
         if (playerLock <= 0 && animLock == null) {
+            int speed = 1;
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 2;
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                verticalForce += 1;
+                verticalForce += speed;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                horizontalForce -= 1;
+                horizontalForce -= speed;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                verticalForce -= 1;
+                verticalForce -= speed;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                horizontalForce += 1;
+                horizontalForce += speed;
             }
             if ((horizontalForce != 0 && verticalForce != 0)) {
                 horizontalForce *= MathUtils.sin(MathUtils.PI2 / 8);
@@ -156,11 +157,21 @@ public class PlayerControls {
                 System.out.println("Removing: " + player.getHeldItem());
                 playerAnimations.setAnimationPlaying(true);
                 playerAnimations.resetStateTime();
-                player.poofFrames = 1f;
+                poof();
                 player.shouldRemoveHeldItemAfterAnimation = true;
                 player.removeHeldItem();
             }
         }
+    }
+    public void poof() {
+        player.poofFrames = .8f;
+    }
+    public void poof2() {
+        playerAnimations.setAnimationPlaying(true);
+        playerAnimations.resetStateTime();
+        poof();
+        currentTime = 0;
+        isLifting = true;
     }
 
     public Vector2 getPosition() {

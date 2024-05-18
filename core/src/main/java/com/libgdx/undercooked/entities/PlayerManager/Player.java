@@ -203,4 +203,10 @@ public class Player implements Runnable {
     public void removeAnimLocker() {
         playerControls.removeAnimLocker();
     }
+    public void outPoof() {
+        playerControls.poof2();
+    }
+    public void poof() {
+        playerControls.poof();
+    }
 }

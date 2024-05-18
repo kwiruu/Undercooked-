@@ -8,16 +8,22 @@ import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     int timer;
+    int max_timer = 500;
 
     public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         containedItem = FoodType.rice;
-        floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon"); // cooking
+        floatingIconFrames[1] = floating_iconAtlas.findRegions("meat_icon"); // cooked
     }
     public void render() {
-        // Update stateTime
         stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
+        TextureRegion currentFrame;
+        if (timer > 0) {
+            currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
+        } else {
+            currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
+        }
         batch.draw(currentFrame, getX(), getY());
     }
 
