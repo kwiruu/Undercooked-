@@ -8,6 +8,7 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
     public static final int POS_X = 2;
     public static final int POS_Y = 3;
     public static final int ROTATION = 4;
+    public static final int SCALE_XY = 5; // New constant for scaling
 
     @Override
     public int getValues(Sprite target, int tweenType, float[] returnValues) {
@@ -24,6 +25,10 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
             case ROTATION:
                 returnValues[0] = target.getRotation();
                 return 1;
+            case SCALE_XY: // Handle SCALE_XY
+                returnValues[0] = target.getScaleX();
+                returnValues[1] = target.getScaleY();
+                return 2;
             default:
                 return -1;
         }
@@ -43,6 +48,9 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
                 break;
             case ROTATION:
                 target.setRotation(newValues[0]);
+                break;
+            case SCALE_XY: // Handle SCALE_XY
+                target.setScale(newValues[0], newValues[1]);
                 break;
             default:
                 break;
