@@ -20,6 +20,8 @@ import static com.libgdx.undercooked.entities.Orders.activeOrderCount;
 public class GameManager implements Disposable {
 
     private final World world;
+
+    public static boolean checkEntry = false;
     private MapManager mapManager;
     private Player playerManager;
     private SpriteBatch batch;
@@ -84,7 +86,10 @@ public class GameManager implements Disposable {
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
         stationList.update();
-        uiUpdater.updateOrdersUI(orders); // Update the orders UI
+        if(checkEntry){
+            uiUpdater.updateOrdersUI(orders); // Update the orders UI
+            checkEntry = false;
+        }
     }
 
     public void render(TextureRegion currentFrame) {

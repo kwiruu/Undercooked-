@@ -116,16 +116,12 @@ public class GameUI  implements UIUpdater {
     }
 
     public void update(Player player) {
-        Vector2 playerPos = player.getPosition();
         scoreLabel.setText("Score: " + score);
         elapsedTime -= Gdx.graphics.getDeltaTime();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("Time Left: %02d:%02d", minutes, seconds));
-
     }
-
-
 
     public Stage getStage() {
         return stage;
@@ -140,7 +136,6 @@ public class GameUI  implements UIUpdater {
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         for (FoodOrder order : orderList) {
-            System.out.println(order.getFoodType().toString());
             Label orderLabel = new Label(order.getFoodType().toString(), skin);
             orderTable.add(orderLabel).pad(5).row();
         }

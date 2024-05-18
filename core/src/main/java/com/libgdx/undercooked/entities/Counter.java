@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
+import static com.libgdx.undercooked.GameManager.checkEntry;
 import static com.libgdx.undercooked.GameManager.score;
 
 public class Counter extends Station {
@@ -33,7 +34,7 @@ public class Counter extends Station {
                     orders.rewardPoints(p.getHeldItem());
                     f.setInactive();
                     p.removeHeldItem();
-
+                    checkEntry = true;
                 }
             }
             // counter edit
