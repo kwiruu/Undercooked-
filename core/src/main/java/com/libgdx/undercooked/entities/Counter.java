@@ -14,7 +14,7 @@ public class Counter extends Station {
     public Counter(World world, float x, float y, int width, int height, SpriteBatch batch, Orders orders) {
         super(world, x, y, width, height, batch);
         this.orders = orders;
-        floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon"); // TODO change this
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("counter_icon");
     }
 
     @Override

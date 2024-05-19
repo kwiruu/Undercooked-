@@ -14,7 +14,7 @@ public class RiceCooker extends Station implements canUpdate {
         super(world, x, y, width, height, batch);
         containedItem = FoodType.rice;
         floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon"); // cooking
-        floatingIconFrames[1] = floating_iconAtlas.findRegions("meat_icon"); // cooked
+        floatingIconFrames[1] = floating_iconAtlas.findRegions("rice_icon"); // cooked
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();

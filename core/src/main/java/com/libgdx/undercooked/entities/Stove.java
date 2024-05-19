@@ -11,9 +11,9 @@ public class Stove extends Station implements canUpdate {
     int max_timer;
     public Stove(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
-        floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon"); // idle
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon_blank"); // idle
         floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // cooking
-        floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon"); // meal on standby
+        floatingIconFrames[2] = floating_iconAtlas.findRegions("clock_icon_done"); // meal on standby
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
