@@ -159,7 +159,7 @@ public class Player implements Runnable {
 
         // igo rani mu animate sa up and down
         if (heldItem != null) {
-            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/raw_sprites/" + heldItem + ".png"));
+            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + heldItem + ".png"));
             if (!texture.getTextureData().isPrepared()) {
                 texture.getTextureData().prepare();
             }

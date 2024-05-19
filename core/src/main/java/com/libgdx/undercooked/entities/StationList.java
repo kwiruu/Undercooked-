@@ -82,7 +82,7 @@ public class StationList {
                     stationArray.add(counter); // Add stove to the array
                 } if (object.getName().equals("station_placemat")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 80;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
