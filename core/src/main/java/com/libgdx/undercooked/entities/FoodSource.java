@@ -14,37 +14,37 @@ public class FoodSource extends Station {
         // this else statement is para sa icon name depending on the foodtype!
 //        switch(foodType) {
 //            case tomato:
-//                floatingIconFrames = floating_iconAtlas.findRegions("tomato_icon");
+//                floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
 //                break;
 //            case meat:
-//                floatingIconFrames = floating_iconAtlas.findRegions("meat_icon");
+//                floatingIconFrames[0] = floating_iconAtlas.findRegions("meat_icon");
 //                break;
 //            case fish:
-//                floatingIconFrames = floating_iconAtlas.findRegions("fish_icon");
+//                floatingIconFrames[0] = floating_iconAtlas.findRegions("fish_icon");
 //                break;
 //            case pickle:
-//                floatingIconFrames = floating_iconAtlas.findRegions("pickle_icon");
+//                floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
 //                break;
 //        }
         if (foodType.equals(FoodType.tomato)) {
-            floatingIconFrames = floating_iconAtlas.findRegions("tomato_icon");
+            floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
         } else if (foodType.equals(FoodType.onion)) {
-            floatingIconFrames = floating_iconAtlas.findRegions("onion_icon");
+            floatingIconFrames[0] = floating_iconAtlas.findRegions("onion_icon");
         } else if (foodType.equals(FoodType.meat)) {
-            floatingIconFrames = floating_iconAtlas.findRegions("meat_icon");
+            floatingIconFrames[0] = floating_iconAtlas.findRegions("meat_icon");
         } else if (foodType.equals(FoodType.fish)) {
-            floatingIconFrames = floating_iconAtlas.findRegions("fish_icon");
+            floatingIconFrames[0] = floating_iconAtlas.findRegions("fish_icon");
         } else if (foodType.equals(FoodType.pickle)) {
-            floatingIconFrames = floating_iconAtlas.findRegions("pickle_icon");
+            floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
         }
     }
     public void render() {
-        // Update stateTime
         stateTime += Gdx.graphics.getDeltaTime();
         stateTime += 0.2f;
-        TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
+        TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         batch.draw(currentFrame, getX(), getY());
     }
+    // TODO remove below if done
     /* TODO :
         1. to change the type of icon the food source make we need to find it in the region,
          so just pass the string name of the region for the foodsource to render for!

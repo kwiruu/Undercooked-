@@ -2,22 +2,41 @@ package com.libgdx.undercooked.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
+import com.libgdx.undercooked.entities.PlayerManager.PlayerControls;
 
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
+    int max_timer;
     int timer;
     boolean playerOn;
+    Player pon;
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
-        // different classes different icons!
-        floatingIconFrames = floating_iconAtlas.findRegions("chop_icon"); // Assuming "clock_icon" is the name of the animation
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("chop_icon"); // idle
+        floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // chopping
+        floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon"); // unfinished chopping (show containedItem)
     }
     public void render() {
-        // Update stateTime
-        stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
-        TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
+        // stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentFrame;
+        // TODO this
+        // it runs thrice for some reason
+        System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
+        if (!playerOn && timer <= 0){
+            System.out.println("idle");
+            currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
+        } else if (playerOn) {
+            System.out.println("chopping");
+            currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
+        } else {
+            System.out.println("cut progress");
+            currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
+        }
         batch.draw(currentFrame, getX(), getY());
     }
 
@@ -27,13 +46,18 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         if (timer == 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 playerOn = true;
-                timer = 500;
-                p.setHeldItem(transmute(p.getHeldItem()));
-                // trap player here
+                max_timer = 200;
+                timer = 200;
+                containedItem = transmute(p.getHeldItem());
+                p.removeHeldItem();
+                pon = p;
+                // set this to current containedItem
+                // floatingIconFrames2 = floating_iconAtlas.findRegions("chop_icon");
                 return true;
             }
         } else if (containedItem != null && !p.hasHeldItem()) {
             playerOn = true;
+            pon = p;
             return true;
         }
         return false;
@@ -72,17 +96,26 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         return null;
     }
 
-    public void stopChopping() {
-        playerOn = false;
-    }
-
     @Override
     public void update() {
-        if (playerOn && timer > 0) timer--;
+        if (playerOn) {
+            if (timer > 0) {
+                timer--;
+                System.out.println(timer);
+            } else {
+                max_timer = 0;
+                pon.setHeldItem(containedItem);
+                pon.removeAnimLocker();
+                pon.outPoof();
+                containedItem = null;
+                exitPlayer();
+            }
+        }
     }
 
     @Override
-    public float lockPlayer() {
-        return 500f;
+    public void exitPlayer() {
+        pon = null;
+        playerOn = false;
     }
 }

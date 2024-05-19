@@ -9,18 +9,22 @@ import com.libgdx.undercooked.entities.PlayerManager.Player;
 public class Stove extends Station implements canUpdate {
     int timer;
     int max_timer;
-
-    // spriteBatch is used to add a TextureRegion to a certain batch./
-    // then the spriteBatch is then rendered!
     public Stove(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
-        // different classes different icons!
-        floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon"); // idle
+        floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // cooking
+        floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon"); // meal on standby
     }
     public void render() {
-        // Update stateTime
         stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
+        TextureRegion currentFrame;
+        if (timer > 0) {
+            currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
+        } else if (containedItem != null) {
+            currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
+        } else {
+            currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
+        }
         batch.draw(currentFrame, getX(), getY());
     }
 
@@ -29,7 +33,8 @@ public class Stove extends Station implements canUpdate {
         System.out.println("interacted with stove");
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
-                p.setHeldItem(transmute(p.getHeldItem()));
+                containedItem = transmute(p.getHeldItem());
+                p.removeHeldItem();
                 timer = 500;
                 max_timer = 500;
                 return true;

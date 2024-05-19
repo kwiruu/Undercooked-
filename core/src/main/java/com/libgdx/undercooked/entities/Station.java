@@ -20,7 +20,7 @@ public abstract class Station {
     protected float frameDuration;
     protected float stateTime; // Time elapsed since the start of the animation
     SpriteBatch batch;
-    protected Array<TextureAtlas.AtlasRegion> floatingIconFrames;
+    protected Array<TextureAtlas.AtlasRegion>[] floatingIconFrames;
 
     // TODO popup (progress bar for non-source stations)
 
@@ -31,7 +31,7 @@ public abstract class Station {
         this.height = height;
         this.batch = batch;
         body = CreateBox.createBox(world, (int) x, (int) y, width, height, true);
-        Array<TextureAtlas.AtlasRegion> floatingIconFrames;
+        floatingIconFrames = new Array[3];
         floating_iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
         frameDuration = 1f; // Set the duration of each frame (adjust as needed)
         stateTime = 0f; // Initialize stateTime

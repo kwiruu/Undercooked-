@@ -14,14 +14,13 @@ public class Counter extends Station {
     public Counter(World world, float x, float y, int width, int height, SpriteBatch batch, Orders orders) {
         super(world, x, y, width, height, batch);
         this.orders = orders;
-        // different classes different icons!
-        floatingIconFrames = floating_iconAtlas.findRegions("clock_icon"); // Assuming "clock_icon" is the name of the animation
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon"); // TODO change this
     }
 
     @Override
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = floatingIconFrames.get((int) (stateTime / frameDuration) % floatingIconFrames.size);
+        TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         batch.draw(currentFrame, getX(), getY());
     }
 

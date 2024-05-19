@@ -199,4 +199,14 @@ public class Player implements Runnable {
     public Animation<TextureRegion> determineCurrentAnimation() {
         return playerControls.determineCurrentAnimation();
     }
+
+    public void removeAnimLocker() {
+        playerControls.removeAnimLocker();
+    }
+    public void outPoof() {
+        playerControls.poof2();
+    }
+    public void poof() {
+        playerControls.poof();
+    }
 }
