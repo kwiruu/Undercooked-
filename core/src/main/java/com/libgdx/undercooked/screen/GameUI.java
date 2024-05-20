@@ -1,5 +1,7 @@
 package com.libgdx.undercooked.screen;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.libgdx.undercooked.UIUpdater;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.libgdx.undercooked.entities.Orders;
@@ -11,10 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -37,6 +35,7 @@ public class GameUI  implements UIUpdater {
     private Label scoreLabel;
     private Table orderTable;
     private Orders orders;
+    private Table rootTable;
 
     public GameUI(final Main context){
         this.context = context;
@@ -78,7 +77,7 @@ public class GameUI  implements UIUpdater {
 
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
-        Table rootTable = new Table();
+        rootTable = new Table();
         rootTable.top().right();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
@@ -92,6 +91,11 @@ public class GameUI  implements UIUpdater {
 
         // Initialize orders table
         orderTable = new Table();
+        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/ui/table_background.png"));
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+
+        orderTable.setBackground(backgroundDrawable);
+        orderTable.pad(30);
         orderTable.top().right();
         rootTable.row();
         rootTable.add(orderTable).pad(10).align(Align.right);
@@ -135,9 +139,31 @@ public class GameUI  implements UIUpdater {
 
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
+        // Load the background texture and create a drawable
+        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/ui/row_background.png"));
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+
         for (FoodOrder order : orderList) {
+            // Create a Table for the row
+            Table rowTable = new Table();
+            rowTable.setBackground(backgroundDrawable);
+            rowTable.align(Align.left);
+
+            // Load the texture and create an Image actor
+            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + order.getFoodType().toString() + ".png"));
+            Image orderImage = new Image(texture);
+
+            // Create a Label with the food type text
             Label orderLabel = new Label(order.getFoodType().toString(), skin);
-            orderTable.add(orderLabel).pad(5).row();
+
+            // Add the label and image to the row table
+            rowTable.add(orderImage).pad(5);
+            rowTable.add(orderLabel).pad(5).width(100f);
+
+            // Add the row table to the main orderTable
+            orderTable.add(rowTable).pad(5).row();
         }
     }
+
+
 }
