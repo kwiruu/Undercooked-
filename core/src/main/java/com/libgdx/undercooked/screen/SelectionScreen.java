@@ -93,8 +93,8 @@ public class SelectionScreen implements Screen {
 
         //Since mag handle man tag stage and gesture InputMultiplexer ato gamiton to handle both at the same time
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new GestureDetector(new MyGestureListener()));
         inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(new GestureDetector(new MyGestureListener()));
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
