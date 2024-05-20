@@ -75,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
         if (timesUp) {
             if(gameManager.getWin()){
                 System.out.println(score);
-                insertScore(getUsername(),1,score);
+                insertScore(getUsername(),1, (int) (180 - gameUI.getElapsedTime() + score));
             }
             finishGame();
             try {
