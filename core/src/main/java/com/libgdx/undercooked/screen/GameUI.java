@@ -22,6 +22,7 @@ import com.libgdx.undercooked.Main;
 import java.util.ArrayList;
 
 import static com.libgdx.undercooked.GameManager.score;
+import static com.libgdx.undercooked.GameManager.timesUp;
 
 public class GameUI  implements UIUpdater {
     private final Main context;
@@ -30,7 +31,7 @@ public class GameUI  implements UIUpdater {
     private TextureRegion[] buttonRegions;
     private int currentIndex = 0;
     private boolean isHovered = false;
-    private float elapsedTime = 10f;
+    private float elapsedTime = 18f;
     private Label timerLabel;
     private Label scoreLabel;
     private Table orderTable;
@@ -125,6 +126,9 @@ public class GameUI  implements UIUpdater {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("Time Left: %02d:%02d", minutes, seconds));
+        if(elapsedTime <= 0){
+            timesUp = true;
+        }
     }
 
     public Stage getStage() {

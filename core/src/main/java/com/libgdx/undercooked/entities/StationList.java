@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class StationList {
     private final SpriteBatch batch;
-    private final Array<Station> stationArray;
+    private  Array<Station> stationArray;
     private final TiledMap map;
 
     private Orders orders;
@@ -55,39 +55,40 @@ public class StationList {
                     height = object.getProperties().get("height", Float.class);
 
                     Stove stove = new Stove(world, x, y, (int) width, (int) height, batch);
-                    stationArray.add(stove); // Add stove to the array
-                } if (object.getName().equals("station_chopping_board")) {
+                    stationArray.add(stove);
+                } else if (object.getName().equals("station_chopping_board")) {
                     x = object.getProperties().get("x", Float.class) + 16;
                     y = object.getProperties().get("y", Float.class) + 25;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
                     ChoppingBoard choppingBoard = new ChoppingBoard(world, x, y, (int) width, (int) height, batch);
-                    stationArray.add(choppingBoard); // Add stove to the array
-                } if (object.getName().equals("station_rice_cooker")) {
+                    stationArray.add(choppingBoard);
+                    System.out.println("choppingb");
+                } else if (object.getName().equals("station_rice_cooker")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 40;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
                     RiceCooker riceCooker = new RiceCooker(world, x, y, (int) width, (int) height, batch);
-                    stationArray.add(riceCooker); // Add stove to the array
-                } if (object.getName().equals("station_counter")) {
+                    stationArray.add(riceCooker);
+                } else if (object.getName().equals("station_counter")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 70;
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
                     Counter counter = new Counter(world, x, y, (int) width, (int) height, batch, orders);
-                    stationArray.add(counter); // Add stove to the array
-                } if (object.getName().equals("station_placemat")) {
+                    stationArray.add(counter);
+                } else if (object.getName().equals("station_placemat")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
                     Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch);
-                    stationArray.add(placemat); // Add stove to the array
+                    stationArray.add(placemat);
                 }
 
                 //--------------------IMPORTANT-----------------------//
@@ -96,7 +97,7 @@ public class StationList {
                 // in the tiled map, we only need to name the foodsources like these!
                 // more modular map creation!!!!!
 
-                if (object.getName().equals("onion_source")) {
+                else if (object.getName().equals("onion_source")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
                     width = object.getProperties().get("width", Float.class);
@@ -111,7 +112,7 @@ public class StationList {
                     height = object.getProperties().get("height", Float.class);
 
                     FoodSource meat = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.meat);
-                    stationArray.add(meat); // Add meat to the array
+                    stationArray.add(meat);
                 } else if (object.getName().equals("fish_tank_source")) {
                     x = object.getProperties().get("x", Float.class) + 32;
                     y = object.getProperties().get("y", Float.class) + 55;
@@ -119,7 +120,7 @@ public class StationList {
                     height = object.getProperties().get("height", Float.class);
 
                     FoodSource fish = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.fish);
-                    stationArray.add(fish); // Add stove to the array
+                    stationArray.add(fish);
                 } else if (object.getName().equals("tomato_source")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
@@ -127,7 +128,7 @@ public class StationList {
                     height = object.getProperties().get("height", Float.class);
 
                     FoodSource tomato = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.tomato);
-                    stationArray.add(tomato); // Add tomato to the array
+                    stationArray.add(tomato);
                 } else if (object.getName().equals("pickle_source")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
@@ -135,7 +136,7 @@ public class StationList {
                     height = object.getProperties().get("height", Float.class);
 
                     FoodSource pickle = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.pickle);
-                    stationArray.add(pickle); // Add pickle to the array
+                    stationArray.add(pickle);
                 }
             }
         }
@@ -147,6 +148,7 @@ public class StationList {
         for (Station s: stationArray) {
             System.out.println(s + "(" + s.containedItem + ") checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
             // needs tweaking
+
             r = new Rectangle(s.getX(), s.getY(), 32f, 64f);
             if (r.contains(v2)) {
                 return s;

@@ -20,24 +20,27 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // chopping
         floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon"); // unfinished chopping (show containedItem)
     }
+    @Override
     public void render() {
         // stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
+
         // TODO this
         // it runs thrice for some reason
-        System.out.println("timer = " + timer + ", playerOn = " + playerOn + ", containedItem = " + containedItem);
-        if (timer > 0 && playerOn) {
-            //System.out.println("chopping");
-            currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
-        } else if (timer > 0) {
-            //System.out.println("cut progress");
-            currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
-        } else {
+        // System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
+        if (!playerOn && timer <= 0){
             //System.out.println("idle");
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
+        } else if (playerOn) {
+            //System.out.println("chopping");
+            currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
+        } else {
+            //System.out.println("cut progress");
+            currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
         }
         batch.draw(currentFrame, getX(), getY());
+
     }
 
     @Override

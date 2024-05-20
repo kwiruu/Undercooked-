@@ -27,6 +27,7 @@ public class Stove extends Station implements canUpdate {
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         }
         batch.draw(currentFrame, getX(), getY());
+        System.out.println("stove ni");
     }
 
     @Override
@@ -36,8 +37,8 @@ public class Stove extends Station implements canUpdate {
             if (validate(p.getHeldItem())) {
                 containedItem = transmute(p.getHeldItem());
                 p.removeHeldItem();
-                timer = 500;
-                max_timer = 500;
+                timer = 1000;
+                max_timer = 1000;
                 return true;
             }
         } else if (containedItem != null && timer == 0 && max_timer != 0 && !p.hasHeldItem()) {

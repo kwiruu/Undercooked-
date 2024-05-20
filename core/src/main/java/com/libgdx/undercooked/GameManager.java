@@ -2,6 +2,7 @@
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.StationList;
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
