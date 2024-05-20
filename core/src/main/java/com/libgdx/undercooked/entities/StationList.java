@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class StationList {
     private final SpriteBatch batch;
-    private final Array<Station> stationArray;
+    private  Array<Station> stationArray;
     private final TiledMap map;
 
     private Orders orders;
@@ -27,6 +27,7 @@ public class StationList {
         for (Station st : stationArray) {
             st.render();
         }
+        System.out.println("oten ni alec");
     }
     public void update() {
         for (Station st : stationArray) {
@@ -56,7 +57,7 @@ public class StationList {
 
                     Stove stove = new Stove(world, x, y, (int) width, (int) height, batch);
                     stationArray.add(stove); // Add stove to the array
-                } if (object.getName().equals("station_chopping_board")) {
+                } else if (object.getName().equals("station_chopping_board")) {
                     x = object.getProperties().get("x", Float.class) + 16;
                     y = object.getProperties().get("y", Float.class) + 25;
                     width = object.getProperties().get("width", Float.class);
@@ -64,7 +65,7 @@ public class StationList {
 
                     ChoppingBoard choppingBoard = new ChoppingBoard(world, x, y, (int) width, (int) height, batch);
                     stationArray.add(choppingBoard); // Add stove to the array
-                } if (object.getName().equals("station_rice_cooker")) {
+                } else if (object.getName().equals("station_rice_cooker")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 40;
                     width = object.getProperties().get("width", Float.class);
@@ -72,7 +73,7 @@ public class StationList {
 
                     RiceCooker riceCooker = new RiceCooker(world, x, y, (int) width, (int) height, batch);
                     stationArray.add(riceCooker); // Add stove to the array
-                } if (object.getName().equals("station_counter")) {
+                } else if (object.getName().equals("station_counter")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 70;
                     width = object.getProperties().get("width", Float.class);
@@ -80,7 +81,7 @@ public class StationList {
 
                     Counter counter = new Counter(world, x, y, (int) width, (int) height, batch, orders);
                     stationArray.add(counter); // Add stove to the array
-                } if (object.getName().equals("station_placemat")) {
+                } else if (object.getName().equals("station_placemat")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
@@ -96,7 +97,7 @@ public class StationList {
                 // in the tiled map, we only need to name the foodsources like these!
                 // more modular map creation!!!!!
 
-                if (object.getName().equals("onion_source")) {
+                else if (object.getName().equals("onion_source")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
                     width = object.getProperties().get("width", Float.class);

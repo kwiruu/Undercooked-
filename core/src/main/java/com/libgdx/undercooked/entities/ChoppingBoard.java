@@ -12,7 +12,7 @@ import com.libgdx.undercooked.entities.PlayerManager.PlayerControls;
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int max_timer;
     int timer;
-    boolean playerOn;
+    boolean playerOn = false;
     Player pon;
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
@@ -20,24 +20,30 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // chopping
         floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon"); // unfinished chopping (show containedItem)
     }
+    @Override
     public void render() {
         // stateTime += (float) (Gdx.graphics.getDeltaTime() + .2);
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
+
         // TODO this
         // it runs thrice for some reason
         System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
         if (!playerOn && timer <= 0){
             System.out.println("idle");
+            System.out.println("oten ni mars gga 1");
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         } else if (playerOn) {
             System.out.println("chopping");
+            System.out.println("oten ni mars gga ");
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         } else {
             System.out.println("cut progress");
+            System.out.println("oten ni mars gga");
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
         }
         batch.draw(currentFrame, getX(), getY());
+
     }
 
     @Override
