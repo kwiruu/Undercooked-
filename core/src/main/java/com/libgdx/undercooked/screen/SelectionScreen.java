@@ -10,8 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
+import database.UserInfo;
+import database.SQLOperations;
+import database.HighScore;
+
+import java.util.List;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
+import static database.SQLOperations.getInfo;
 
 public class SelectionScreen implements Screen {
 
@@ -19,7 +25,7 @@ public class SelectionScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private MapSound mapSound;
-
+    private Table mapTable;
     private static String selectedMap;
 
     public SelectionScreen(final Main context) {
@@ -35,27 +41,11 @@ public class SelectionScreen implements Screen {
         root.setFillParent(true);
         stage.addActor(root);
 
-        Label titleLabel = new Label("Select Map", skin);
+        UserInfo userInfo = getInfo("kwiru");  // Adjust "valceven" as needed to dynamically fetch the current user
+        Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
 
-        Table mapTable = new Table();
-        for (int i = 1; i <= 5; i++) {
-            final int mapNumber = i;
-            TextButton mapButton = new TextButton("Map " + mapNumber, skin);
-            mapButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    String mapText = mapButton.getText().toString().replaceAll("\\s", "");
-                    setSelectedMap(mapText);
-                    mapSound = new MapSound("assets/audio/" + mapText +"_sound.wav");
-                    context.setScreen(ScreenType.GAME);
-                    Thread mapSoundThread = new Thread(mapSound);
-                    mapRunning = true;
-                    mapSoundThread.start();
-                }
-            });
-            mapTable.add(mapButton).width(300F).pad(20);
-            mapTable.row();
-        }
+        mapTable = new Table();
+        setupMapButtons(userInfo.getLevel(), skin);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -83,6 +73,61 @@ public class SelectionScreen implements Screen {
         stage.draw();
     }
 
+    public void setupMapButtons(int userLevel, Skin skin) {
+        mapTable.clear();
+
+        for (int i = 1; i <= 5; i++) {
+            final int mapNumber = i;
+            TextButton mapButton = new TextButton("Map " + mapNumber, skin);
+            if (mapNumber > userLevel) {
+                mapButton.setDisabled(true);
+            } else {
+                mapButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        String mapText = mapButton.getText().toString().replaceAll("\\s", "");
+                        setSelectedMap(mapText);
+                        mapSound = new MapSound("assets/audio/" + mapText + "_sound.wav");
+                        context.setScreen(ScreenType.GAME);
+                        Thread mapSoundThread = new Thread(mapSound);
+                        mapRunning = true;
+                        mapSoundThread.start();
+                    }
+                });
+            }
+
+            TextButton highScoreButton = new TextButton("High Scores", skin);
+            highScoreButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    showHighScoresDialog(mapNumber);
+                }
+            });
+
+            mapTable.add(mapButton).width(200F).pad(10);
+            mapTable.add(highScoreButton).width(200F).pad(10);
+            mapTable.row();
+        }
+    }
+
+    private void showHighScoresDialog(int mapId) {
+        List<HighScore> highScores = SQLOperations.getTopHighScores(mapId);
+
+        Dialog dialog = new Dialog("Top 10 High Scores", skin);
+        dialog.getContentTable().add(new Label("Username", skin)).pad(10);
+        dialog.getContentTable().add(new Label("Score", skin)).pad(10);
+        dialog.getContentTable().row();
+
+        for (HighScore highScore : highScores) {
+            dialog.getContentTable().add(new Label(highScore.getUserName(), skin)).pad(10);
+            dialog.getContentTable().add(new Label(String.valueOf(highScore.getHighScore()), skin)).pad(10);
+            dialog.getContentTable().row();
+        }
+
+        dialog.button("Close", true);
+        dialog.show(stage);
+    }
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -102,11 +147,12 @@ public class SelectionScreen implements Screen {
         stage.dispose();
         skin.dispose();
     }
-    public static String getSelectedMap(){
+
+    public static String getSelectedMap() {
         return selectedMap;
     }
 
-    private void setSelectedMap(String map){
+    private void setSelectedMap(String map) {
         SelectionScreen.selectedMap = map;
     }
 }

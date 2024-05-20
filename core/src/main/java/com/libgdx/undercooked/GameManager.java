@@ -28,8 +28,6 @@ public class GameManager implements Disposable {
     private boolean initialized = false;
     private float elapsedTime = 0f;
     private float TIME_LIMIT = 10f;
-
-    private boolean win;
     public static boolean timesUp = false;
     public static int score = 0;
     public static NpcB2D npc;

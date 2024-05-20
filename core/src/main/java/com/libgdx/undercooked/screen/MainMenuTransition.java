@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.libgdx.undercooked.Main;
+import database.SQLOperations;
 
 public class MainMenuTransition implements Screen {
     private SpriteBatch batch;
@@ -39,6 +40,13 @@ public class MainMenuTransition implements Screen {
 
     @Override
     public void show() {
+
+        SQLOperations.createDatabase();
+        SQLOperations.createTableAccount("tblAccount");
+        SQLOperations.createTableMap();
+        SQLOperations.createTableHighScore();
+
+
         batch = new SpriteBatch();
         tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
         Tween.registerAccessor(Sprite.class, new SpriteAccessor()); // This should be after tweenManager initialization

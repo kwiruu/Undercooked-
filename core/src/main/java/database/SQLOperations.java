@@ -1,6 +1,8 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static database.SQLConnection.getConnection;
 
@@ -41,13 +43,12 @@ public class SQLOperations {
     }
 
 
-    public static void insertAccount(String username, int level) {
+    public static void insertAccount(String username) {
         try (Connection conn = getConnection();
              PreparedStatement stmnt = conn.prepareStatement(
-                 "INSERT INTO tblAccount (username, level) VALUES (? , ?)");
+                 "INSERT INTO tblAccount (username, level) VALUES (? , 1)");
         ) {
             stmnt.setString(1, username);
-            stmnt.setInt(2, level);
             stmnt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +81,7 @@ public class SQLOperations {
             if (resultSet.next()) {
                 System.out.println("User signed in successfully. Welcome ma nigga");
             } else {
-                insertAccount(userName, 1);
+                insertAccount(userName);
                 System.out.println("New account created. Proceeding to the game...");
             }
         } catch (SQLException e) {
@@ -91,16 +92,72 @@ public class SQLOperations {
     }
 
     public static void levelUp(String username) {
+        String sql = "UPDATE tblAccount SET level = level + 1 WHERE userName = ?";
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(
-                 "UPDATE level FROM tblAccount WHERE userName = ?");) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
-            ResultSet res = stmt.executeQuery();
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("User level updated successfully.");
+            } else {
+                System.out.println("User not found.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public static int findLevel(String username) {
+        int level = 0;
+        String sql = "SELECT level FROM tblAccount WHERE userName = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                level = rs.getInt("level");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return level;
+    }
+
+    public static UserInfo getInfo(String username) {
+        int level = 0;
+        String userName = "";
+        String sql = "SELECT * FROM tblAccount WHERE userName = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                level = rs.getInt("level");
+                userName = rs.getString("username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new UserInfo(level,userName);
+    }
+
+    public static List<HighScore> getTopHighScores(int mapId) {
+        List<HighScore> highScores = new ArrayList<>();
+        String sql = "SELECT userName, highScore FROM tblHighscore WHERE mapId = ? ORDER BY highScore DESC LIMIT 10";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, mapId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String userName = rs.getString("userName");
+                int highScore = rs.getInt("highScore");
+                highScores.add(new HighScore(userName, highScore));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return highScores;
+    }
 
 
 
