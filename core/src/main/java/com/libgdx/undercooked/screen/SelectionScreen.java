@@ -43,6 +43,10 @@ public class SelectionScreen implements Screen {
 
     public SelectionScreen(final Main context) {
         this.context = context;
+        mapSound = new MapSound("assets/audio/spirited_away.wav");
+        Thread mapSoundThread = new Thread(mapSound);
+        mapRunning = true;
+        mapSoundThread.start();
     }
 
     @Override
@@ -82,7 +86,7 @@ public class SelectionScreen implements Screen {
         camera.zoom = 0.5f; //Adjust lang ni if you want to zoom in or zoom less
 
         //Sets the camera pos
-        camera.position.set((backgroundTexture.getWidth()/3) * camera.zoom, Gdx.graphics.getHeight() - ((backgroundTexture.getHeight()/3) * camera.zoom), 0);
+        camera.position.set((backgroundTexture.getWidth()/3) * camera.zoom - 600, Gdx.graphics.getHeight() - ((backgroundTexture.getHeight()/3) * camera.zoom) - 200, 0);
         System.out.println(backgroundTexture.getHeight());
         System.out.println(backgroundTexture.getWidth());
         System.out.println("Camera position: (" + camera.position.x + ", " + camera.position.y + ")");
