@@ -49,7 +49,7 @@ public class GameUI implements UIUpdater {
         initializeComponents();
     }
 
-    public void initializeComponents() {
+    private void initializeComponents() {
         pauseButton = new ImageButton(
             new TextureRegionDrawable(buttonRegions[0]),
             new TextureRegionDrawable(buttonRegions[1])
@@ -84,12 +84,11 @@ public class GameUI implements UIUpdater {
         rootTable.padRight(15f);
         stage.addActor(rootTable);
 
-        //info table para babaw sa oderlist lmao
         infoTable = new Table();
         infoTable.setHeight(32);
-        Texture topbackgroundTexture = new Texture(Gdx.files.internal("assets/ui/top_table_background.png"));
-        TextureRegionDrawable topbackgroundDrawable = new TextureRegionDrawable(new TextureRegion(topbackgroundTexture));
-        infoTable.setBackground(topbackgroundDrawable);
+        Texture topBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/top_table_background.png"));
+        TextureRegionDrawable topBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(topBackgroundTexture));
+        infoTable.setBackground(topBackgroundDrawable);
 
         rootTable.add(infoTable).pad(0).align(Align.topRight);
 
@@ -103,28 +102,25 @@ public class GameUI implements UIUpdater {
         rootTable.row();
         rootTable.add(orderTable).pad(0).align(Align.topRight);
         rootTable.row();
+
         belowTable = new Table();
-        Texture belowbackgroundTexture = new Texture(Gdx.files.internal("assets/ui/below_table_background.png"));
-        TextureRegionDrawable belowbackgroundDrawable = new TextureRegionDrawable(new TextureRegion(belowbackgroundTexture));
-        belowTable.setBackground(belowbackgroundDrawable);
-        rootTable.add(belowTable).pad(0).expand().align(Align.topRight);;
+        Texture belowBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/below_table_background.png"));
+        TextureRegionDrawable belowBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(belowBackgroundTexture));
+        belowTable.setBackground(belowBackgroundDrawable);
+        rootTable.add(belowTable).pad(0).expand().align(Align.topRight);
 
         scoreLabel = new Label("Score: " + score, skin);
-        orderTable.add(scoreLabel).pad(10).align(Align.right).row();
-
         timerLabel = new Label("", skin);
-        orderTable.add(timerLabel).pad(10).align(Align.right).row();
-
-        stage.addActor(pauseButton);
-
 
         infoTable.add(scoreLabel).pad(10);
         infoTable.add(timerLabel).pad(10);
 
+        stage.addActor(pauseButton);
+
         orders = new Orders(); // Initialize orders
     }
 
-    public void updateButtonPosition() {
+    private void updateButtonPosition() {
         float displacement = isHovered ? 2.5f : 0f;
         pauseButton.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72 + displacement);
     }
@@ -139,7 +135,7 @@ public class GameUI implements UIUpdater {
     }
 
     public void update(Player player) {
-        scoreLabel.setText("  "+score+"   ");
+        scoreLabel.setText("  " + score + "   ");
         elapsedTime -= Gdx.graphics.getDeltaTime();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
@@ -157,14 +153,11 @@ public class GameUI implements UIUpdater {
     public void updateOrdersUI(Orders orders) {
         orderTable.clear(); // Clear previous orders
 
-        // Re-add the scoreLabel and timerLabel at the top of the orderTable
-
         orders.removeInactiveOrders();
         ArrayList<FoodOrder> orderList = orders.getOrderList();
 
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
-        // Load the background texture and create a drawable
         Texture rowBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/row_background.png"));
         TextureRegionDrawable rowBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(rowBackgroundTexture));
 
@@ -172,12 +165,10 @@ public class GameUI implements UIUpdater {
         TextureRegionDrawable itemBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(itemBackgroundTexture));
 
         for (FoodOrder order : orderList) {
-            // Create a Table for the row
             Table rowTable = new Table();
             rowTable.padRight(10f);
             rowTable.align(Align.left);
 
-            // Create a Table for the image with its own background
             Table imageTable = new Table();
             imageTable.setBackground(itemBackgroundDrawable);
             imageTable.align(Align.center).pad(0);
@@ -186,30 +177,22 @@ public class GameUI implements UIUpdater {
             Image orderImage = new Image(texture);
             imageTable.add(orderImage).pad(5).width(32f).height(32f);
 
-            // Create a Table for the label with its own background
             Table labelTable = new Table();
             labelTable.setBackground(rowBackgroundDrawable);
             labelTable.align(Align.left);
             Label orderLabel = new Label(toCamelCase(order.getFoodType().toString()), skin);
             labelTable.add(orderLabel).pad(5).width(128f);
 
-            // Add the image and label tables to the row table
             rowTable.add(imageTable).pad(5).width(34f).height(34f);
             rowTable.add(labelTable).pad(5).expandX().fillX();
 
-            // Add the row table to the main orderTable
             orderTable.add(rowTable).pad(5).row();
         }
     }
 
-    public String toCamelCase(String input) {
-        // Replace underscores with spaces
+    private String toCamelCase(String input) {
         input = input.replace('_', ' ');
-
-        // Split the string into words
         String[] words = input.split(" ");
-
-        // Convert the first letter of each word to uppercase and the rest to lowercase
         StringBuilder camelCaseString = new StringBuilder();
         for (String word : words) {
             if (word.length() > 0) {
@@ -218,12 +201,49 @@ public class GameUI implements UIUpdater {
                     .append(" ");
             }
         }
-
-        // Trim the trailing space and return the result
         return camelCaseString.toString().trim();
     }
 
-    public float getElapsedTime(){
+    public float getElapsedTime() {
         return this.elapsedTime;
+    }
+
+    public void gameOverScreen() {
+        createEndScreen("Game Over");
+    }
+
+    public void winScreen() {
+        createEndScreen("You Win!");
+    }
+
+    private void createEndScreen(String message) {
+        stage.clear(); // Clear the stage
+
+        Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+
+        Table endScreenTable = new Table();
+        endScreenTable.setFillParent(true);
+        stage.addActor(endScreenTable);
+
+        Label messageLabel = new Label(message, skin);
+        messageLabel.setFontScale(2);
+        endScreenTable.add(messageLabel).pad(20).row();
+
+        Label scoreLabel = new Label("Final Score: " + score, skin);
+        endScreenTable.add(scoreLabel).pad(20).row();
+
+        int minutes = (int) (elapsedTime / 60);
+        int seconds = (int) (elapsedTime % 60);
+        Label timeLabel = new Label(String.format("Time: %02d:%02d", minutes, seconds), skin);
+        endScreenTable.add(timeLabel).pad(20).row();
+
+        TextButton returnButton = new TextButton("Return to Menu", skin);
+        returnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                context.setScreen(ScreenType.SELECTMAP); // Change this to the appropriate screen type
+            }
+        });
+        endScreenTable.add(returnButton).pad(20).row();
     }
 }

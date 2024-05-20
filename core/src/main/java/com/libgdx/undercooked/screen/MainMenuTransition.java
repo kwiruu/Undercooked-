@@ -151,7 +151,7 @@ public class MainMenuTransition implements Screen {
         float cloud1EndX = Gdx.graphics.getWidth() - cloud1Sprite.getWidth() * 8;
 
         Tween.set(cloud1Sprite, SpriteAccessor.POS_X)
-            .target(-cloud1Sprite.getWidth() * 0.01f)
+            .target(-cloud1Sprite.getWidth() * 1.1f)
             .start(tweenManager);
 
         Tween.to(cloud1Sprite, SpriteAccessor.POS_X, 2)
@@ -164,10 +164,10 @@ public class MainMenuTransition implements Screen {
             .start(tweenManager);
 
         // Move cloud2 from left to right and stop on the right side of the screen
-        float cloud2EndX = Gdx.graphics.getWidth() - cloud2Sprite.getWidth() * 23;
+        float cloud2EndX = Gdx.graphics.getWidth() - cloud2Sprite.getWidth() * 8;
 
         Tween.set(cloud2Sprite, SpriteAccessor.POS_X)
-            .target(cloud2Sprite.getWidth())
+            .target(cloud2Sprite.getWidth() * 1.1f)
             .start(tweenManager);
 
         Tween.to(cloud2Sprite, SpriteAccessor.POS_X, 2)
