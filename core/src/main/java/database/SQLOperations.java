@@ -90,5 +90,18 @@ public class SQLOperations {
         return true;
     }
 
+    public static void levelUp(String username) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                 "UPDATE level FROM tblAccount WHERE userName = ?");) {
+            stmt.setString(1, username);
+            ResultSet res = stmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 }

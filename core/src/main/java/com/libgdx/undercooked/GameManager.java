@@ -2,7 +2,6 @@
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.StationList;
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
@@ -22,13 +21,15 @@ public class GameManager implements Disposable {
 
     private final World world;
 
-    public static boolean checkEntry;
+    private static boolean checkEntry;
     private MapManager mapManager;
     private Player playerManager;
     private SpriteBatch batch;
     private boolean initialized = false;
     private float elapsedTime = 0f;
     private float TIME_LIMIT = 10f;
+
+    private boolean win;
     public static boolean timesUp = false;
     public static int score = 0;
     public static NpcB2D npc;
@@ -36,6 +37,7 @@ public class GameManager implements Disposable {
     private Texture npcTexture;
     private StationList stationList;
 
+    private static boolean win;
     private Orders orders;
     private UIUpdater uiUpdater;
 
@@ -68,6 +70,7 @@ public class GameManager implements Disposable {
 
             initialized = true;
             checkEntry = true;
+            win = false;
         }
     }
 
@@ -80,6 +83,7 @@ public class GameManager implements Disposable {
             Orders.freeOrderList();
             timesUp = true;
             checkEntry = true;
+            win = true;
         }
     }
 
@@ -127,5 +131,13 @@ public class GameManager implements Disposable {
         npcTexture.dispose();
         initialized = false;
         Gdx.app.log("GameManager", "World disposed after 3 minutes");
+    }
+
+    public boolean getWin(){
+        return win;
+    }
+
+    public static void setCheckEntry(Boolean x){
+        checkEntry = x;
     }
 }

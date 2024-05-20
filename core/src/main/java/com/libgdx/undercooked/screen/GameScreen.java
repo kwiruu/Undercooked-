@@ -70,14 +70,10 @@ public class GameScreen extends ScreenAdapter {
         MapManager.tmr.setView(camera);
         gameUI.update(gameManager.getPlayerManager());
         if (timesUp) {
-            Orders.freeOrderList();
-            timesUp = false;
-            System.out.println("Time's up! Switching to SELECTMAP screen.");
-            gameManager.dispose();
-            gameManager = null;
-            score = 0;
-            mapRunning = false;
-            MapSound.stop();
+            if(gameManager.getWin()){
+
+            }
+            finishGame();
             try {
                 context.setScreen(SelectionScreen.class.newInstance());
                 Main.deleteScreen(ScreenType.GAME);
@@ -114,5 +110,15 @@ public class GameScreen extends ScreenAdapter {
             gameManager.dispose();
             debugRenderer.dispose();
         }
+    }
+
+    public void finishGame(){
+        Orders.freeOrderList();
+        timesUp = false;
+        gameManager.dispose();
+        gameManager = null;
+        score = 0;
+        mapRunning = false;
+        MapSound.stop();
     }
 }
