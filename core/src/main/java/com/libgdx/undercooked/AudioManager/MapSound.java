@@ -15,6 +15,7 @@ public class MapSound implements Runnable{
     public void run() {
         if(mapRunning){
             startSound.play(volume);
+            long loop = startSound.loop();
         }
     }
 
