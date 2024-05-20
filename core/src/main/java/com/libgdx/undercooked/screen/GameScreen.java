@@ -19,7 +19,10 @@ import com.libgdx.undercooked.entities.Orders;
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static com.libgdx.undercooked.GameManager.score;
 import static com.libgdx.undercooked.GameManager.timesUp;
+import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
+import static com.libgdx.undercooked.screen.SelectionScreen.mapId;
 import static com.libgdx.undercooked.utils.Constants.PPM;
+import static database.SQLOperations.insertScore;
 
 public class GameScreen extends ScreenAdapter {
     private final Main context;
@@ -71,7 +74,8 @@ public class GameScreen extends ScreenAdapter {
         gameUI.update(gameManager.getPlayerManager());
         if (timesUp) {
             if(gameManager.getWin()){
-
+                System.out.println(score);
+                insertScore(getUsername(),1,score);
             }
             finishGame();
             try {
@@ -120,5 +124,6 @@ public class GameScreen extends ScreenAdapter {
         score = 0;
         mapRunning = false;
         MapSound.stop();
+        mapId = 0;
     }
 }

@@ -11,10 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -26,6 +23,8 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
+
+import static database.SQLOperations.userSignIn;
 
 public class LandingPageScreen implements Screen {
     private final Main context;
@@ -132,11 +131,16 @@ public class LandingPageScreen implements Screen {
                 username = usernameField.getText();
 
                 if (username.isEmpty()) {
-
+                    Dialog warningDialog = new Dialog("Warning", skin);
+                    warningDialog.text("Please enter a username.");
+                    warningDialog.button("OK", true);
+                    warningDialog.show(stage);
                 }
                 else if(!username.isEmpty()){
-                    context.setScreen(ScreenType.SELECTMAP);
-                    mainMenuSound.stop();
+                    if(userSignIn(username)){
+                        context.setScreen(ScreenType.SELECTMAP);
+                        mainMenuSound.stop();
+                    }
                 }
             }
         });

@@ -159,6 +159,21 @@ public class SQLOperations {
         return highScores;
     }
 
+    public static void insertScore(String username,int mapId,int score){
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                 "INSERT INTO tblHighscore (mapId, userName, highScore)  VALUES " +
+                     "(? , ?, ?)"
+             )) {
+            stmt.setInt(1, mapId);
+            stmt.setString(2,username);
+            stmt.setInt(3,score);
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

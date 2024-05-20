@@ -27,7 +27,6 @@ public class Stove extends Station implements canUpdate {
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         }
         batch.draw(currentFrame, getX(), getY());
-        System.out.println("stove ni");
     }
 
     @Override

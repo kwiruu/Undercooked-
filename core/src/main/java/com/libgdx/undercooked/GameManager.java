@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.libgdx.undercooked.entities.Npc.Npc;
 
 import static com.libgdx.undercooked.entities.Orders.activeOrderCount;
+import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
+import static database.SQLOperations.insertScore;
 
 public class GameManager implements Disposable {
 

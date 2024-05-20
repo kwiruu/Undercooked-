@@ -17,16 +17,20 @@ import database.HighScore;
 import java.util.List;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
+import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
 import static database.SQLOperations.getInfo;
 
 public class SelectionScreen implements Screen {
 
     private final Main context;
+
+    public static int mapId = 0;
     private Stage stage;
     private Skin skin;
     private MapSound mapSound;
     private Table mapTable;
     private static String selectedMap;
+
 
     public SelectionScreen(final Main context) {
         this.context = context;
@@ -41,7 +45,7 @@ public class SelectionScreen implements Screen {
         root.setFillParent(true);
         stage.addActor(root);
 
-        UserInfo userInfo = getInfo("kwiru");  // Adjust "valceven" as needed to dynamically fetch the current user
+        UserInfo userInfo = getInfo(getUsername());
         Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
 
         mapTable = new Table();
@@ -87,6 +91,7 @@ public class SelectionScreen implements Screen {
                     public void clicked(InputEvent event, float x, float y) {
                         String mapText = mapButton.getText().toString().replaceAll("\\s", "");
                         setSelectedMap(mapText);
+                        mapId = mapText.charAt(3);
                         mapSound = new MapSound("assets/audio/" + mapText + "_sound.wav");
                         context.setScreen(ScreenType.GAME);
                         Thread mapSoundThread = new Thread(mapSound);
