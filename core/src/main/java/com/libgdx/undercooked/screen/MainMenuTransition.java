@@ -25,14 +25,13 @@ public class MainMenuTransition implements Screen {
     private Sprite pressSprite;
     private boolean keyPressedSinceLastFrame;
     private boolean transitionStarted = false;
-    private boolean transitionScreenStarted = false;
     private boolean initialAnimationComplete = false;
     private boolean buttonsVisible = false;
-    private Texture playTexture,playClickedTexture,settingsClickedTexture,settingsTexture,exitTexture,exitClickedTexture, profileTexture, profileClickedTexture,blockCloud1Texture, blockCloud2Texture;
+    private Texture playTexture,playClickedTexture,settingsClickedTexture,settingsTexture,exitTexture,exitClickedTexture, profileTexture, profileClickedTexture;
     private Sprite profileButton;
-    private boolean SceneInitialAnimationComplete = false;
     private boolean playButtonPressed = false;
     private boolean transitionAnimationComplete = false;
+    private boolean profileButtonPressed = false;
 
     public MainMenuTransition(final Main context) {
         this.context = context;
@@ -186,13 +185,14 @@ public class MainMenuTransition implements Screen {
                     if (playButton.getBoundingRectangle().contains(screenX, screenY)) {
                         playButton.setTexture(playClickedTexture);
                         revertTexture(playButton, playTexture);
+                        playButtonPressed = true; // Set the flag
+                        startTransitionAnimation(); // Start the transition animation
                         return true;
                     }
                     if (profileButton.getBoundingRectangle().contains(screenX, screenY)) {
                         profileButton.setTexture(profileClickedTexture);
                         revertTexture(profileButton, profileTexture);
-                        startTransitionAnimation(); // Start the transition animation
-                        playButtonPressed = true; // Set the flag
+                        profileButtonPressed = true; // Set the flag
                         startTransitionAnimation(); // Start the transition animation
                         return true;
                     }
@@ -267,6 +267,9 @@ public class MainMenuTransition implements Screen {
                 @Override
                 public void onEvent(int type, BaseTween<?> source) {
                     transitionAnimationComplete = true; // Set the flag
+                    if (profileButtonPressed) {
+                        startTransitionScreen(); // Only start screen transition if play button was pressed
+                    }
                     if (playButtonPressed) {
                         startTransitionScreen(); // Only start screen transition if play button was pressed
                     }
@@ -279,7 +282,7 @@ public class MainMenuTransition implements Screen {
 
 
     private void startTransitionScreen() {
-        float duration = 0.2f;
+        float duration = 2f;
 
         float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
 
@@ -293,7 +296,14 @@ public class MainMenuTransition implements Screen {
                 @Override
                 public void onEvent(int type, BaseTween<?> source) {
                     if (transitionAnimationComplete) {
-                        context.setScreen(new LandingPageScreen(context)); // Transition to the new screen
+                        if(profileButtonPressed){
+                            context.setScreen(ScreenType.LANDING);
+                            profileButtonPressed=false;
+                        }
+                        if(playButtonPressed){
+                            context.setScreen(ScreenType.SELECTMAP);
+                            playButtonPressed=false;
+                        }
                     }
                 }
             })
