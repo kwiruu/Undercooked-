@@ -18,6 +18,7 @@ public class Stove extends Station implements canUpdate {
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
+        // System.out.println("containedItem " + containedItem);
         if (timer > 0) {
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         } else if (containedItem != null) {

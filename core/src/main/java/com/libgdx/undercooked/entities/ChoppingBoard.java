@@ -12,7 +12,7 @@ import com.libgdx.undercooked.entities.PlayerManager.PlayerControls;
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int max_timer;
     int timer;
-    boolean playerOn;
+    boolean playerOn = false;
     Player pon;
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
@@ -26,16 +26,16 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         TextureRegion currentFrame;
         // TODO this
         // it runs thrice for some reason
-        System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
-        if (!playerOn && timer <= 0){
-            System.out.println("idle");
-            currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
-        } else if (playerOn) {
-            System.out.println("chopping");
+        System.out.println("timer = " + timer + ", playerOn = " + playerOn + ", containedItem = " + containedItem);
+        if (timer > 0 && playerOn) {
+            //System.out.println("chopping");
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
-        } else {
-            System.out.println("cut progress");
+        } else if (timer > 0) {
+            //System.out.println("cut progress");
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
+        } else {
+            //System.out.println("idle");
+            currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         }
         batch.draw(currentFrame, getX(), getY());
     }
