@@ -222,4 +222,8 @@ public class GameUI implements UIUpdater {
         // Trim the trailing space and return the result
         return camelCaseString.toString().trim();
     }
+
+    public float getElapsedTime(){
+        return this.elapsedTime;
+    }
 }
