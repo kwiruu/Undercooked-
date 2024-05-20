@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,14 +21,22 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.AudioManager.MainMenuSound;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Sine;
+
 public class LandingPageScreen implements Screen {
     private final Main context;
+    private TweenManager tweenManager;
     private Stage stage;
     private Skin skin;
     private SpriteBatch batch;
     private static String username = null;
     private Texture imgTexture; // Declare imgTexture here
     private MainMenuSound mainMenuSound;
+    private Sprite blockClouds1, blockClouds2;
 
     public LandingPageScreen(final Main context) {
         this.context = context;
@@ -36,12 +45,40 @@ public class LandingPageScreen implements Screen {
 
     @Override
     public void show() {
+        tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+
         stage = new Stage(new ScreenViewport());
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(stage);
 
         imgTexture = new Texture(Gdx.files.internal("assets/sprites_raw/login_box2.png"));
+
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
+
+
+        blockClouds1 = new Sprite(blockCloud1Texture);
+        blockClouds2 = new Sprite(blockCloud2Texture);
+
+        float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
+
+        blockClouds1.setSize(blockCloud1Texture.getWidth() * 4, blockCloud1Texture.getHeight() * 4);
+        blockClouds2.setSize(blockCloud2Texture.getWidth() * 4, blockCloud2Texture.getHeight() * 4);
+
+        // Set initial positions to the middle of the screen
+        blockClouds1.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds1.getHeight() / 2);
+        blockClouds2.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds2.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds2.getHeight() / 2);
+
+        // Tween to move to the outside
+        Tween.to(blockClouds1, SpriteAccessor.POS_X, 3f)
+            .target(-blockClouds1.getWidth()) // Move to the left outside
+            .start(tweenManager);
+        Tween.to(blockClouds2, SpriteAccessor.POS_X, 3f)
+            .target(Gdx.graphics.getWidth()) // Move to the right outside
+            .start(tweenManager);
+
 
         Table root = new Table();
         root.setBackground(new TextureRegionDrawable(new TextureRegion(imgTexture)));
@@ -112,8 +149,11 @@ public class LandingPageScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        tweenManager.update(delta);
 
         batch.begin();
+        blockClouds1.draw(batch);
+        blockClouds2.draw(batch);
 
         batch.end();
 
