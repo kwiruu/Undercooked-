@@ -28,18 +28,15 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
 
         // TODO this
         // it runs thrice for some reason
-        System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
+        // System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
         if (!playerOn && timer <= 0){
-            System.out.println("idle");
-            System.out.println("oten ni mars gga 1");
+            //System.out.println("idle");
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         } else if (playerOn) {
-            System.out.println("chopping");
-            System.out.println("oten ni mars gga ");
+            //System.out.println("chopping");
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         } else {
-            System.out.println("cut progress");
-            System.out.println("oten ni mars gga");
+            //System.out.println("cut progress");
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
         }
         batch.draw(currentFrame, getX(), getY());

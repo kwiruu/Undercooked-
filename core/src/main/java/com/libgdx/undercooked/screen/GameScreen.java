@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.GameManager;
@@ -23,6 +24,7 @@ import static com.libgdx.undercooked.utils.Constants.PPM;
 public class GameScreen extends ScreenAdapter {
     private final Main context;
     public static OrthographicCamera camera;
+    private Box2DDebugRenderer debugRenderer;
     private FitViewport viewport;
     private GameUI gameUI;
     private GameManager gameManager;
@@ -33,11 +35,11 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         if (gameManager == null) {
-
             initCamera();
             gameUI = new GameUI(context);
             gameManager = new GameManager(gameUI);
             Gdx.input.setInputProcessor(gameUI.getStage());
+            debugRenderer = new Box2DDebugRenderer();
         }
     }
 
@@ -56,9 +58,10 @@ public class GameScreen extends ScreenAdapter {
             gameManager.render(currentFrame);
             batch.end();
             gameUI.render();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e){
             context.setScreen(ScreenType.SELECTMAP);
         }
+        debugRenderer.render(gameManager.getWorld(), camera.combined);
     }
 
     private void update(float deltaTime) {
@@ -101,7 +104,7 @@ public class GameScreen extends ScreenAdapter {
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera();
         float SCALE = 1.5f;
-        camera.setToOrtho(false, w / SCALE, h / SCALE);
+        camera.setToOrtho(false, w / SCALE / PPM, h / SCALE / PPM);
         viewport = new FitViewport(w / SCALE, h / SCALE, camera);
     }
 
@@ -109,6 +112,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         if (gameManager != null) {
             gameManager.dispose();
+            debugRenderer.dispose();
         }
     }
 }

@@ -18,17 +18,21 @@ import com.libgdx.undercooked.Main;
 
 public class MainMenuTransition implements Screen {
     private SpriteBatch batch;
-    private Sprite bgSprite, cloudSprite, textSprite, cloud1Sprite, cloud2Sprite;
+    private Sprite bgSprite, cloudSprite, textSprite, cloud1Sprite, cloud2Sprite, blockClouds1, blockClouds2;
     private Sprite playButton, settingsButton, exitButton;
     private TweenManager tweenManager;
     private final Main context;
     private Sprite pressSprite;
     private boolean keyPressedSinceLastFrame;
     private boolean transitionStarted = false;
+    private boolean transitionScreenStarted = false;
     private boolean initialAnimationComplete = false;
     private boolean buttonsVisible = false;
-    private Texture playTexture,playClickedTexture,settingsClickedTexture,settingsTexture,exitTexture,exitClickedTexture, profileTexture, profileClickedTexture;
+    private Texture playTexture,playClickedTexture,settingsClickedTexture,settingsTexture,exitTexture,exitClickedTexture, profileTexture, profileClickedTexture,blockCloud1Texture, blockCloud2Texture;
     private Sprite profileButton;
+    private boolean SceneInitialAnimationComplete = false;
+    private boolean playButtonPressed = false;
+    private boolean transitionAnimationComplete = false;
 
     public MainMenuTransition(final Main context) {
         this.context = context;
@@ -47,6 +51,8 @@ public class MainMenuTransition implements Screen {
         Texture cloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/clouds1.png"));
         Texture cloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/clouds2.png"));
         Texture pressTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/press_text.png"));
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
 
 
         // Load button textures
@@ -60,6 +66,7 @@ public class MainMenuTransition implements Screen {
         profileClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/profiles_clicked.png"));
 
 
+
         // Create sprites
         bgSprite = new Sprite(bgTexture);
         cloudSprite = new Sprite(cloudTexture);
@@ -71,6 +78,8 @@ public class MainMenuTransition implements Screen {
         settingsButton = new Sprite(settingsTexture);
         exitButton = new Sprite(exitTexture);
         profileButton = new Sprite(profileTexture);
+        blockClouds1 = new Sprite(blockCloud1Texture);
+        blockClouds2 = new Sprite(blockCloud2Texture);
 
 
         // Multiply sizes by 4
@@ -84,6 +93,8 @@ public class MainMenuTransition implements Screen {
         settingsButton.setSize(settingsTexture.getWidth() * 2, settingsTexture.getHeight() * 2);
         exitButton.setSize(exitTexture.getWidth() * 2, exitTexture.getHeight() * 2);
         profileButton.setSize(profileTexture.getWidth() * 2, profileTexture.getHeight() * 2);
+        blockClouds1.setSize(cloud1Texture.getWidth() * 4, cloud1Texture.getHeight() * 4);
+        blockClouds2.setSize(cloud2Texture.getWidth() * 4, cloud2Texture.getHeight() * 4);
 
 
         // Set sprite positions
@@ -94,6 +105,9 @@ public class MainMenuTransition implements Screen {
         cloud2Sprite.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2f - cloud2Sprite.getHeight() / 2);
         pressSprite.setPosition(Gdx.graphics.getWidth() / 2f - pressSprite.getWidth() / 2, Gdx.graphics.getHeight() / 5f);
         profileButton.setPosition(Gdx.graphics.getWidth() - profileButton.getWidth() * 1.5f, -profileButton.getHeight());
+        blockClouds1.setPosition(-blockClouds1.getWidth(), Gdx.graphics.getHeight() / 2f - blockClouds1.getHeight() / 2);
+        blockClouds2.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2f - blockClouds2.getHeight() / 2);
+
 
         // Position buttons off-screen initially
         playButton.setPosition(Gdx.graphics.getWidth() / 2f - playButton.getWidth() / 2, -playButton.getHeight());
@@ -172,30 +186,35 @@ public class MainMenuTransition implements Screen {
                     if (playButton.getBoundingRectangle().contains(screenX, screenY)) {
                         playButton.setTexture(playClickedTexture);
                         revertTexture(playButton, playTexture);
-                        context.setScreen(new LandingPageScreen(context));
                         return true;
                     }
                     if (profileButton.getBoundingRectangle().contains(screenX, screenY)) {
                         profileButton.setTexture(profileClickedTexture);
                         revertTexture(profileButton, profileTexture);
+                        startTransitionAnimation(); // Start the transition animation
+                        playButtonPressed = true; // Set the flag
+                        startTransitionAnimation(); // Start the transition animation
                         return true;
                     }
                     if (settingsButton.getBoundingRectangle().contains(screenX, screenY)) {
                         settingsButton.setTexture(settingsClickedTexture);
-                        // Perform settings action here
                         revertTexture(settingsButton, settingsTexture);
+                        startTransitionAnimation(); // Start the transition animation
                         return true;
                     }
                     if (exitButton.getBoundingRectangle().contains(screenX, screenY)) {
                         exitButton.setTexture(exitClickedTexture);
-                        // Perform exit action here
                         revertTexture(exitButton, exitTexture);
+                        startTransitionAnimation(); // Start the transition animation
                         return true;
                     }
                 }
                 return false;
             }
         });
+
+
+
     }
 
 
@@ -237,13 +256,54 @@ public class MainMenuTransition implements Screen {
             .start(tweenManager);
 
         // Fade out pressSprite
-        Tween.to(pressSprite, SpriteAccessor.ALPHA, duration-0.5f)
+        Tween.to(pressSprite, SpriteAccessor.ALPHA, duration - 0.5f)
             .target(0)
             .start(tweenManager);
 
         // Show buttons after transition
+        Tween.to(profileButton, SpriteAccessor.POS_Y, duration)
+            .target(Gdx.graphics.getHeight() / 25f)
+            .setCallback(new TweenCallback() {
+                @Override
+                public void onEvent(int type, BaseTween<?> source) {
+                    transitionAnimationComplete = true; // Set the flag
+                    if (playButtonPressed) {
+                        startTransitionScreen(); // Only start screen transition if play button was pressed
+                    }
+                }
+            })
+            .start(tweenManager);
+
         showButtons();
     }
+
+
+    private void startTransitionScreen() {
+        float duration = 0.2f;
+
+        float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
+
+        Tween.to(blockClouds1, SpriteAccessor.POS_X, duration)
+            .target(targetX)
+            .start(tweenManager);
+
+        Tween.to(blockClouds2, SpriteAccessor.POS_X, duration)
+            .target(targetX)
+            .setCallback(new TweenCallback() {
+                @Override
+                public void onEvent(int type, BaseTween<?> source) {
+                    if (transitionAnimationComplete) {
+                        context.setScreen(new LandingPageScreen(context)); // Transition to the new screen
+                    }
+                }
+            })
+            .start(tweenManager);
+    }
+
+
+
+
+
 
     private void showButtons() {
         float duration = 1.5f;
@@ -296,7 +356,6 @@ public class MainMenuTransition implements Screen {
         cloud2Sprite.draw(batch);
         pressSprite.draw(batch);
 
-
         if (buttonsVisible) {
             playButton.draw(batch);
             settingsButton.draw(batch);
@@ -304,8 +363,12 @@ public class MainMenuTransition implements Screen {
             profileButton.draw(batch);
         }
 
+        blockClouds2.draw(batch);
+        blockClouds1.draw(batch);
+
         batch.end();
     }
+
 
     @Override
     public void resize(int width, int height) {}

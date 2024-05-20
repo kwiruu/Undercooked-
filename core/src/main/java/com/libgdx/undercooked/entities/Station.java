@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.libgdx.undercooked.utils.CreateBox;
 
+import static com.libgdx.undercooked.utils.Constants.PPM;
+
 public abstract class Station {
     //temporarily stopped extends Entity
     FoodType containedItem;
@@ -27,8 +29,8 @@ public abstract class Station {
     public Station(World world, float x, float y, int width, int height, SpriteBatch batch) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = (int) ((float) height / 2 / PPM);
+        this.height = (int) (height / 2 / PPM);
         this.batch = batch;
         body = CreateBox.createBox(world, (int) x, (int) y, width, height, true);
         floatingIconFrames = new Array[3];
@@ -57,4 +59,12 @@ public abstract class Station {
 
     @Override
     public abstract String toString();
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }
