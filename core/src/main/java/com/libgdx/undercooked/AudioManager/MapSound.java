@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 public class MapSound implements Runnable{
     private static Sound startSound;
     public static boolean mapRunning = false;
-    private float volume = .5f;
+    private float volume = .3f;
 
     public MapSound(String songpath) {
         startSound = Gdx.audio.newSound(Gdx.files.internal(songpath));
