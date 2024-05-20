@@ -108,8 +108,10 @@ public class MainMenuTransition implements Screen {
         bgSprite.setPosition(0, 0);
         cloudSprite.setPosition(Gdx.graphics.getWidth() / 2f - cloudSprite.getWidth() / 2, -cloudSprite.getHeight());
         textSprite.setPosition(Gdx.graphics.getWidth() / 2f - textSprite.getWidth() / 2, Gdx.graphics.getHeight());
+        // Initial positions
         cloud1Sprite.setPosition(-cloud1Sprite.getWidth(), Gdx.graphics.getHeight() / 2f - cloud1Sprite.getHeight() / 2);
         cloud2Sprite.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2f - cloud2Sprite.getHeight() / 2);
+
         pressSprite.setPosition(Gdx.graphics.getWidth() / 2f - pressSprite.getWidth() / 2, Gdx.graphics.getHeight() / 5f);
         profileButton.setPosition(Gdx.graphics.getWidth() - profileButton.getWidth() * 1.5f, -profileButton.getHeight());
         blockClouds1.setPosition(-blockClouds1.getWidth(), Gdx.graphics.getHeight() / 2f - blockClouds1.getHeight() / 2);
@@ -149,7 +151,7 @@ public class MainMenuTransition implements Screen {
         float cloud1EndX = Gdx.graphics.getWidth() - cloud1Sprite.getWidth() * 8;
 
         Tween.set(cloud1Sprite, SpriteAccessor.POS_X)
-            .target(-cloud1Sprite.getWidth() * 0.1f)
+            .target(-cloud1Sprite.getWidth() * 0.01f)
             .start(tweenManager);
 
         Tween.to(cloud1Sprite, SpriteAccessor.POS_X, 2)
@@ -162,10 +164,10 @@ public class MainMenuTransition implements Screen {
             .start(tweenManager);
 
         // Move cloud2 from left to right and stop on the right side of the screen
-        float cloud2EndX = Gdx.graphics.getWidth() - cloud2Sprite.getWidth() * 8;
+        float cloud2EndX = Gdx.graphics.getWidth() - cloud2Sprite.getWidth() * 23;
 
         Tween.set(cloud2Sprite, SpriteAccessor.POS_X)
-            .target(cloud2Sprite.getWidth() * 0.1f)
+            .target(cloud2Sprite.getWidth())
             .start(tweenManager);
 
         Tween.to(cloud2Sprite, SpriteAccessor.POS_X, 2)
