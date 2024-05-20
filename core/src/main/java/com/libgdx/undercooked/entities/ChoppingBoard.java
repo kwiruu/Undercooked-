@@ -13,12 +13,13 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int max_timer;
     int timer;
     boolean playerOn = false;
+    FoodType tempFood;
     Player pon;
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         floatingIconFrames[0] = floating_iconAtlas.findRegions("chop_icon"); // idle
         floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // chopping
-        floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon"); // unfinished chopping (show containedItem)
+        floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon");// unfinished chopping (show containedItem)
     }
     @Override
     public void render() {
@@ -37,7 +38,11 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         } else {
             //System.out.println("cut progress");
+            if(tempFood != null){
+            floatingIconFrames[2] = floating_iconAtlas.findRegions(tempFood.toString() + "_icon");
+            }
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
+
         }
         batch.draw(currentFrame, getX(), getY());
 
@@ -51,6 +56,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
                 playerOn = true;
                 max_timer = 200;
                 timer = 200;
+                tempFood = p.getHeldItem();
                 containedItem = transmute(p.getHeldItem());
                 p.removeHeldItem();
                 pon = p;

@@ -31,7 +31,7 @@ public class GameUI  implements UIUpdater {
     private TextureRegion[] buttonRegions;
     private int currentIndex = 0;
     private boolean isHovered = false;
-    private float elapsedTime = 18f;
+    private float elapsedTime = 180f;
     private Label timerLabel;
     private Label scoreLabel;
     private Table orderTable;
@@ -96,10 +96,11 @@ public class GameUI  implements UIUpdater {
         TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
 
         orderTable.setBackground(backgroundDrawable);
-        orderTable.pad(30);
+        orderTable.pad(2);
+        orderTable.setHeight(32);
         orderTable.top().right();
         rootTable.row();
-        rootTable.add(orderTable).pad(10).align(Align.right);
+        rootTable.add(orderTable).pad(0).align(Align.right);// change this to make the table not stick right
 
         stage.addActor(pauseButton);
 
@@ -144,29 +145,62 @@ public class GameUI  implements UIUpdater {
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         // Load the background texture and create a drawable
-        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/ui/row_background.png"));
-        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+        Texture rowBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/row_background.png"));
+        TextureRegionDrawable rowBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(rowBackgroundTexture));
+
+        Texture itemBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/item_background.png"));
+        TextureRegionDrawable itemBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(itemBackgroundTexture));
+
 
         for (FoodOrder order : orderList) {
             // Create a Table for the row
             Table rowTable = new Table();
-            rowTable.setBackground(backgroundDrawable);
             rowTable.align(Align.left);
 
-            // Load the texture and create an Image actor
+            // Create a Table for the image with its own background
+            Table imageTable = new Table();
+            imageTable.setBackground(itemBackgroundDrawable);
+            imageTable.align(Align.center).pad(10);
+
             Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + order.getFoodType().toString() + ".png"));
             Image orderImage = new Image(texture);
+            imageTable.add(orderImage).pad(5).width(32f).height(32f);
 
-            // Create a Label with the food type text
-            Label orderLabel = new Label(order.getFoodType().toString(), skin);
+            // Create a Table for the label with its own background
+            Table labelTable = new Table();
+            labelTable.setBackground(rowBackgroundDrawable);
+            labelTable.align(Align.left);
+            Label orderLabel = new Label(toCamelCase(order.getFoodType().toString()), skin);
+            labelTable.add(orderLabel).pad(5).width(128f);
 
-            // Add the label and image to the row table
-            rowTable.add(orderImage).pad(5);
-            rowTable.add(orderLabel).pad(5).width(100f);
+            // Add the image and label tables to the row table
+            rowTable.add(imageTable).pad(5).width(34f).height(34f);
+            rowTable.add(labelTable).pad(5).expandX().fillX();
 
             // Add the row table to the main orderTable
             orderTable.add(rowTable).pad(5).row();
         }
+    }
+
+    public String toCamelCase(String input) {
+        // Replace underscores with spaces
+        input = input.replace('_', ' ');
+
+        // Split the string into words
+        String[] words = input.split(" ");
+
+        // Convert the first letter of each word to uppercase and the rest to lowercase
+        StringBuilder camelCaseString = new StringBuilder();
+        for (String word : words) {
+            if (word.length() > 0) {
+                camelCaseString.append(Character.toUpperCase(word.charAt(0)))
+                    .append(word.substring(1).toLowerCase())
+                    .append(" ");
+            }
+        }
+
+        // Trim the trailing space and return the result
+        return camelCaseString.toString().trim();
     }
 
 
