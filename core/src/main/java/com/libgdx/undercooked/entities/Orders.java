@@ -84,20 +84,6 @@ public class Orders {
         orderList.clear();
     }
 
-    public FoodOrder getCurrentOrder() {
-        if (activeOrder < orderList.size()) {
-            return orderList.get(activeOrder);
-        }
-        return null;
-    }
-
-    public void nextOrder() {
-        activeOrder++;
-        if (activeOrder >= orderList.size()) {
-            activeOrder = 0; // Reset to the first order if we've reached the end
-        }
-    }
-
     public void removeInactiveOrders() {
         orderList.removeIf(order -> !order.getActive());
     }
