@@ -20,7 +20,6 @@ public class Stove extends Station implements canUpdate {
         TextureRegion currentFrame;
         // System.out.println("containedItem " + containedItem);
         if (timer > 0) {
-            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
             currentFrame = floatingIconFrames[1].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
         } else if (containedItem != null) {
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);

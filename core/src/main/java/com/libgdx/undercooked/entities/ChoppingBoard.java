@@ -26,7 +26,6 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         if (!playerOn && timer <= 0){
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         } else if (playerOn) {
-            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
             currentFrame = floatingIconFrames[1].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
         } else {
             if(tempFood != null){

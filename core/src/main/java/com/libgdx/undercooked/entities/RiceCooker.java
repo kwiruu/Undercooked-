@@ -21,8 +21,7 @@ public class RiceCooker extends Station implements canUpdate {
 //        timer++;
         TextureRegion currentFrame;
         if (timer >= max_timer) {
-            currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
-//            timer = 0;
+            currentFrame = floatingIconFrames[1].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
         } else {
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         }
