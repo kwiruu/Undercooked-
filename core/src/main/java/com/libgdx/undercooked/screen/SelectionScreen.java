@@ -141,6 +141,7 @@ public class SelectionScreen implements Screen {
                         setSelectedMap(mapText);
                         mapId = mapText.charAt(3);
                         mapSound = new MapSound("assets/audio/" + mapText + "_sound.wav");
+                        Main.deleteScreen(ScreenType.SELECTMAP);
                         context.setScreen(ScreenType.GAME);
                         Thread mapSoundThread = new Thread(mapSound);
                         mapRunning = true;

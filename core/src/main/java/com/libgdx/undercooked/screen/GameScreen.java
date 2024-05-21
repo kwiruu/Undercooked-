@@ -22,8 +22,7 @@ import static com.libgdx.undercooked.GameManager.timesUp;
 import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
 import static com.libgdx.undercooked.screen.SelectionScreen.mapId;
 import static com.libgdx.undercooked.utils.Constants.PPM;
-import static database.SQLOperations.insertScore;
-import static database.SQLOperations.levelUp;
+import static database.SQLOperations.*;
 
 public class GameScreen extends ScreenAdapter {
     private final Main context;
@@ -76,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
             if(gameManager.getWin()){
                 System.out.println(score);
                 insertScore(getUsername(),1, (int) (180 - gameUI.getElapsedTime() + score));
-                levelUp(getUsername());
+                levelUp(getUsername(),findLevel(getUsername()));
             }
             finishGame();
             context.setScreen(ScreenType.SELECTMAP);
