@@ -29,7 +29,7 @@ public class Counter extends Station {
         System.out.println("interacted with a " + this);
         if (validate(p.getHeldItem())) {
             for (Orders.FoodOrder f : orders.getOrderList()) {
-                if (p.getHeldItem() == f.getFoodType() && f.getActive()){
+                if (p.getHeldItem() == f.getFoodType() && f.isActive()){
                     orders.rewardPoints(p.getHeldItem());
                     f.setInactive();
                     p.removeHeldItem();
@@ -48,7 +48,7 @@ public class Counter extends Station {
     private boolean validate(FoodType ft) {
         if (ft == null) return false;
         for (Orders.FoodOrder f : orders.getOrderList()) {
-            if (ft == f.getFoodType() && f.getActive()){
+            if (ft == f.getFoodType() && f.isActive()){
                 return true;
             }
         }

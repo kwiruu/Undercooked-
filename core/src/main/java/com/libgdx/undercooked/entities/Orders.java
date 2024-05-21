@@ -71,7 +71,7 @@ public class Orders {
     }
     public void update(float deltaTime) {
         for (int i = 0; i < activeOrder; i++) {
-            orderList.get(i).patience -= deltaTime;
+            if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
         }
         if (timer > 0) {
             timer -= deltaTime;
@@ -84,13 +84,13 @@ public class Orders {
         orderList.clear();
     }
 
-    public void removeInactiveOrders() {
-        orderList.removeIf(order -> !order.getActive());
-    }
+//    public void removeInactiveOrders() {
+//        orderList.removeIf(order -> !order.isActive());
+//    }
     public ArrayList<FoodOrder> getActiveFoods() {
         ArrayList<FoodOrder> activeFoods = new ArrayList<>();
         for (FoodOrder order : orderList) {
-            if (order.getActive()) {
+            if (order.isActive()) {
                 activeFoods.add(order);
             }
         }
@@ -117,7 +117,7 @@ public class Orders {
             return timer;
         }
 
-        public boolean getActive(){
+        public boolean isActive(){
             return this.active;
         }
 
