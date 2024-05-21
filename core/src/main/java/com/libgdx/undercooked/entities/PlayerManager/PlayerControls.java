@@ -13,14 +13,13 @@ import com.libgdx.undercooked.entities.animLocker;
 public class PlayerControls {
 
     Player player;
-//    float tempX;
-//    float tempY;
     public boolean isLifting;
     private float currentTime;
     private float deltaTimes;
     public animLocker animLock;
     public float playerLock;
     public int invalidTimer;
+    private float speedBoostTimer;
 
     PlayerAnimations playerAnimations;
 
@@ -33,11 +32,9 @@ public class PlayerControls {
     public void inputUpdate(float deltaTime) {
         float horizontalForce = 0;
         float verticalForce = 0;
-        currentTime += deltaTime;
-        deltaTimes = deltaTime;
         playerAnimations.updateStateTime(deltaTime); // Increment stateTime here
         player.timeUpdate();
-        invalidTimer--;
+        updateTimer(deltaTime);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (animLock == null) {
@@ -49,8 +46,6 @@ public class PlayerControls {
                         if (st instanceof animLocker) {
                             System.out.println("interacted with animLocker");
                             animLock = ((animLocker) st);
-//                            tempX = getPosition().x;
-//                            tempY = getPosition().y;
                         }
                         playerLock = 1f;
                         currentTime = 0;
@@ -67,15 +62,14 @@ public class PlayerControls {
             } else {
                 animLock.exitPlayer();
                 animLock = null;
-//                getPosition().x = tempX;
-//                getPosition().y = tempY;
             }
         }
         debugKeys();
 
         if (playerLock <= 0 && animLock == null) {
             int speed = 1;
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 2;
+            if (speedBoostTimer >= 0) speed = 2;
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speedUp();
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 verticalForce += speed;
             }
@@ -94,6 +88,13 @@ public class PlayerControls {
             }
         }
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
+    }
+
+    private void updateTimer(float deltaTime) {
+        currentTime += deltaTime;
+        deltaTimes = deltaTime;
+        invalidTimer--;
+        speedBoostTimer -= deltaTime;
     }
 
     public Animation<TextureRegion> determineCurrentAnimation() {
@@ -189,5 +190,8 @@ public class PlayerControls {
     }
     public void removeAnimLocker() {
         animLock = null;
+    }
+    void speedUp() {
+        speedBoostTimer = 10f;
     }
 }

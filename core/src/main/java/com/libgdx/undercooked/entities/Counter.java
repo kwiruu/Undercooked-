@@ -19,13 +19,14 @@ public class Counter extends Station {
     @Override
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
+        stateTime += 0.2f;
         TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         batch.draw(currentFrame, getX(), getY());
     }
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with counter");
+        System.out.println("interacted with a " + this);
         if (validate(p.getHeldItem())) {
             for (Orders.FoodOrder f : orders.getOrderList()) {
                 if (p.getHeldItem() == f.getFoodType() && f.getActive()){
@@ -35,7 +36,6 @@ public class Counter extends Station {
                     GameManager.setCheckEntry(true);
                 }
             }
-            // counter edit
             return true;
         }
         return false;

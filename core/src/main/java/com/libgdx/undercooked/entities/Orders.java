@@ -19,18 +19,18 @@ public class Orders {
             case "Map1":
                 totalOrders = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 0));
-                orderList.add(new FoodOrder(FoodType.chopped_pickle, 5));
-                orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 5));
-                orderList.add(new FoodOrder(FoodType.rice, 1));
+                orderList.add(new FoodOrder(FoodType.chopped_pickle, 3));
+                orderList.add(new FoodOrder(FoodType.cooked_meat, 3));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 3));
+                orderList.add(new FoodOrder(FoodType.rice, .5f));
                 break;
             case "Map2":
                 totalOrders = 5;
-                orderList.add(new FoodOrder(FoodType.rice, 5));
-                orderList.add(new FoodOrder(FoodType.tomato_soup, 5));
+                orderList.add(new FoodOrder(FoodType.rice, 3));
+                orderList.add(new FoodOrder(FoodType.tomato_soup, 3));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 5));
-                orderList.add(new FoodOrder(FoodType.chopped_pickle, 5));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 0));
+                orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
                 break;
         }
     }
@@ -73,29 +73,15 @@ public class Orders {
         for (int i = 0; i < activeOrder; i++) {
             orderList.get(i).patience -= deltaTime;
         }
-        if (timer > 0 && activeOrder < totalOrders) {
+        if (timer > 0) {
             timer -= deltaTime;
-        } else {
-            timer = 0;
+        } else if (activeOrder < totalOrders) {
+            timer = orderList.get(activeOrder).getTimer();
             activeOrder++;
         }
     }
     public static void freeOrderList() {
         orderList.clear();
-    }
-
-    public FoodOrder getCurrentOrder() {
-        if (activeOrder < orderList.size()) {
-            return orderList.get(activeOrder);
-        }
-        return null;
-    }
-
-    public void nextOrder() {
-        activeOrder++;
-        if (activeOrder >= orderList.size()) {
-            activeOrder = 0; // Reset to the first order if we've reached the end
-        }
     }
 
     public void removeInactiveOrders() {
@@ -114,11 +100,11 @@ public class Orders {
 
     public static class FoodOrder {
         private final FoodType foodType;
-        private final int timer;
+        private final float timer;
         float patience = 100;
         private boolean active = true;
 
-        public FoodOrder(FoodType foodType, int timer) {
+        public FoodOrder(FoodType foodType, float timer) {
             this.foodType = foodType;
             this.timer = timer;
         }
@@ -127,7 +113,7 @@ public class Orders {
             return foodType;
         }
 
-        public int getTimer() {
+        public float getTimer() {
             return timer;
         }
 

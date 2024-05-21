@@ -23,6 +23,7 @@ public class RiceCooker extends Station implements canUpdate {
 //            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
             currentFrame = floatingIconFrames[0].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
         } else {
+            stateTime += 0.2f;
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         }
         batch.draw(currentFrame, getX(), getY());
@@ -30,14 +31,14 @@ public class RiceCooker extends Station implements canUpdate {
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with rice cooker");
+        System.out.println("interacted with a " + this);
         if (timer <= 0 && p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
-
             timer = 100;
             return true;
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
+
             timer = 100;
 
             timer = max_timer;
@@ -45,14 +46,17 @@ public class RiceCooker extends Station implements canUpdate {
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
             timer = max_timer;
+
+            timer = max_timer;
             return true;
+
         }
         return false;
     }
 
     @Override
     public String toString() {
-        return "Rice Cooker";
+        return "RiceCooker";
     }
 
     private boolean validate(FoodType ft) {

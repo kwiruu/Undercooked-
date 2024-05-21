@@ -18,10 +18,10 @@ public class Stove extends Station implements canUpdate {
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
-        // System.out.println("containedItem " + containedItem);
         if (timer > 0) {
             currentFrame = floatingIconFrames[1].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
         } else if (containedItem != null) {
+            stateTime += 0.2f;
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
         } else {
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
@@ -31,8 +31,7 @@ public class Stove extends Station implements canUpdate {
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with stove");
-        System.out.println(containedItem + " " + timer + " " + max_timer);
+        System.out.println("interacted with a " + this);
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 containedItem = transmute(p.getHeldItem());
