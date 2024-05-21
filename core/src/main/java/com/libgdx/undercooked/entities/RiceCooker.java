@@ -7,8 +7,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
-    float timer;
     int max_timer = 10;
+    float timer = 10;
 
     public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
@@ -18,9 +18,9 @@ public class RiceCooker extends Station implements canUpdate {
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
-//        timer++;
         TextureRegion currentFrame;
-        if (timer >= max_timer) {
+        if (timer >= 0) {
+            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
             currentFrame = floatingIconFrames[0].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
         } else {
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
@@ -33,11 +33,11 @@ public class RiceCooker extends Station implements canUpdate {
         System.out.println("interacted with rice cooker");
         if (timer <= 0 && p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
-            timer = 500;
+            timer = max_timer;
             return true;
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
-            timer = 500;
+            timer = max_timer;
             return true;
         }
         return false;
