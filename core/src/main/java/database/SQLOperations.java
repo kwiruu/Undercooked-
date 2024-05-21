@@ -79,7 +79,7 @@ public class SQLOperations {
             stmt.setString(1, userName);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
-                System.out.println("User signed in successfully. Welcome ma nigga");
+                System.out.println("User signed in successfully. Welcome");
             } else {
                 insertAccount(userName);
                 System.out.println("New account created. Proceeding to the game...");
@@ -91,21 +91,43 @@ public class SQLOperations {
         return true;
     }
 
-    public static void levelUp(String username) {
-        String sql = "UPDATE tblAccount SET level = level + 1 WHERE userName = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("User level updated successfully.");
-            } else {
-                System.out.println("User not found.");
+    public static void levelUp(String username,int currLevel) {
+
+        if(!checkProgress(username)){
+            String sql = "UPDATE tblAccount SET level = level + 1 WHERE userName = ?";
+            try (Connection conn = getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, username);
+                int rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("User level updated successfully.");
+                } else {
+                    System.out.println("User not found.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
+
+
+    public static boolean checkProgress(String user){
+
+        String sql = "SELECT userName FROM tblHighscore WHERE userName = ?";
+
+        try(Connection conn = getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql)) {
+            stmnt.setString(1, user);
+            ResultSet res = stmnt.executeQuery();
+            if(res.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
 
     public static int findLevel(String username) {
         int level = 0;
@@ -159,21 +181,39 @@ public class SQLOperations {
         return highScores;
     }
 
-    public static void insertScore(String username,int mapId,int score){
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(
-                 "INSERT INTO tblHighscore (mapId, userName, highScore)  VALUES " +
-                     "(? , ?, ?)"
-             )) {
-            stmt.setInt(1, mapId);
-            stmt.setString(2,username);
-            stmt.setInt(3,score);
-            stmt.execute();
+    public static void insertScore(String username, int mapId, int score) {
+        try (Connection conn = getConnection()) {
+            String checkQuery = "SELECT highScore FROM tblHighscore WHERE mapId = ? AND userName = ?";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, mapId);
+                checkStmt.setString(2, username);
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next()) {
+                        int currentScore = rs.getInt("highScore");
+                        if (score > currentScore) {
+                            String updateQuery = "UPDATE tblHighscore SET highScore = ? WHERE mapId = ? AND userName = ?";
+                            try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                                updateStmt.setInt(1, score);
+                                updateStmt.setInt(2, mapId);
+                                updateStmt.setString(3, username);
+                                updateStmt.executeUpdate();
+                            }
+                        }
+                    } else {
+                        String insertQuery = "INSERT INTO tblHighscore (mapId, userName, highScore) VALUES (?, ?, ?)";
+                        try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                            insertStmt.setInt(1, mapId);
+                            insertStmt.setString(2, username);
+                            insertStmt.setInt(3, score);
+                            insertStmt.executeUpdate();
+                        }
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 
 
 }
