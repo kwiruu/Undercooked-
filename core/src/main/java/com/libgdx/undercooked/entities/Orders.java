@@ -84,20 +84,6 @@ public class Orders {
         orderList.clear();
     }
 
-//    public void removeInactiveOrders() {
-//        orderList.removeIf(order -> !order.isActive());
-//    }
-    public ArrayList<FoodOrder> getActiveFoods() {
-        ArrayList<FoodOrder> activeFoods = new ArrayList<>();
-        for (FoodOrder order : orderList) {
-            if (order.isActive()) {
-                activeFoods.add(order);
-            }
-        }
-        return activeFoods;
-    }
-
-
     public static class FoodOrder {
         private final FoodType foodType;
         private final float timer;
