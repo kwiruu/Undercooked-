@@ -16,6 +16,9 @@ public class FoodSource extends Station {
             case tomato:
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
                 break;
+            case onion:
+                floatingIconFrames[0] = floating_iconAtlas.findRegions("onion_icon");
+                break;
             case meat:
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("meat_icon");
                 break;
@@ -26,19 +29,8 @@ public class FoodSource extends Station {
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
                 break;
             default:
-                floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
+                floatingIconFrames[0] = floating_iconAtlas.findRegions("question_icon");
         }
-//        if (foodType.equals(FoodType.tomato)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
-//        } else if (foodType.equals(FoodType.onion)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("onion_icon");
-//        } else if (foodType.equals(FoodType.meat)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("meat_icon");
-//        } else if (foodType.equals(FoodType.fish)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("fish_icon");
-//        } else if (foodType.equals(FoodType.pickle)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
-//        }
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
