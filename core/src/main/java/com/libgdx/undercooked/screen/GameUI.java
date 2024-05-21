@@ -84,7 +84,7 @@ public class GameUI implements UIUpdater {
             public void clicked(InputEvent event, float x, float y) {
                 currentIndex = (currentIndex + 1) % 2;
                 pauseButton.getStyle().imageUp = new TextureRegionDrawable(buttonRegions[currentIndex]);
-                context.setScreen(ScreenType.LOADING);
+                context.setScreen(ScreenType.PAUSE);
             }
         });
 
@@ -150,7 +150,7 @@ public class GameUI implements UIUpdater {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            context.setScreen(ScreenType.LOADING);
+            context.setScreen(ScreenType.PAUSE);
         }
     }
 
