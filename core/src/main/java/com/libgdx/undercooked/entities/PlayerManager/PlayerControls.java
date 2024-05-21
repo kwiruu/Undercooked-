@@ -100,56 +100,65 @@ public class PlayerControls {
         String lastDir = player.getLastDirection();
         float animationSpeed = playerAnimations.getAnimation("lifting_" + lastDir).getAnimationDuration();
         currentTime += deltaTimes * animationSpeed;
+            if (animLock != null) {
+                // TODO change this to chopping anim
+                Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
+                if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
+                    return playerAnimations.getAnimation("running_lifting_"+lastDir);
+                } else {
+                    return liftingAnimation;
+                }
+            }
+            if (isLifting) {
+                Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
+                if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                        player.setLastDirection("top");
+                        return playerAnimations.getAnimation("running_lifting_top");
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                        player.setLastDirection("left");
+                        return playerAnimations.getAnimation("running_lifting_left");
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                        player.setLastDirection("down");
+                        return playerAnimations.getAnimation("running_lifting_down");
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                        player.setLastDirection("right");
+                        return playerAnimations.getAnimation("running_lifting_right");
+                    } else {
+                        return playerAnimations.getAnimation("idle_lifting_" + lastDir);
+                    }
+                } else {
+                    return liftingAnimation;
+                }
+            }
 
-        if (isLifting) {
-            Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
-            if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
+            if ((Gdx.input.isKeyPressed(Input.Keys.W) ||
+                Gdx.input.isKeyPressed(Input.Keys.A) ||
+                Gdx.input.isKeyPressed(Input.Keys.S) ||
+                Gdx.input.isKeyPressed(Input.Keys.D))) {
+
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                     player.setLastDirection("top");
-                    return playerAnimations.getAnimation("running_lifting_top");
+                    if (isLifting) return playerAnimations.getAnimation("running_lifting_top");
+                    return playerAnimations.getAnimation("running_top");
                 } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                     player.setLastDirection("left");
-                    return playerAnimations.getAnimation("running_lifting_left");
+                    if (isLifting) return playerAnimations.getAnimation("running_lifting_left");
+                    return playerAnimations.getAnimation("running_left");
                 } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                     player.setLastDirection("down");
-                    return playerAnimations.getAnimation("running_lifting_down");
-                } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                    player.setLastDirection("right");
-                    return playerAnimations.getAnimation("running_lifting_right");
+                    if (isLifting) return playerAnimations.getAnimation("running_lifting_down");
+                    return playerAnimations.getAnimation("running_down");
                 } else {
-                    return playerAnimations.getAnimation("idle_lifting_" + lastDir);
+                    player.setLastDirection("right");
+                    if (isLifting) return playerAnimations.getAnimation("running_lifting_right");
+                    return playerAnimations.getAnimation("running_right");
                 }
             } else {
-                return liftingAnimation;
+                if (isLifting) return playerAnimations.getAnimation("idle_lifting_" + lastDir);
+                return playerAnimations.getAnimation("idle_" + lastDir);
             }
-        }
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.W) ||
-            Gdx.input.isKeyPressed(Input.Keys.A) ||
-            Gdx.input.isKeyPressed(Input.Keys.S) ||
-            Gdx.input.isKeyPressed(Input.Keys.D)) && animLock == null) {
-
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                player.setLastDirection("top");
-                if (isLifting) return playerAnimations.getAnimation("running_lifting_top");
-                return playerAnimations.getAnimation("running_top");
-            } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                player.setLastDirection("left");
-                if (isLifting) return playerAnimations.getAnimation("running_lifting_left");
-                return playerAnimations.getAnimation("running_left");
-            } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                player.setLastDirection("down");
-                if (isLifting) return playerAnimations.getAnimation("running_lifting_down");
-                return playerAnimations.getAnimation("running_down");
-            } else {
-                player.setLastDirection("right");
-                if (isLifting) return playerAnimations.getAnimation("running_lifting_right");
-                return playerAnimations.getAnimation("running_right");
-            }
-        } else {
-            if (isLifting) return playerAnimations.getAnimation("idle_lifting_" + lastDir);
-            return playerAnimations.getAnimation("idle_" + lastDir);
-        }
     }
 
     private void debugKeys() {
