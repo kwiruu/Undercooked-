@@ -64,7 +64,6 @@ public class StationList {
 
                     ChoppingBoard choppingBoard = new ChoppingBoard(world, x, y, (int) width, (int) height, batch);
                     stationArray.add(choppingBoard);
-                    System.out.println("choppingb");
                 } else if (object.getName().equals("station_rice_cooker")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 40;

@@ -302,18 +302,15 @@ public class MainMenuTransition implements Screen {
 
         Tween.to(blockClouds2, SpriteAccessor.POS_X, duration)
             .target(targetX)
-            .setCallback(new TweenCallback() {
-                @Override
-                public void onEvent(int type, BaseTween<?> source) {
-                    if (transitionAnimationComplete) {
-                        if(profileButtonPressed){
-                            context.setScreen(ScreenType.LANDING);
-                            profileButtonPressed=false;
-                        }
-                        if(playButtonPressed){
-                            context.setScreen(ScreenType.SELECTMAP);
-                            playButtonPressed=false;
-                        }
+            .setCallback((type, source) -> {
+                if (transitionAnimationComplete) {
+                    if(profileButtonPressed){
+                        context.setScreen(ScreenType.LANDING);
+                        profileButtonPressed=false;
+                    }
+                    if(playButtonPressed){
+                        context.setScreen(ScreenType.SELECTMAP);
+                        playButtonPressed=false;
                     }
                 }
             })

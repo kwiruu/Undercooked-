@@ -8,7 +8,7 @@ import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     float timer;
-    int max_timer = 500;
+    int max_timer = 10;
 
     public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);

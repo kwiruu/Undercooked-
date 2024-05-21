@@ -135,8 +135,7 @@ public class LandingPageScreen implements Screen {
                     warningDialog.text("Please enter a username.");
                     warningDialog.button("OK", true);
                     warningDialog.show(stage);
-                }
-                else if(!username.isEmpty()){
+                } else {
                     if(userSignIn(username)){
                         context.setScreen(ScreenType.SELECTMAP);
                         mainMenuSound.stop();

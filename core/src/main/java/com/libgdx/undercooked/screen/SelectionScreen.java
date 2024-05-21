@@ -1,6 +1,7 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -116,6 +117,12 @@ public class SelectionScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+            String mapText = "Map1";
+            setSelectedMap(mapText);
+            context.setScreen(ScreenType.GAME);
+        }
     }
 
     public void setupMapButtons(int userLevel, Skin skin) {

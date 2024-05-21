@@ -15,9 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.libgdx.undercooked.entities.Npc.Npc;
 
-import static com.libgdx.undercooked.entities.Orders.activeOrderCount;
-import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
-import static database.SQLOperations.insertScore;
+import static com.libgdx.undercooked.entities.Orders.totalOrders;
 
 public class GameManager implements Disposable {
 
@@ -79,7 +77,7 @@ public class GameManager implements Disposable {
     }
 
     private void checkCompletion() {
-        if (activeOrderCount == 0) {
+        if (totalOrders == 0) {
             Orders.freeOrderList();
             timesUp = true;
             checkEntry = true;

@@ -1,9 +1,6 @@
 package com.libgdx.undercooked.entities;
 
-import com.libgdx.undercooked.entities.PlayerManager.Player;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.libgdx.undercooked.GameManager.score;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
@@ -12,15 +9,15 @@ public class Orders {
 
     private static ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
-
-    public static int activeOrderCount;
+    public static int totalOrders;
+    private float timer = 0;
 
     public Orders() {
         orderList = new ArrayList<>();
         String selectedMap = getSelectedMap();
         switch (selectedMap) {
             case "Map1":
-                activeOrderCount = 5;
+                totalOrders = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 0));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 5));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
@@ -28,7 +25,7 @@ public class Orders {
                 orderList.add(new FoodOrder(FoodType.rice, 1));
                 break;
             case "Map2":
-                activeOrderCount = 5;
+                totalOrders = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 5));
                 orderList.add(new FoodOrder(FoodType.tomato_soup, 5));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
@@ -72,6 +69,17 @@ public class Orders {
                 break;
         }
     }
+    public void update(float deltaTime) {
+        for (int i = 0; i < activeOrder; i++) {
+            orderList.get(i).patience -= deltaTime;
+        }
+        if (timer > 0 && activeOrder < totalOrders) {
+            timer -= deltaTime;
+        } else {
+            timer = 0;
+            activeOrder++;
+        }
+    }
     public static void freeOrderList() {
         orderList.clear();
     }
@@ -107,7 +115,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         private final int timer;
-        private int patience = 100;
+        float patience = 100;
         private boolean active = true;
 
         public FoodOrder(FoodType foodType, int timer) {
@@ -129,7 +137,7 @@ public class Orders {
 
         void setInactive(){
             this.active = false;
-            activeOrderCount--;
+            totalOrders--;
         }
     }
 }

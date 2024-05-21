@@ -51,8 +51,8 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         if (timer == 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 playerOn = true;
-                max_timer = 200;
-                timer = 200;
+                max_timer = 4;
+                timer = 4;
                 tempFood = p.getHeldItem();
                 containedItem = transmute(p.getHeldItem());
                 p.removeHeldItem();
