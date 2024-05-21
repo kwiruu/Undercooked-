@@ -23,6 +23,7 @@ import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
 import static com.libgdx.undercooked.screen.SelectionScreen.mapId;
 import static com.libgdx.undercooked.utils.Constants.PPM;
 import static database.SQLOperations.insertScore;
+import static database.SQLOperations.levelUp;
 
 public class GameScreen extends ScreenAdapter {
     private final Main context;
@@ -64,7 +65,6 @@ public class GameScreen extends ScreenAdapter {
         } catch (NullPointerException e){
             context.setScreen(ScreenType.SELECTMAP);
         }
-        debugRenderer.render(gameManager.getWorld(), camera.combined);
     }
 
     private void update(float deltaTime) {
@@ -76,14 +76,11 @@ public class GameScreen extends ScreenAdapter {
             if(gameManager.getWin()){
                 System.out.println(score);
                 insertScore(getUsername(),1, (int) (180 - gameUI.getElapsedTime() + score));
+                levelUp(getUsername());
             }
             finishGame();
-            try {
-                context.setScreen(SelectionScreen.class.newInstance());
-                Main.deleteScreen(ScreenType.GAME);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            context.setScreen(ScreenType.SELECTMAP);
+            Main.deleteScreen(ScreenType.GAME);
         }
 
     }

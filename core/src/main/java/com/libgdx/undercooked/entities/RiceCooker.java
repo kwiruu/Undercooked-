@@ -18,9 +18,11 @@ public class RiceCooker extends Station implements canUpdate {
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
+//        timer++;
         TextureRegion currentFrame;
-        if (timer > 0) {
+        if (timer >= max_timer) {
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
+//            timer = 0;
         } else {
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         }

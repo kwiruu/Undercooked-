@@ -43,6 +43,7 @@ public class PlayerControls {
             if (animLock == null) {
                 Station st = player.stationList.pointStation(player.getInteractPos());
                 FoodType oft = player.getHeldItem();
+                isLifting = true;
                 if (st != null) {
                     if (st.interact(player)) {
                         if (st instanceof animLocker) {
