@@ -124,12 +124,22 @@ public class StationList {
 
                 else if (object.getName().equals("onion_source")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 55;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
-                    FoodSource onion = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.onion);
-                    stationArray.add(onion); // Add onion to the array
+                    Stove stove = new Stove(world, x, y, (int) width, (int) height, batch);
+                    Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch);
+                    PolyStation polyStation = new PolyStation(world, x, y, (int) width, (int) height, batch, stove, placemat);
+                    stationArray.add(polyStation);
+
+//                    x = object.getProperties().get("x", Float.class);
+//                    y = object.getProperties().get("y", Float.class) + 55;
+//                    width = object.getProperties().get("width", Float.class);
+//                    height = object.getProperties().get("height", Float.class);
+//
+//                    FoodSource onion = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.onion);
+//                    stationArray.add(onion);
                 } else if (object.getName().equals("meat_source")) {
                     x = object.getProperties().get("x", Float.class) + 48;
                     y = object.getProperties().get("y", Float.class) + 40;
@@ -171,7 +181,7 @@ public class StationList {
         Rectangle r;
         float displacement = 48F;
         for (Station s: stationArray) {
-            System.out.println(s + "(" + s.containedItem + ") checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
+            System.out.println(s + " checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
             // needs tweaking
 
             r = new Rectangle(s.getX(), s.getY(), 32f, 64f);

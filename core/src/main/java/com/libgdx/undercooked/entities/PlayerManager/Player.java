@@ -94,8 +94,10 @@ public class Player implements Runnable {
         float displacement = 32;
         switch (lastDirection) {
             case "top":
-            case "down":
                 point.add(0, displacement);
+                break;
+            case "down":
+                point.add(0, -displacement);
                 break;
             case "left":
                 point.add(-displacement, 0);

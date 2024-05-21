@@ -26,7 +26,7 @@ public class PolyStation extends Station implements canUpdate {
     @Override
     public void update(float deltaTime) {
         int as = activeStation1 ? 0 : 1;
-        if (stations.get(as) instanceof canUpdate) stations.get(as).render();
+        if (stations.get(as) instanceof canUpdate) ((canUpdate) stations.get(as)).update(deltaTime);
 
         if (timer > 0) {
             timer -= deltaTime;

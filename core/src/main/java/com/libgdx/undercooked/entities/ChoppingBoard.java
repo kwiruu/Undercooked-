@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
+import java.util.Objects;
+
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
     float timer;
     int max_timer;
@@ -22,6 +24,9 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
 
+        if (playerOn && Objects.equals(pon.getLastDirection(), "down")) {
+            batch.setColor(1, 1, 1, 0.5f);
+        }
         if (!playerOn && timer <= 0){
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         } else if (playerOn) {
@@ -35,7 +40,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
 
         }
         batch.draw(currentFrame, getX(), getY());
-
+        batch.setColor(1, 1, 1, 1f);
     }
 
     @Override

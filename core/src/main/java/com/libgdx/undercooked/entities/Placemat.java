@@ -48,6 +48,33 @@ public class Placemat extends Station implements Disposable {
         return false;
     }
 
+    private boolean validate(FoodType ft) {
+        if (ft == null) return true;
+        switch (ft) {
+            case cooked_meat:
+            case cooked_fish:
+            case chopped_tomato:
+            case chopped_onion:
+            case chopped_pickle:
+                return true;
+        }
+        return false;
+    }
+    private FoodType transmute(FoodType ft) {
+        if (ft == null) return FoodType.rice;
+        switch (ft) {
+            case cooked_meat:
+                return FoodType.meat_meal;
+            case cooked_fish:
+                return FoodType.fish_meal;
+            case chopped_tomato:
+            case chopped_onion:
+            case chopped_pickle:
+                return FoodType.struggle_meal;
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Placemat";

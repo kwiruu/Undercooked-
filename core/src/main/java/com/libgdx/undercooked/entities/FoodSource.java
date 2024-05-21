@@ -48,6 +48,6 @@ public class FoodSource extends Station {
 
     @Override
     public String toString() {
-        return "FoodSource  (" + containedItem + ")";
+        return "FoodSource(" + containedItem + ")";
     }
 }

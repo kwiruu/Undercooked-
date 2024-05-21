@@ -40,15 +40,12 @@ public class PlayerControls {
             if (animLock == null) {
                 Station st = player.stationList.pointStation(player.getInteractPos());
                 FoodType oft = player.getHeldItem();
-                isLifting = true;
                 if (st != null) {
                     if (st.interact(player)) {
                         if (st instanceof animLocker) {
-                            System.out.println("interacted with animLocker");
                             animLock = ((animLocker) st);
                         }
-                        playerLock = 1f;
-                        currentTime = 0;
+                        playerLock = .8f;
                         if (oft != player.getHeldItem()) {
                             poof();
                         }
@@ -66,10 +63,11 @@ public class PlayerControls {
         }
         debugKeys();
 
-        if (playerLock <= 0 && animLock == null) {
+        if (playerLock > 0 || animLock == null) {
+            System.out.println(currentTime);
             int speed = 1;
             if (speedBoostTimer >= 0) speed = 2;
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speedUp();
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 2;
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 verticalForce += speed;
             }
@@ -102,7 +100,6 @@ public class PlayerControls {
         float animationSpeed = playerAnimations.getAnimation("lifting_" + lastDir).getAnimationDuration();
         currentTime += deltaTimes * animationSpeed;
             if (animLock != null) {
-                // TODO change this to chopping anim
                 return playerAnimations.getAnimation("interacting_" + lastDir);
             }
             if (isLifting) {
@@ -185,6 +182,7 @@ public class PlayerControls {
     }
     public void removeAnimLocker() {
         animLock = null;
+        currentTime = 0;
     }
     void speedUp() {
         speedBoostTimer = 10f;

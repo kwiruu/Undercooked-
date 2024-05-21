@@ -62,6 +62,7 @@ public class GameScreen extends ScreenAdapter {
             batch.end();
             gameUI.render();
         } catch (NullPointerException e){
+            e.printStackTrace();
             context.setScreen(ScreenType.SELECTMAP);
         }
     }

@@ -21,7 +21,8 @@ public class RiceCooker extends Station implements canUpdate {
         TextureRegion currentFrame;
         if (timer >= 0) {
 //            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
-            currentFrame = floatingIconFrames[0].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
+            int x = (int) ((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size;
+            currentFrame = floatingIconFrames[0].get(x);
         } else {
             stateTime += 0.2f;
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
@@ -34,7 +35,7 @@ public class RiceCooker extends Station implements canUpdate {
         System.out.println("interacted with a " + this);
         if (timer <= 0 && !p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
-            timer = 100;
+            timer = 10;
             return true;
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));

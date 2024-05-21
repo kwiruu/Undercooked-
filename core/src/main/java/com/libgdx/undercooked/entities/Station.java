@@ -26,6 +26,7 @@ public abstract class Station {
 
     // TODO popup (progress bar for non-source stations)
 
+    @SuppressWarnings("unchecked")
     public Station(World world, float x, float y, int width, int height, SpriteBatch batch) {
         this.x = x;
         this.y = y;
@@ -35,8 +36,8 @@ public abstract class Station {
         body = CreateBox.createBox(world, (int) x, (int) y, width, height, true);
         floatingIconFrames = new Array[3];
         floating_iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
-        frameDuration = 1f; // Set the duration of each frame (adjust as needed)
-        stateTime = 0f; // Initialize stateTime
+        frameDuration = 1f;
+        stateTime = 0f;
     }
 
     public float getX() {
