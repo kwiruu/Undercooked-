@@ -34,7 +34,7 @@ public class SelectionScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private MapSound mapSound;
-    private Table mapTable;
+
     private static String selectedMap;
 
     //This will handle the drag movement sa background
@@ -65,8 +65,6 @@ public class SelectionScreen implements Screen {
         UserInfo userInfo = getInfo(getUsername());
         Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
 
-        mapTable = new Table();
-        setupMapButtons(userInfo.getLevel(), skin);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -77,8 +75,6 @@ public class SelectionScreen implements Screen {
         });
 
         root.add(titleLabel).top().left().expandX().colspan(2);
-        root.row();
-        root.add(mapTable).expand().colspan(2).pad(20);
         root.row();
         root.add(backButton).center().colspan(2).pad(20);
 
@@ -125,62 +121,9 @@ public class SelectionScreen implements Screen {
         }
     }
 
-    public void setupMapButtons(int userLevel, Skin skin) {
-        mapTable.clear();
 
-        for (int i = 1; i <= 5; i++) {
-            final int mapNumber = i;
-            TextButton mapButton = new TextButton("Map " + mapNumber, skin);
-            if (mapNumber > userLevel) {
-                mapButton.setDisabled(true);
-            } else {
-                mapButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        String mapText = mapButton.getText().toString().replaceAll("\\s", "");
-                        setSelectedMap(mapText);
-                        mapId = mapText.charAt(3);
-                        mapSound = new MapSound("assets/audio/" + mapText + "_sound.wav");
-                        Main.deleteScreen(ScreenType.SELECTMAP);
-                        context.setScreen(ScreenType.GAME);
-                        Thread mapSoundThread = new Thread(mapSound);
-                        mapRunning = true;
-                        mapSoundThread.start();
-                    }
-                });
-            }
 
-            TextButton highScoreButton = new TextButton("High Scores", skin);
-            highScoreButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    showHighScoresDialog(mapNumber);
-                }
-            });
 
-            mapTable.add(mapButton).width(200F).pad(10);
-            mapTable.add(highScoreButton).width(200F).pad(10);
-            mapTable.row();
-        }
-    }
-
-    private void showHighScoresDialog(int mapId) {
-        List<HighScore> highScores = SQLOperations.getTopHighScores(mapId);
-
-        Dialog dialog = new Dialog("Top 10 High Scores", skin);
-        dialog.getContentTable().add(new Label("Username", skin)).pad(10);
-        dialog.getContentTable().add(new Label("Score", skin)).pad(10);
-        dialog.getContentTable().row();
-
-        for (HighScore highScore : highScores) {
-            dialog.getContentTable().add(new Label(highScore.getUserName(), skin)).pad(10);
-            dialog.getContentTable().add(new Label(String.valueOf(highScore.getHighScore()), skin)).pad(10);
-            dialog.getContentTable().row();
-        }
-
-        dialog.button("Close", true);
-        dialog.show(stage);
-    }
 
     private class MyGestureListener extends GestureDetector.GestureAdapter {
         private float initialScale = 1f;

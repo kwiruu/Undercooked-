@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.AudioManager.MainMenuSound;
 
@@ -23,15 +24,22 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
+import database.HighScore;
+import database.SQLOperations;
 
+import java.util.List;
+
+import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static database.SQLOperations.userSignIn;
 
 public class LandingPageScreen implements Screen {
     private final Main context;
     private TweenManager tweenManager;
     private Stage stage;
-    private Skin skin;
+    private Skin skin,skin1;
     private SpriteBatch batch;
+
+    private Table mapTable;
     private static String username = null;
     private Texture imgTexture; // Declare imgTexture here
     private MainMenuSound mainMenuSound;
@@ -79,24 +87,28 @@ public class LandingPageScreen implements Screen {
             .start(tweenManager);
 
 
+        skin1 = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+
         Table root = new Table();
-        root.setBackground(new TextureRegionDrawable(new TextureRegion(imgTexture)));
         stage.addActor(root);
+        mapTable = new Table();
+        setupMapButtons(skin1);
 
         // Calculate table size based on the stage's viewport dimensions
         float tableWidth = stage.getWidth() * 0.2f;
         float tableHeight = stage.getHeight() * 0.15f;
         root.setSize(tableWidth, tableHeight);
         // Center the table on the stage
-        root.setPosition((stage.getWidth() - tableWidth) / 2f, (stage.getHeight() - tableHeight) / 2f);
+        root.setPosition((stage.getWidth() - tableWidth) / 2f, 500);
 
         // Set the number of columns for the table
-        root.defaults().colspan(2);
+        root.defaults().colspan(3);
         root.top().left(); // Align content to the top-left corner
 
         // Adjust padding
-        root.pad(20);
-        root.defaults().space(10);
+        root.pad(10);
+        root.add(mapTable).expand().colspan(2).pad(20);
+        root.row();
         // Load the skin
         skin = new Skin(Gdx.files.internal("assets/metal-ui.json"));
 
@@ -105,21 +117,16 @@ public class LandingPageScreen implements Screen {
         yourFont.getData().setScale(16/ yourFont.getCapHeight());
         textFieldStyle.font = yourFont;
         textFieldStyle.fontColor = Color.BROWN; // Change the font color if needed
-        textFieldStyle.background = null; // Set background drawable to null
 
-        final TextField usernameField = new TextField("", textFieldStyle);
+        final TextField usernameField = new TextField("", skin);
 
 
         MainMenuSound.running = true;
         new Thread(mainMenuSound).start();
 
 
-        // Create a TextButtonStyle without specifying a skin
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = yourFont; // Assign your font directly here
-        buttonStyle.fontColor = Color.WHITE; // Change the font color if needed
 
-        TextButton okButton = new TextButton("", buttonStyle); // Create the button without specifying a skin
+        TextButton okButton = new TextButton("Sign In", skin); // Create the button without specifying a skin
 
         root.add(okButton).width(100).height(45).pad(3).padTop(0);
         root.add(usernameField).height(100).fillX().uniformX().padBottom(20).pad(3);
@@ -144,8 +151,6 @@ public class LandingPageScreen implements Screen {
             }
         });
 
-        // Start the sound in a new thread
-
     }
 
     @Override
@@ -162,6 +167,43 @@ public class LandingPageScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+
+    public void setupMapButtons(Skin skin) {
+        mapTable.clear();
+
+        for (int i = 1; i <= 5; i++) {
+            final int mapNumber = i;
+
+            TextButton highScoreButton = new TextButton("Map " + mapNumber + " High Scores", skin);
+            highScoreButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    showHighScoresDialog(mapNumber);
+                }
+            });
+
+            mapTable.add(highScoreButton).width(200F).pad(10);
+            mapTable.row();
+        }
+    }
+
+    private void showHighScoresDialog(int mapId) {
+        List<HighScore> highScores = SQLOperations.getTopHighScores(mapId);
+
+        Dialog dialog = new Dialog("Top 10 High Scores", skin);
+        dialog.getContentTable().add(new Label("Username", skin)).pad(10);
+        dialog.getContentTable().add(new Label("Score", skin)).pad(10);
+        dialog.getContentTable().row();
+
+        for (HighScore highScore : highScores) {
+            dialog.getContentTable().add(new Label(highScore.getUserName(), skin)).pad(10);
+            dialog.getContentTable().add(new Label(String.valueOf(highScore.getHighScore()), skin)).pad(10);
+            dialog.getContentTable().row();
+        }
+
+        dialog.button("Close", true);
+        dialog.show(stage);
     }
 
     @Override
