@@ -7,12 +7,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
@@ -34,13 +39,17 @@ public class SelectionScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private MapSound mapSound;
-
+    private Table mapTable;
     private static String selectedMap;
 
     //This will handle the drag movement sa background
     private SpriteBatch spriteBatch;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
+
+    //Buttons for each map
+    private Sprite map1, map2, map3, map4, map5;
+    private Texture map1Texture, map2Texture, map3Texture, map4Texture, map5Texture;
 
     public SelectionScreen(final Main context) {
         this.context = context;
@@ -55,16 +64,27 @@ public class SelectionScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
+
         backgroundTexture = new Texture(Gdx.files.internal("assets/tilesets/map_selector.png"));
         spriteBatch = new SpriteBatch();
 
-        Table root = new Table();
-        root.setFillParent(true);
-        stage.addActor(root);
 
+
+        //For the Unlocked Map Buttons
+        map1Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked.png"));
+        map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map2_unlocked.png"));
+        map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map3_unlocked.png"));
+        map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map4_unlocked.png"));
+        //map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked"));
+
+        //For the Locked Map Buttons
+
+
+
+        //Wala pani
         UserInfo userInfo = getInfo(getUsername());
-        Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
-
+        //Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
+        setupMapButtons(userInfo.getLevel());
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -73,10 +93,6 @@ public class SelectionScreen implements Screen {
                 context.setScreen(ScreenType.LANDING);
             }
         });
-
-        root.add(titleLabel).top().left().expandX().colspan(2);
-        root.row();
-        root.add(backButton).center().colspan(2).pad(20);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -121,8 +137,60 @@ public class SelectionScreen implements Screen {
         }
     }
 
+    public void setupMapButtons(int userLevel) {
+        ImageButton map1Button = createMapButton(map1Texture, "Map1", 1, userLevel);
+        ImageButton map2Button = createMapButton(map2Texture, "Map2", 2, userLevel);
+        ImageButton map3Button = createMapButton(map3Texture, "Map3", 3, userLevel);
+        ImageButton map4Button = createMapButton(map4Texture, "Map4", 4, userLevel);
+        //ImageButton map5Button = createMapButton(map5Texture, "Map 5", 5, userLevel);
 
+        // Set positions for map buttons manually
+        map1Button.setPosition(50, Gdx.graphics.getHeight() - 250);
+        map2Button.setPosition(300, Gdx.graphics.getHeight() - 250);
+        map3Button.setPosition(550, Gdx.graphics.getHeight() - 250);
+        map4Button.setPosition(800, Gdx.graphics.getHeight() - 250);
+        //map5Button.setPosition(1050, Gdx.graphics.getHeight() - 250);
 
+        // Add buttons to the stage
+        stage.addActor(map1Button);
+        stage.addActor(map2Button);
+        stage.addActor(map3Button);
+        stage.addActor(map4Button);
+        //stage.addActor(map5Button);
+    }
+
+    private ImageButton createMapButton(Texture texture, String mapName, int mapNumber, int userLevel) {
+        Drawable drawable = new TextureRegionDrawable(texture);
+        ImageButton mapButton = new ImageButton(drawable);
+        mapButton.setSize(texture.getWidth()/3, texture.getHeight()/3); // Set size as needed
+        System.out.println("Map width: " + texture.getWidth() + " Map height: " + texture.getHeight());
+
+        // Click listener for map selection
+        mapButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (mapNumber <= userLevel) {
+                    setSelectedMap(mapName);
+                    mapId = mapNumber;
+                    mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
+                    context.setScreen(ScreenType.GAME);
+                    Thread mapSoundThread = new Thread(mapSound);
+                    mapRunning = true;
+                    mapSoundThread.start();
+                }
+            }
+        });
+        // Hover listener for changing appearance
+        mapButton.addListener(new InputListener() {
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                mapButton.setColor(1, 1, 1, 1); // Reset to original opacity
+            }
+        });
+
+        return mapButton;
+
+    }
 
 
     private class MyGestureListener extends GestureDetector.GestureAdapter {
