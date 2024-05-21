@@ -41,6 +41,11 @@ public class PlayerAnimations extends Animations {
         addAnimation("running_lifting_top", new Animation<>(0.09f, textureAtlas.findRegions("running_lifting_top")));
         addAnimation("running_lifting_left", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_left")));
         addAnimation("running_lifting_right", new Animation<>(0.12f, textureAtlas.findRegions("running_lifting_right")));
+
+        addAnimation("interacting_down", new Animation<>(0.12f, textureAtlas.findRegions("interacting_down")));
+        addAnimation("interacting_top", new Animation<>(0.09f, textureAtlas.findRegions("interacting_top")));
+        addAnimation("interacting_left", new Animation<>(0.12f, textureAtlas.findRegions("interacting_left")));
+        addAnimation("interacting_right", new Animation<>(0.12f, textureAtlas.findRegions("interacting_right")));
     }
 
     private void initializeSmokeAnimation(TextureAtlas smokeAtlas) {
