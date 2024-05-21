@@ -31,8 +31,7 @@ public class Stove extends Station implements canUpdate {
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with stove");
-        System.out.println(containedItem + " " + timer + " " + max_timer);
+        System.out.println("interacted with a " + this);
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 containedItem = transmute(p.getHeldItem());

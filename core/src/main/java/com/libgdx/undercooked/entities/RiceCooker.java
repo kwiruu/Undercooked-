@@ -31,22 +31,14 @@ public class RiceCooker extends Station implements canUpdate {
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with rice cooker");
+        System.out.println("interacted with a " + this);
         if (timer <= 0 && p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
-<<<<<<< HEAD
             timer = 100;
             return true;
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
-            timer = 100;
-=======
             timer = max_timer;
-            return true;
-        } else if (timer <= 0 && validate(p.getHeldItem())) {
-            p.setHeldItem(transmute(p.getHeldItem()));
-            timer = max_timer;
->>>>>>> e2553934acd0280458b1c1770b84bde5b7c5791e
             return true;
         }
         return false;
@@ -54,7 +46,7 @@ public class RiceCooker extends Station implements canUpdate {
 
     @Override
     public String toString() {
-        return "Rice Cooker";
+        return "RiceCooker";
     }
 
     private boolean validate(FoodType ft) {

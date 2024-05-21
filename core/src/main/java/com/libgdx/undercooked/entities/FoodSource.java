@@ -38,7 +38,7 @@ public class FoodSource extends Station {
     }
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with a foodSource for - " + containedItem);
+        System.out.println("interacted with a " + this);
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             return true;
@@ -48,6 +48,6 @@ public class FoodSource extends Station {
 
     @Override
     public String toString() {
-        return "Food Source";
+        return "FoodSource  (" + containedItem + ")";
     }
 }

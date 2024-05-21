@@ -35,7 +35,7 @@ public class Placemat extends Station implements Disposable {
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with a Placemat for - " + containedItem);
+        System.out.println("interacted with a " + this);
         if (containedItem == null && p.hasHeldItem()) {
             containedItem = p.getHeldItem();
             p.removeHeldItem();

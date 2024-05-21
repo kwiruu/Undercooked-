@@ -40,7 +40,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
 
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with chopping board");
+        System.out.println("interacted with a " + this);
         if (timer <= 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 playerOn = true;
@@ -62,7 +62,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
 
     @Override
     public String toString() {
-        return "Chopping Board";
+        return "ChoppingBoard";
     }
 
     private boolean validate(FoodType ft) {

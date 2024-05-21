@@ -220,4 +220,7 @@ public class Player implements Runnable {
     public void speedUp() {
         playerControls.speedUp();
     }
+    public void transport(Vector2 v2) {
+        player.setTransform(v2, 0);
+    }
 }
