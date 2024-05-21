@@ -13,16 +13,14 @@ public class SpeedBooster extends Station {
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
+        stateTime += .2f;
         TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         batch.draw(currentFrame, getX(), getY());
     }
     @Override
     public boolean interact(Player p) {
-        System.out.println("interacted with a foodSource for - " + containedItem);
-        if (!p.hasHeldItem()) {
-            p.setHeldItem(containedItem);
-            return true;
-        }
+        System.out.println("interacted with a speedBooster");
+        p.speedUp();
         return false;
     }
 

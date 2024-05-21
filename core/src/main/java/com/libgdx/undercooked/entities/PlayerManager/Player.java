@@ -217,4 +217,7 @@ public class Player implements Runnable {
     public void poof() {
         playerControls.poof();
     }
+    public void speedUp() {
+        playerControls.speedUp();
+    }
 }
