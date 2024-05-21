@@ -107,6 +107,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         private final int timer;
+        private int patience = 100;
         private boolean active = true;
 
         public FoodOrder(FoodType foodType, int timer) {

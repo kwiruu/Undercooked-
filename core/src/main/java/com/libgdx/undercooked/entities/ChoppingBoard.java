@@ -2,16 +2,13 @@ package com.libgdx.undercooked.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
-import com.libgdx.undercooked.entities.PlayerManager.PlayerControls;
 
 public class ChoppingBoard extends Station implements canUpdate, animLocker {
+    float timer;
     int max_timer;
-    int timer;
     boolean playerOn = false;
     FoodType tempFood;
     Player pon;
@@ -106,11 +103,10 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     }
 
     @Override
-    public void update() {
+    public void update(float deltaTime) {
         if (playerOn) {
             if (timer > 0) {
-                timer--;
-                System.out.println(timer);
+                timer-=deltaTime;
             } else {
                 max_timer = 0;
                 pon.setHeldItem(containedItem);

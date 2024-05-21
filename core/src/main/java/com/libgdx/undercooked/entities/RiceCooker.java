@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
-    int timer;
+    float timer;
     int max_timer = 500;
 
     public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
@@ -75,7 +75,7 @@ public class RiceCooker extends Station implements canUpdate {
     }
 
     @Override
-    public void update() {
-        if (timer > 0) timer--;
+    public void update(float deltaTime) {
+        if (timer > 0) timer-=deltaTime;
     }
 }

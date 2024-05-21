@@ -34,7 +34,6 @@ public class GameUI implements UIUpdater {
     private Label timerLabel;
     private Label scoreLabel;
     private Table orderTable;
-    private Orders orders;
     private Table rootTable;
     private Table infoTable;
     private Table belowTable;
@@ -116,8 +115,6 @@ public class GameUI implements UIUpdater {
         infoTable.add(timerLabel).pad(10);
 
         stage.addActor(pauseButton);
-
-        orders = new Orders(); // Initialize orders
     }
 
     private void updateButtonPosition() {

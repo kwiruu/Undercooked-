@@ -1,5 +1,5 @@
 package com.libgdx.undercooked.entities;
 
 public interface canUpdate {
-    void update();
+    void update(float deltaTime);
 }

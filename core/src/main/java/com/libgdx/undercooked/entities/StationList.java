@@ -28,10 +28,10 @@ public class StationList {
             st.render();
         }
     }
-    public void update() {
+    public void update(float deltaTime) {
         for (Station st : stationArray) {
             if (st instanceof canUpdate) {
-                ((canUpdate) st).update();
+                ((canUpdate) st).update(deltaTime);
             }
         }
     }

@@ -93,7 +93,7 @@ public class GameManager implements Disposable {
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
-        stationList.update();
+        stationList.update(deltaTime);
         if(checkEntry){
             uiUpdater.updateOrdersUI(orders); // Update the orders UI
             checkEntry = false;
