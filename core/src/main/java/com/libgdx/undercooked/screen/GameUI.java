@@ -173,8 +173,8 @@ public class GameUI implements UIUpdater {
     public void updateOrdersUI(Orders orders) {
         orderTable.clear(); // Clear previous orders
 
-        orders.removeInactiveOrders();
-        ArrayList<FoodOrder> orderList = orders.getOrderList();
+        //orders.removeInactiveOrders();
+        ArrayList<FoodOrder> orderList = orders.getActiveOrderList();
 
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 

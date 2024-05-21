@@ -8,12 +8,14 @@ import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 public class Orders {
 
     private static ArrayList<FoodOrder> orderList;
-    private int activeOrder = 0;
+    private static ArrayList<FoodOrder> activeOrderList;
+    private static int activeOrderIndex = 0;
     public static int totalOrders;
     private float timer = 0;
 
     public Orders() {
         orderList = new ArrayList<>();
+        activeOrderList = new ArrayList<>();
         String selectedMap = getSelectedMap();
         switch (selectedMap) {
             case "Map1":
@@ -22,7 +24,7 @@ public class Orders {
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 3));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 3));
                 orderList.add(new FoodOrder(FoodType.cooked_fish, 3));
-                orderList.add(new FoodOrder(FoodType.rice, .5f));
+                orderList.add(new FoodOrder(FoodType.rice, 0.5f));
                 break;
             case "Map2":
                 totalOrders = 5;
@@ -37,6 +39,10 @@ public class Orders {
 
     public ArrayList<FoodOrder> getOrderList() {
         return orderList;
+    }
+
+    public ArrayList<FoodOrder> getActiveOrderList() {
+        return new ArrayList<>(activeOrderList);
     }
 
     public void rewardPoints(FoodType foodType) {
@@ -69,40 +75,46 @@ public class Orders {
                 break;
         }
     }
+
     public void update(float deltaTime) {
-        for (int i = 0; i < activeOrder; i++) {
-            orderList.get(i).patience -= deltaTime;
+        timer += deltaTime;
+
+        // Activate orders based on the elapsed timer
+        for (int i = 0; i < orderList.size(); i++) {
+            FoodOrder order = orderList.get(i);
+            if (timer >= order.getTimer() && !order.getActive()) {
+                System.out.println(order.getTimer());
+                order.activate();
+                activeOrderList.add(order);
+                activeOrderIndex++;
+            }
         }
-        if (timer > 0) {
-            timer -= deltaTime;
-        } else if (activeOrder < totalOrders) {
-            timer = orderList.get(activeOrder).getTimer();
-            activeOrder++;
+
+        // Update patience for active orders
+        for (FoodOrder order : activeOrderList) {
+            order.updatePatience(deltaTime);
         }
+
+        // Remove inactive orders from activeOrderList
+        activeOrderList.removeIf(order -> !order.getActive());
     }
+
     public static void freeOrderList() {
         orderList.clear();
+        activeOrderList.clear();
+        activeOrderIndex = 0;
     }
 
     public void removeInactiveOrders() {
         orderList.removeIf(order -> !order.getActive());
     }
-    public ArrayList<FoodOrder> getActiveFoods() {
-        ArrayList<FoodOrder> activeFoods = new ArrayList<>();
-        for (FoodOrder order : orderList) {
-            if (order.getActive()) {
-                activeFoods.add(order);
-            }
-        }
-        return activeFoods;
-    }
-
 
     public static class FoodOrder {
         private final FoodType foodType;
         private final float timer;
-        float patience = 100;
-        private boolean active = true;
+        private final float maxPatience = 100;
+        private float patience = maxPatience;
+        private boolean active = false;
 
         public FoodOrder(FoodType foodType, float timer) {
             this.foodType = foodType;
@@ -117,13 +129,26 @@ public class Orders {
             return timer;
         }
 
-        public boolean getActive(){
+        public void activate() {
+            this.active = true;
+        }
+
+        public boolean getActive() {
             return this.active;
         }
 
-        void setInactive(){
+        void setInactive() {
             this.active = false;
             totalOrders--;
+        }
+
+        public void updatePatience(float deltaTime) {
+            if (active && patience > 0) {
+                patience -= deltaTime;
+                if (patience <= 0) {
+                    setInactive();
+                }
+            }
         }
     }
 }
