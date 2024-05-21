@@ -40,7 +40,7 @@ public class SelectionScreen implements Screen {
     private Skin skin;
     private MapSound mapSound;
     private Table mapTable;
-    private static String selectedMap;
+    private static String selectedMap = "Map1";
 
     //This will handle the drag movement sa background
     private SpriteBatch spriteBatch;
