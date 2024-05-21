@@ -130,7 +130,6 @@ public class GameManager implements Disposable {
         initialized = false;
         Gdx.app.log("GameManager", "World disposed after 3 minutes");
     }
-    // TODO remove "welcome ma nigga" print when user is changed
 
     public boolean getWin(){
         return win;
