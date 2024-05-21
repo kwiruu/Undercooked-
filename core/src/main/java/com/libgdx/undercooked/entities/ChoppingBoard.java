@@ -24,7 +24,6 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame;
 
-        // TODO this
         // it runs thrice for some reason
         // System.out.println("playerOn = " + playerOn + ", containedItem = " + containedItem);
         if (!playerOn && timer <= 0){
@@ -48,7 +47,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     @Override
     public boolean interact(Player p) {
         System.out.println("interacted with chopping board");
-        if (timer == 0 && p.hasHeldItem()) {
+        if (timer <= 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 playerOn = true;
                 max_timer = 4;

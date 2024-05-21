@@ -30,11 +30,11 @@ public class RiceCooker extends Station implements canUpdate {
     @Override
     public boolean interact(Player p) {
         System.out.println("interacted with rice cooker");
-        if (timer == 0 && p.hasHeldItem()) {
+        if (timer <= 0 && p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
             timer = 500;
             return true;
-        } else if (timer == 0 && validate(p.getHeldItem())) {
+        } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
             timer = 500;
             return true;

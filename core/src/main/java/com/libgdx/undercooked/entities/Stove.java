@@ -40,7 +40,7 @@ public class Stove extends Station implements canUpdate {
                 max_timer = 10;
                 return true;
             }
-        } else if (containedItem != null && timer == 0 && max_timer != 0 && !p.hasHeldItem()) {
+        } else if (containedItem != null && timer <= 0 && max_timer != 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
             containedItem = null;
             max_timer = 0;
