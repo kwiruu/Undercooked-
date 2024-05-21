@@ -54,11 +54,19 @@ public class Player implements Runnable {
         String selectedMap = getSelectedMap();
         switch (selectedMap) {
             case "Map1":
-                Player.x = 8;
-                Player.y = 2;
+                Player.x = 7;
+                Player.y = 13;
                 break;
             case "Map2":
-                Player.x = 18;
+                Player.x = 8;
+                Player.y = 14;
+                break;
+            case "Map3":
+                Player.x = 13;
+                Player.y = 13;
+                break;
+            case "Map4":
+                Player.x = 16;
                 Player.y = 12;
                 break;
         }
