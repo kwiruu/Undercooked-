@@ -217,4 +217,10 @@ public class Player implements Runnable {
     public void poof() {
         playerControls.poof();
     }
+    public void speedUp() {
+        playerControls.speedUp();
+    }
+    public void transport(Vector2 v2) {
+        player.setTransform(v2, 0);
+    }
 }
