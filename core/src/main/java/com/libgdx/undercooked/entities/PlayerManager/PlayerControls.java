@@ -103,12 +103,7 @@ public class PlayerControls {
         currentTime += deltaTimes * animationSpeed;
             if (animLock != null) {
                 // TODO change this to chopping anim
-                Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
-                if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
-                    return playerAnimations.getAnimation("running_lifting_"+lastDir);
-                } else {
-                    return liftingAnimation;
-                }
+                return playerAnimations.getAnimation("interacting_" + lastDir);
             }
             if (isLifting) {
                 Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
