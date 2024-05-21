@@ -20,7 +20,8 @@ public class Stove extends Station implements canUpdate {
         TextureRegion currentFrame;
         // System.out.println("containedItem " + containedItem);
         if (timer > 0) {
-            currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
+            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
+            currentFrame = floatingIconFrames[1].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
         } else if (containedItem != null) {
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
         } else {
@@ -32,6 +33,7 @@ public class Stove extends Station implements canUpdate {
     @Override
     public boolean interact(Player p) {
         System.out.println("interacted with stove");
+        System.out.println(containedItem + " " + timer + " " + max_timer);
         if (containedItem == null && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 containedItem = transmute(p.getHeldItem());
