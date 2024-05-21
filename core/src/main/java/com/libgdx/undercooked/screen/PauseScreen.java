@@ -14,18 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 
-import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static com.libgdx.undercooked.GameManager.timesUp;
 
-public class LoadingScreen implements Screen {
+public class PauseScreen implements Screen {
     public Skin skin;
     public Stage stage;
     private final Main context;
 
-    public LoadingScreen(final Main context) {
+    public PauseScreen(final Main context) {
         this.context = context;
     }
 

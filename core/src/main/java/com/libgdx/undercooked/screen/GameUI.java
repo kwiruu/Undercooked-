@@ -27,9 +27,9 @@ public class GameUI implements UIUpdater {
     private final Main context;
     private final Stage stage;
     private ImageButton pauseButton;
+    private ImageButton infoButton;
     private TextureRegion[] buttonRegions;
     private int currentIndex = 0;
-    private boolean isHovered = false;
     private float elapsedTime = 180f;
     private Label timerLabel;
     private Label scoreLabel;
@@ -37,14 +37,31 @@ public class GameUI implements UIUpdater {
     private Table rootTable;
     private Table infoTable;
     private Table belowTable;
+    private Image infoImage; // Image to display in the center
+    private Container<Image> infoContainer; // Container to center the image
 
     public GameUI(final Main context) {
         this.context = context;
         this.stage = new Stage(new ScreenViewport());
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("assets/ui/buttonsAtlas.atlas"));
-        buttonRegions = new TextureRegion[2];
+        buttonRegions = new TextureRegion[4];
         buttonRegions[0] = atlas.findRegion("pause_button", 0); // Unclicked region
         buttonRegions[1] = atlas.findRegion("pause_button", 1); // Clicked region
+        buttonRegions[2] = atlas.findRegion("info_button", 0); // Unclicked region
+        buttonRegions[3] = atlas.findRegion("info_button", 1); // Clicked region
+
+        // Load the info image
+        Texture infoTexture = new Texture(Gdx.files.internal("assets/ui/info_img.png"));
+        infoImage = new Image(infoTexture);
+
+        // Create the container to center the info image
+        infoContainer = new Container<>(infoImage);
+        infoContainer.setFillParent(true);
+        infoContainer.center();
+        infoContainer.setVisible(false); // Initially hidden
+
+        stage.addActor(infoContainer);
+
         initializeComponents();
     }
 
@@ -53,8 +70,15 @@ public class GameUI implements UIUpdater {
             new TextureRegionDrawable(buttonRegions[0]),
             new TextureRegionDrawable(buttonRegions[1])
         );
+        infoButton = new ImageButton(
+            new TextureRegionDrawable(buttonRegions[2]),
+            new TextureRegionDrawable(buttonRegions[3])
+        );
+
+        // Set the button sizes to 64x64
+        infoButton.setSize(64, 64);
         pauseButton.setSize(64, 64);
-        pauseButton.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72);
+
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -62,17 +86,12 @@ public class GameUI implements UIUpdater {
                 pauseButton.getStyle().imageUp = new TextureRegionDrawable(buttonRegions[currentIndex]);
                 context.setScreen(ScreenType.LOADING);
             }
+        });
 
+        infoButton.addListener(new ClickListener() {
             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {
-                isHovered = true;
-                updateButtonPosition();
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor toActor) {
-                isHovered = false;
-                updateButtonPosition();
+            public void clicked(InputEvent event, float x, float y) {
+                infoContainer.setVisible(!infoContainer.isVisible());
             }
         });
 
@@ -99,7 +118,7 @@ public class GameUI implements UIUpdater {
         orderTable.setHeight(32);
         orderTable.top().right();
         rootTable.row();
-        rootTable.add(orderTable).pad(0).align(Align.topRight);
+        rootTable.add(orderTable).pad(0).align(Align.topRight).expandX();
         rootTable.row();
 
         belowTable = new Table();
@@ -114,12 +133,16 @@ public class GameUI implements UIUpdater {
         infoTable.add(scoreLabel).pad(10);
         infoTable.add(timerLabel).pad(10);
 
-        stage.addActor(pauseButton);
-    }
+        // Add a separate table for buttons and place it at the top left
+        Table buttonTable = new Table();
+        buttonTable.add(pauseButton).size(48, 48).padTop(20).padLeft(20).padRight(5);
+        buttonTable.add(infoButton).size(48, 48).padTop(20);
 
-    private void updateButtonPosition() {
-        float displacement = isHovered ? 2.5f : 0f;
-        pauseButton.setPosition((float) (Gdx.graphics.getWidth()) / 2 - 32, Gdx.graphics.getHeight() - 72 + displacement);
+        // Create a container to position the button table
+        Container<Table> buttonContainer = new Container<>(buttonTable);
+        buttonContainer.top().left(); // Align to the top left
+        buttonContainer.setFillParent(true);
+        stage.addActor(buttonContainer);
     }
 
     public void render() {
