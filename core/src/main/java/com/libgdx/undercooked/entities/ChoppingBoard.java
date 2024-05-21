@@ -10,13 +10,12 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     float timer;
     int max_timer;
     boolean playerOn = false;
-    FoodType tempFood;
     Player pon;
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         floatingIconFrames[0] = floating_iconAtlas.findRegions("chop_icon"); // idle
         floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // chopping
-        floatingIconFrames[2] = floating_iconAtlas.findRegions("meat_icon");// unfinished chopping (show containedItem)
+        floatingIconFrames[2] = floating_iconAtlas.findRegions("question_icon");// unfinished chopping (show containedItem)
     }
     @Override
     public void render() {
@@ -28,9 +27,10 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         } else if (playerOn) {
             currentFrame = floatingIconFrames[1].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[1].size) % floatingIconFrames[1].size));
         } else {
-            if(tempFood != null){
-            floatingIconFrames[2] = floating_iconAtlas.findRegions(tempFood + "_icon");
+            if(containedItem != null){
+                floatingIconFrames[2] = floating_iconAtlas.findRegions(containedItem + "_icon");
             }
+            stateTime += 0.2f;
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
 
         }
@@ -46,12 +46,10 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
                 playerOn = true;
                 max_timer = 4;
                 timer = 4;
-                tempFood = p.getHeldItem();
-                containedItem = transmute(p.getHeldItem());
+                containedItem = p.getHeldItem();
                 p.removeHeldItem();
                 pon = p;
-                // set this to current containedItem
-                // floatingIconFrames2 = floating_iconAtlas.findRegions("chop_icon");
+                floatingIconFrames[2] = floating_iconAtlas.findRegions(containedItem + "_icon");
                 return true;
             }
         } else if (containedItem != null && !p.hasHeldItem()) {
@@ -102,7 +100,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
                 timer-=deltaTime;
             } else {
                 max_timer = 0;
-                pon.setHeldItem(containedItem);
+                pon.setHeldItem(transmute(containedItem));
                 pon.removeAnimLocker();
                 pon.outPoof();
                 containedItem = null;
@@ -115,5 +113,6 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     public void exitPlayer() {
         pon = null;
         playerOn = false;
+        floatingIconFrames[2] = floating_iconAtlas.findRegions(containedItem + "_icon");
     }
 }

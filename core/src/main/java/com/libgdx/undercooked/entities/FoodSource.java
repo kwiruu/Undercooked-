@@ -10,11 +10,12 @@ public class FoodSource extends Station {
     public FoodSource(World world, float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
         super(world, x, y, width, height, batch);
         containedItem = foodType;
-        // different classes different icons!
-        // this else statement is para sa icon name depending on the foodtype!
         switch(foodType) {
             case tomato:
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
+                break;
+            case onion:
+                floatingIconFrames[0] = floating_iconAtlas.findRegions("onion_icon");
                 break;
             case meat:
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("meat_icon");
@@ -26,19 +27,8 @@ public class FoodSource extends Station {
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
                 break;
             default:
-                floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
+                floatingIconFrames[0] = floating_iconAtlas.findRegions("question_icon");
         }
-//        if (foodType.equals(FoodType.tomato)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
-//        } else if (foodType.equals(FoodType.onion)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("onion_icon");
-//        } else if (foodType.equals(FoodType.meat)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("meat_icon");
-//        } else if (foodType.equals(FoodType.fish)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("fish_icon");
-//        } else if (foodType.equals(FoodType.pickle)) {
-//            floatingIconFrames[0] = floating_iconAtlas.findRegions("pickle_icon");
-//        }
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();

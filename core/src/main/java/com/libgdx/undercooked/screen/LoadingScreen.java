@@ -18,6 +18,7 @@ import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
+import static com.libgdx.undercooked.GameManager.timesUp;
 
 public class LoadingScreen implements Screen {
     public Skin skin;
@@ -80,10 +81,9 @@ public class LoadingScreen implements Screen {
         selectMapButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                timesUp = true;
                 context.setScreen(ScreenType.SELECTMAP);
                 Main.deleteScreen(ScreenType.GAME);
-                mapRunning = false;
-                MapSound.stop();
             }
         });
 
