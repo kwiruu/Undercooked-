@@ -19,6 +19,7 @@ public class Counter extends Station {
     @Override
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
+        stateTime += 0.2f;
         TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         batch.draw(currentFrame, getX(), getY());
     }

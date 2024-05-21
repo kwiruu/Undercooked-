@@ -23,6 +23,7 @@ public class RiceCooker extends Station implements canUpdate {
 //            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
             currentFrame = floatingIconFrames[0].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
         } else {
+            stateTime += 0.2f;
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         }
         batch.draw(currentFrame, getX(), getY());

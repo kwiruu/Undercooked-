@@ -10,8 +10,6 @@ public class FoodSource extends Station {
     public FoodSource(World world, float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
         super(world, x, y, width, height, batch);
         containedItem = foodType;
-        // different classes different icons!
-        // this else statement is para sa icon name depending on the foodtype!
         switch(foodType) {
             case tomato:
                 floatingIconFrames[0] = floating_iconAtlas.findRegions("tomato_icon");
