@@ -27,7 +27,7 @@ public class RiceCooker extends Station implements canUpdate {
             stateTime += 0.2f;
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         }
-        batch.draw(currentFrame, getX(), getY());
+        batch.draw(currentFrame, getX(), getY() + 40);
     }
 
     @Override

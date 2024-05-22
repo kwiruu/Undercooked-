@@ -34,7 +34,7 @@ public class FoodSource extends Station {
         stateTime += Gdx.graphics.getDeltaTime();
         stateTime += 0.2f;
         TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
-        batch.draw(currentFrame, getX(), getY());
+        batch.draw(currentFrame, getX(), getY() + 55);
     }
     @Override
     public boolean interact(Player p) {

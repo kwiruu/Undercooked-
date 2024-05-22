@@ -64,7 +64,6 @@ public class PlayerControls {
         debugKeys();
 
         if (playerLock > 0 || animLock == null) {
-            System.out.println(currentTime);
             int speed = 1;
             if (speedBoostTimer >= 0) speed = 2;
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 2;
@@ -167,7 +166,7 @@ public class PlayerControls {
         }
     }
     public void poof() {
-        player.poofFrames = .8f;
+        player.poofFrames = .5f;
     }
     public void poof2() {
         playerAnimations.setAnimationPlaying(true);

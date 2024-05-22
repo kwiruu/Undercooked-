@@ -49,6 +49,7 @@ public class StationList {
             if (objectName != null) {
                 // if the object is named stove in the tiled map then mu create siyag new nga stove!
                 if (object.getName().equals("station_stove")) {
+                    // TODO position is a bit down
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
                     width = object.getProperties().get("width", Float.class);
@@ -58,7 +59,7 @@ public class StationList {
                     stationArray.add(stove);
                 } else if (object.getName().equals("station_chopping_board")) {
                     x = object.getProperties().get("x", Float.class) + 16;
-                    y = object.getProperties().get("y", Float.class) + 25;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
@@ -66,7 +67,7 @@ public class StationList {
                     stationArray.add(choppingBoard);
                 } else if (object.getName().equals("station_rice_cooker")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 40;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
@@ -136,13 +137,13 @@ public class StationList {
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
-                    Stove stove = new Stove(world, x, y, (int) width, (int) height, batch);
-                    Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch);
+                    Stove stove = new Stove(world, x, y, (int) width, (int) height, batch, 55);
+                    Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch, 25);
                     PolyStation polyStation = new PolyStation(world, x, y, (int) width, (int) height, batch, stove, placemat);
                     stationArray.add(polyStation);
 
 //                    x = object.getProperties().get("x", Float.class);
-//                    y = object.getProperties().get("y", Float.class) + 55;
+//                    y = object.getProperties().get("y", Float.class);
 //                    width = object.getProperties().get("width", Float.class);
 //                    height = object.getProperties().get("height", Float.class);
 //
@@ -150,7 +151,7 @@ public class StationList {
 //                    stationArray.add(onion);
                 } else if (object.getName().equals("meat_source")) {
                     x = object.getProperties().get("x", Float.class) + 48;
-                    y = object.getProperties().get("y", Float.class) + 40;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
@@ -158,7 +159,7 @@ public class StationList {
                     stationArray.add(meat);
                 } else if (object.getName().equals("fish_tank_source")) {
                     x = object.getProperties().get("x", Float.class) + 32;
-                    y = object.getProperties().get("y", Float.class) + 55;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
@@ -166,7 +167,7 @@ public class StationList {
                     stationArray.add(fish);
                 } else if (object.getName().equals("tomato_source")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 55;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 
@@ -174,7 +175,7 @@ public class StationList {
                     stationArray.add(tomato);
                 } else if (object.getName().equals("pickle_source")) {
                     x = object.getProperties().get("x", Float.class);
-                    y = object.getProperties().get("y", Float.class) + 55;
+                    y = object.getProperties().get("y", Float.class);
                     width = object.getProperties().get("width", Float.class);
                     height = object.getProperties().get("height", Float.class);
 

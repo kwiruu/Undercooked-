@@ -39,7 +39,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
             currentFrame = floatingIconFrames[2].get((int) (stateTime / frameDuration) % floatingIconFrames[2].size);
 
         }
-        batch.draw(currentFrame, getX(), getY());
+        batch.draw(currentFrame, getX(), getY() + 25);
         batch.setColor(1, 1, 1, 1f);
     }
 

@@ -21,6 +21,7 @@ public class Bin extends Station {
         System.out.println("interacted with a " + this);
         if (p.hasHeldItem()) {
             p.removeHeldItem();
+            return true;
         }
         return false;
     }

@@ -9,11 +9,19 @@ import com.libgdx.undercooked.entities.PlayerManager.Player;
 public class Stove extends Station implements canUpdate {
     float timer;
     int max_timer;
+    private int dispY = 0;
     public Stove(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon_blank"); // idle
         floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // cooking
         floatingIconFrames[2] = floating_iconAtlas.findRegions("clock_icon_done"); // meal on standby
+    }
+    public Stove(World world, float x, float y, int width, int height, SpriteBatch batch, int dispY) {
+        super(world, x, y, width, height, batch);
+        floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon_blank"); // idle
+        floatingIconFrames[1] = floating_iconAtlas.findRegions("clock_icon"); // cooking
+        floatingIconFrames[2] = floating_iconAtlas.findRegions("clock_icon_done"); // meal on standby
+        this.dispY = dispY;
     }
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
@@ -26,7 +34,7 @@ public class Stove extends Station implements canUpdate {
         } else {
             currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
         }
-        batch.draw(currentFrame, getX(), getY());
+        batch.draw(currentFrame, getX(), getY() + dispY);
     }
 
     @Override

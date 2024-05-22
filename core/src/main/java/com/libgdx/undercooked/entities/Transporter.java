@@ -24,7 +24,7 @@ public class Transporter extends Station {
     public boolean interact(Player p) {
         System.out.println("interacted with a " + this);
         p.transport(target);
-        return false;
+        return true;
     }
 
     @Override
