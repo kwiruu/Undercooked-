@@ -76,7 +76,6 @@ public class Orders {
         }
     }
     public void update(float deltaTime) {
-        System.out.println(timer);
         for (int i = 0; i < activeOrder; i++) {
             if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
         }
