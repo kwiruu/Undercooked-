@@ -19,9 +19,7 @@ public abstract class BaseSound implements Runnable {
     }
 
     @Override
-    public void run() {
-            playSound();
-    }
+    public abstract void run();
 
     protected void playSound() {
         sound.play(volume);
