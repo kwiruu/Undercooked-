@@ -67,8 +67,9 @@ public class Placemat extends Station implements Disposable {
             containedItem = null;
             return true;
         } else if (containedItem != null && validate(p.getHeldItem())) {
-            if (transmute(containedItem) != null) {
-                containedItem = transmute(containedItem);
+            if (transmute(p.getHeldItem()) != null) {
+                containedItem = transmute(p.getHeldItem());
+                p.removeHeldItem();
                 return true;
             }
         }
@@ -91,42 +92,41 @@ public class Placemat extends Station implements Disposable {
         if (ft == null) return FoodType.rice;
         switch (ft) {
             case cooked_meat:
-                switch (containedItem) {
-                    case chopped_onion:
-                        return FoodType.cooked_meat_onion;
-                    case chopped_tomato:
-                        return FoodType.cooked_meat_tomato;
+                if (containedItem == FoodType.chopped_onion) {
+                    return FoodType.cooked_meat_onion;
+                } else if (containedItem == FoodType.chopped_tomato) {
+                    return FoodType.cooked_meat_tomato;
                 }
                 break;
             case cooked_fish:
-                switch (containedItem) {
-                    case chopped_onion:
-                        return FoodType.cooked_fish_onion;
-                    case chopped_tomato:
-                        return FoodType.cooked_fish_tomato;
+                if (containedItem == FoodType.chopped_onion) {
+                    return FoodType.cooked_fish_onion;
+                } else if (containedItem == FoodType.chopped_tomato) {
+                    return FoodType.cooked_fish_tomato;
                 }
                 break;
             case chopped_tomato:
-                switch (containedItem) {
-                    case cooked_meat:
-                        return FoodType.cooked_meat_tomato;
-                    case cooked_fish:
-                        return FoodType.cooked_fish_tomato;
+                if (containedItem == FoodType.cooked_meat) {
+                    return FoodType.cooked_meat_tomato;
+                } else if (containedItem == FoodType.cooked_fish) {
+                    return FoodType.cooked_fish_tomato;
                 }
+                break;
             case chopped_onion:
-                switch (containedItem) {
-                    case cooked_meat:
-                        return FoodType.cooked_meat_onion;
-                    case cooked_fish:
-                        return FoodType.cooked_fish_onion;
+                if (containedItem == FoodType.cooked_meat) {
+                    return FoodType.cooked_meat_onion;
+                } else if (containedItem == FoodType.cooked_fish) {
+                    return FoodType.cooked_fish_onion;
                 }
+                break;
         }
+
         return null;
     }
 
     @Override
     public String toString() {
-        return "Placemat";
+        return "Placemat(" + containedItem + ")";
     }
 
     @Override
