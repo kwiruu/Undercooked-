@@ -53,6 +53,7 @@ public class Stove extends Station implements canUpdate {
             }
         } else if (containedItem != null && timer <= 0 && max_timer != 0 && !p.hasHeldItem()) {
             p.setHeldItem(containedItem);
+            gameSound.startPoofSound();
             containedItem = null;
             max_timer = 0;
             return true;

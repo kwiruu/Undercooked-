@@ -8,12 +8,15 @@ public class GameSound {
 
     private PoofSound poofSound;
 
+    private WalkingSound walkingSound;
+
     public GameSound() {
         cookingSound = new CookingSound();
         errorSound = new ErrorSound();
         slicingSound = new SlicingSound();
         bellSound = new BellSound();
         poofSound = new PoofSound();
+        walkingSound = new WalkingSound();
     }
 
     public void startCookingSound() {
@@ -54,6 +57,14 @@ public class GameSound {
 
     public void stopPoofSound() {
         poofSound.stop();
+    }
+
+    public void startWalkingSound(){
+        walkingSound.start();
+    }
+
+    public void stopWalkingSound(){
+        walkingSound.stop();
     }
 
     public void disposeAll() {

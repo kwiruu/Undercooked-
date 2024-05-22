@@ -21,6 +21,8 @@ public class PlayerControls {
     public float playerLock;
     public int invalidTimer;
     private float speedBoostTimer;
+    private boolean isWalking = false;
+    GameSound gameSound = new GameSound();
 
 
     PlayerAnimations playerAnimations;
@@ -34,7 +36,7 @@ public class PlayerControls {
     public void inputUpdate(float deltaTime) {
         float horizontalForce = 0;
         float verticalForce = 0;
-        playerAnimations.updateStateTime(deltaTime); // Increment stateTime here
+        playerAnimations.updateStateTime(deltaTime);
         player.timeUpdate();
         updateTimer(deltaTime);
 
@@ -65,29 +67,45 @@ public class PlayerControls {
         }
         debugKeys();
 
+        boolean isCurrentlyWalking = false;
+
         if (playerLock > 0 || animLock == null) {
             int speed = 1;
             if (speedBoostTimer >= 0) speed = 2;
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 2;
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 verticalForce += speed;
+                isCurrentlyWalking = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                 horizontalForce -= speed;
+                isCurrentlyWalking = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 verticalForce -= speed;
+                isCurrentlyWalking = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D)) {
                 horizontalForce += speed;
+                isCurrentlyWalking = true;
             }
             if ((horizontalForce != 0 && verticalForce != 0)) {
                 horizontalForce *= MathUtils.sin(MathUtils.PI2 / 8);
                 verticalForce *= MathUtils.sin(MathUtils.PI2 / 8);
             }
         }
+
         player.setLinearVelocity(horizontalForce * 5, verticalForce * 5);
+
+        if (isCurrentlyWalking && !isWalking) {
+            gameSound.startWalkingSound();
+            isWalking = true;
+        } else if (!isCurrentlyWalking && isWalking) {
+            gameSound.stopWalkingSound();
+            isWalking = false;
+        }
     }
+
 
     private void updateTimer(float deltaTime) {
         currentTime += deltaTime;

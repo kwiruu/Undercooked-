@@ -68,6 +68,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
             pon = p;
             return true;
         }
+        gameSound.startErrorSound();
         return false;
     }
 
