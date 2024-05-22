@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     int max_timer = 10;
     float timer = 10;
+
+    GameSound gameSound = new GameSound();
 
     public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
@@ -35,13 +38,16 @@ public class RiceCooker extends Station implements canUpdate {
         System.out.println("interacted with a " + this);
         if (timer <= 0 && !p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
+            gameSound.startPoofSound();
             timer = 10;
             return true;
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
             timer = max_timer;
+            gameSound.startCookingSound();
             return true;
         }
+        gameSound.startErrorSound();
         return false;
     }
 

@@ -4,11 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.ErrorSound;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.GameManager;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
+import static com.libgdx.undercooked.entities.Orders.totalOrders;
+
 
 
 public class Counter extends Station {
+
+    GameSound gameSound = new GameSound();
     Orders orders;
     public Counter(World world, float x, float y, int width, int height, SpriteBatch batch, Orders orders) {
         super(world, x, y, width, height, batch);
@@ -33,11 +39,14 @@ public class Counter extends Station {
                     orders.rewardPoints(p.getHeldItem());
                     f.setInactive();
                     p.removeHeldItem();
+                    totalOrders--;
                     GameManager.setCheckEntry(true);
                 }
             }
+            gameSound.startBellSound();
             return true;
         }
+        gameSound.startErrorSound();
         return false;
     }
     @Override

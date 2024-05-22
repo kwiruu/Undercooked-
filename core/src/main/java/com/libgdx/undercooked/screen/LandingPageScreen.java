@@ -121,8 +121,8 @@ public class LandingPageScreen implements Screen {
         final TextField usernameField = new TextField("", skin);
 
 
-        MainMenuSound.running = true;
-        new Thread(mainMenuSound).start();
+//        MainMenuSound.running = true;
+//        new Thread(mainMenuSound).start();
 
 
 
@@ -145,7 +145,7 @@ public class LandingPageScreen implements Screen {
                 } else {
                     if(userSignIn(username)){
                         context.setScreen(ScreenType.SELECTMAP);
-                        mainMenuSound.stop();
+                       // mainMenuSound.stop();
                     }
                 }
             }

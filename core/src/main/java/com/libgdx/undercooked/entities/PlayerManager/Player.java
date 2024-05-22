@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.StationList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.utils.CreateBox;
@@ -28,6 +29,7 @@ public class Player implements Runnable {
     float poofFrames;
     private FoodType heldItem;
     StationList stationList;
+
     public static int x;
     public static int y;
     PlayerControls playerControls;

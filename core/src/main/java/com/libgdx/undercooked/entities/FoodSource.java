@@ -1,12 +1,16 @@
 package com.libgdx.undercooked.entities;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class FoodSource extends Station {
+
+    GameSound gameSound = new GameSound();
     public FoodSource(World world, float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
         super(world, x, y, width, height, batch);
         containedItem = foodType;
@@ -41,8 +45,10 @@ public class FoodSource extends Station {
         System.out.println("interacted with a " + this);
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);
+            gameSound.startPoofSound();
             return true;
         }
+        gameSound.startErrorSound();
         return false;
     }
 

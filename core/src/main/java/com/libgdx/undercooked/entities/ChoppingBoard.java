@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.CookingSound;
+import com.libgdx.undercooked.AudioManager.GameSound;
+import com.libgdx.undercooked.AudioManager.SlicingSound;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 import java.util.Objects;
@@ -13,6 +16,8 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
     int max_timer;
     boolean playerOn = false;
     Player pon;
+    GameSound gameSound = new GameSound();
+
     public ChoppingBoard(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         floatingIconFrames[0] = floating_iconAtlas.findRegions("chop_icon"); // idle
@@ -49,6 +54,7 @@ public class ChoppingBoard extends Station implements canUpdate, animLocker {
         if (timer <= 0 && p.hasHeldItem()) {
             if (validate(p.getHeldItem())) {
                 playerOn = true;
+                gameSound.startSlicingSound();
                 max_timer = 4;
                 timer = 4;
                 containedItem = p.getHeldItem();

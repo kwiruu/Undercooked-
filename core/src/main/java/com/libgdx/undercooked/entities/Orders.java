@@ -9,7 +9,7 @@ import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 
 public class Orders {
 
-    private static ArrayList<FoodOrder> orderList;
+    static ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
     public static int totalOrders;
     private float timer = 0;

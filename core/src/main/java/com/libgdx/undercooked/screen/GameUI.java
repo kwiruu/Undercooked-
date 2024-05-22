@@ -175,6 +175,8 @@ public class GameUI implements UIUpdater {
 
         ArrayList<FoodOrder> orderList = orders.getOrderList();
 
+        System.out.println(orderList.size());
+
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         Texture rowBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/row_background.png"));

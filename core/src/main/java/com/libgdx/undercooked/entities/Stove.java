@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class Stove extends Station implements canUpdate {
     float timer;
     int max_timer;
     private int dispY = 0;
+    GameSound gameSound = new GameSound();
     public Stove(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
         floatingIconFrames[0] = floating_iconAtlas.findRegions("clock_icon_blank"); // idle
@@ -46,6 +48,7 @@ public class Stove extends Station implements canUpdate {
                 p.removeHeldItem();
                 timer = 10;
                 max_timer = 10;
+                gameSound.startCookingSound();
                 return true;
             }
         } else if (containedItem != null && timer <= 0 && max_timer != 0 && !p.hasHeldItem()) {
@@ -54,6 +57,7 @@ public class Stove extends Station implements canUpdate {
             max_timer = 0;
             return true;
         }
+        gameSound.startErrorSound();
         return false;
     }
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Station;
 import com.libgdx.undercooked.entities.animLocker;
@@ -20,6 +21,7 @@ public class PlayerControls {
     public float playerLock;
     public int invalidTimer;
     private float speedBoostTimer;
+
 
     PlayerAnimations playerAnimations;
 
