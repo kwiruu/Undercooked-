@@ -27,7 +27,7 @@ public abstract class Station {
     public Station(World world, float x, float y, int width, int height, SpriteBatch batch) {
         this.x = x;
         this.y = y;
-        this.width = (int) ((float) height / 2 / PPM);
+        this.width = (int) (width / 2 / PPM);
         this.height = (int) (height / 2 / PPM);
         this.batch = batch;
         body = CreateBox.createBox(world, (int) x, (int) y, width, height, true);
