@@ -57,18 +57,27 @@ public class Stove extends Station implements canUpdate {
     private boolean validate(FoodType ft) {
         if (ft == null) return false;
         switch (ft) {
+            case tomato:
             case meat:
             case fish:
+            case chopped_meat:
+            case chopped_fish:
                 return true;
         }
         return false;
     }
     private FoodType transmute(FoodType ft) {
         switch (ft) {
+            case tomato:
+                return FoodType.tomato_soup;
             case meat:
                 return FoodType.cooked_meat;
             case fish:
                 return FoodType.cooked_fish;
+            case chopped_meat:
+                return FoodType.cooked_chopped_meat;
+            case chopped_fish:
+                return FoodType.cooked_chopped_fish;
         }
         return null;
     }

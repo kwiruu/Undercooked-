@@ -44,6 +44,11 @@ public class Placemat extends Station implements Disposable {
             p.setHeldItem(containedItem);
             containedItem = null;
             return true;
+        } else if (containedItem != null && validate(p.getHeldItem())) {
+            if (transmute(containedItem) != null) {
+                containedItem = transmute(containedItem);
+                return true;
+            }
         }
         return false;
     }
@@ -64,13 +69,35 @@ public class Placemat extends Station implements Disposable {
         if (ft == null) return FoodType.rice;
         switch (ft) {
             case cooked_meat:
-                return FoodType.meat_meal;
+                switch (containedItem) {
+                    case chopped_onion:
+                        return FoodType.cooked_meat_onion;
+                    case chopped_tomato:
+                        return FoodType.cooked_meat_tomato;
+                }
+                break;
             case cooked_fish:
-                return FoodType.fish_meal;
+                switch (containedItem) {
+                    case chopped_onion:
+                        return FoodType.cooked_fish_onion;
+                    case chopped_tomato:
+                        return FoodType.cooked_fish_tomato;
+                }
+                break;
             case chopped_tomato:
+                switch (containedItem) {
+                    case cooked_meat:
+                        return FoodType.cooked_meat_tomato;
+                    case cooked_fish:
+                        return FoodType.cooked_fish_tomato;
+                }
             case chopped_onion:
-            case chopped_pickle:
-                return FoodType.struggle_meal;
+                switch (containedItem) {
+                    case cooked_meat:
+                        return FoodType.cooked_meat_onion;
+                    case cooked_fish:
+                        return FoodType.cooked_fish_onion;
+                }
         }
         return null;
     }

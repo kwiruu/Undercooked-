@@ -104,6 +104,14 @@ public class StationList {
 
                     Transporter transporter = new Transporter(world, x, y, (int) width, (int) height, batch, (int) x+32, (int) y);
                     stationArray.add(transporter);
+                } else if (object.getName().equals("station_bin")) {
+                    x = object.getProperties().get("x", Float.class);
+                    y = object.getProperties().get("y", Float.class);
+                    width = object.getProperties().get("width", Float.class);
+                    height = object.getProperties().get("height", Float.class);
+
+                    Bin bin = new Bin(world, x, y, (int) width, (int) height, batch);
+                    stationArray.add(bin);
                 } else if (object.getName().equals("station_polystation_sp")) {
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class);
