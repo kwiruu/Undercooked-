@@ -93,7 +93,10 @@ public class GameManager implements Disposable {
         npcManager.update(deltaTime);
         stationList.update(deltaTime);
         orders.update(deltaTime);
-        uiUpdater.updateOrdersUI(orders); // Update the orders UI
+        if (checkEntry) {
+            uiUpdater.updateOrdersUI(orders); // Update the orders UI
+            checkEntry = false;
+        }
     }
 
     public void render(TextureRegion currentFrame) {

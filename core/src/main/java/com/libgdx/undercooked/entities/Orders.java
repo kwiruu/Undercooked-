@@ -1,5 +1,7 @@
 package com.libgdx.undercooked.entities;
 
+import com.libgdx.undercooked.GameManager;
+
 import java.util.ArrayList;
 
 import static com.libgdx.undercooked.GameManager.score;
@@ -78,12 +80,12 @@ public class Orders {
         for (int i = 0; i < activeOrder; i++) {
             if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
         }
-        System.out.println(activeOrder + " - " + totalOrders);
         if (timer > 0) {
             timer -= deltaTime;
         } else if (activeOrder < totalOrders) {
             timer = orderList.get(activeOrder).timer;
             activeOrder++;
+            GameManager.setCheckEntry(true);
         }
     }
     public static void freeOrderList() {

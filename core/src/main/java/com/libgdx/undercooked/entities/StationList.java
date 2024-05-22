@@ -49,7 +49,6 @@ public class StationList {
             if (objectName != null) {
                 // if the object is named stove in the tiled map then mu create siyag new nga stove!
                 if (object.getName().equals("station_stove")) {
-                    // TODO position is a bit down
                     x = object.getProperties().get("x", Float.class);
                     y = object.getProperties().get("y", Float.class) + 55;
                     width = object.getProperties().get("width", Float.class);

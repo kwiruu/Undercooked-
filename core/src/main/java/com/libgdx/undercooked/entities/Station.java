@@ -23,9 +23,6 @@ public abstract class Station {
     protected float stateTime; // Time elapsed since the start of the animation
     SpriteBatch batch;
     protected Array<TextureAtlas.AtlasRegion>[] floatingIconFrames;
-
-    // TODO popup (progress bar for non-source stations)
-
     @SuppressWarnings("unchecked")
     public Station(World world, float x, float y, int width, int height, SpriteBatch batch) {
         this.x = x;
