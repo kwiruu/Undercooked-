@@ -36,8 +36,9 @@ public class Main extends Game implements SplashScreen.SplashScreenListener{
             @Override
             public void onSplashScreenFinished() {
                 // NOTE debug
-                setScreen(ScreenType.MAINMENUTRANSITION);
-                //setScreen(ScreenType.GAME);
+
+                //setScreen(ScreenType.MAINMENUTRANSITION);
+                setScreen(ScreenType.SELECTMAP);
             }
         });
         setScreen(splashScreen);

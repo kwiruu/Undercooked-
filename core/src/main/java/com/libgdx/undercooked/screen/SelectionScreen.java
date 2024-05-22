@@ -72,6 +72,7 @@ public class SelectionScreen implements Screen {
         map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map2_unlocked.png"));
         map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map3_unlocked.png"));
         map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map4_unlocked.png"));
+
         //map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked"));
 
         //For the Locked Map Buttons
