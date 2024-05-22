@@ -84,7 +84,7 @@ public class GameUI implements UIUpdater {
             public void clicked(InputEvent event, float x, float y) {
                 currentIndex = (currentIndex + 1) % 2;
                 pauseButton.getStyle().imageUp = new TextureRegionDrawable(buttonRegions[currentIndex]);
-                context.setScreen(ScreenType.LOADING);
+                context.setScreen(ScreenType.PAUSE);
             }
         });
 
@@ -150,7 +150,7 @@ public class GameUI implements UIUpdater {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            context.setScreen(ScreenType.LOADING);
+            context.setScreen(ScreenType.PAUSE);
         }
     }
 
@@ -171,10 +171,11 @@ public class GameUI implements UIUpdater {
 
     @Override
     public void updateOrdersUI(Orders orders) {
-        orderTable.clear(); // Clear previous orders
+        orderTable.clear();
 
-        //orders.removeInactiveOrders();
-        ArrayList<FoodOrder> orderList = orders.getActiveOrderList();
+        ArrayList<FoodOrder> orderList = orders.getOrderList();
+
+        System.out.println(orderList.size());
 
         Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
@@ -185,28 +186,30 @@ public class GameUI implements UIUpdater {
         TextureRegionDrawable itemBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(itemBackgroundTexture));
 
         for (FoodOrder order : orderList) {
-            Table rowTable = new Table();
-            rowTable.padRight(10f);
-            rowTable.align(Align.left);
+            if (order.isActive() && orderList.indexOf(order) < orders.getActiveOrder()) {
+                Table rowTable = new Table();
+                rowTable.padRight(10f);
+                rowTable.align(Align.left);
 
-            Table imageTable = new Table();
-            imageTable.setBackground(itemBackgroundDrawable);
-            imageTable.align(Align.center).pad(0);
+                Table imageTable = new Table();
+                imageTable.setBackground(itemBackgroundDrawable);
+                imageTable.align(Align.center).pad(0);
 
-            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + order.getFoodType().toString() + ".png"));
-            Image orderImage = new Image(texture);
-            imageTable.add(orderImage).pad(5).width(32f).height(32f);
+                Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + order.getFoodType().toString() + ".png"));
+                Image orderImage = new Image(texture);
+                imageTable.add(orderImage).pad(5).width(32f).height(32f);
 
-            Table labelTable = new Table();
-            labelTable.setBackground(rowBackgroundDrawable);
-            labelTable.align(Align.left);
-            Label orderLabel = new Label(toCamelCase(order.getFoodType().toString()), skin);
-            labelTable.add(orderLabel).pad(5).width(128f);
+                Table labelTable = new Table();
+                labelTable.setBackground(rowBackgroundDrawable);
+                labelTable.align(Align.left);
+                Label orderLabel = new Label(toCamelCase(order.getFoodType().toString()), skin);
+                labelTable.add(orderLabel).pad(5).width(128f);
 
-            rowTable.add(imageTable).pad(5).width(34f).height(34f);
-            rowTable.add(labelTable).pad(5).expandX().fillX();
+                rowTable.add(imageTable).pad(5).width(34f).height(34f);
+                rowTable.add(labelTable).pad(5).expandX().fillX();
 
-            orderTable.add(rowTable).pad(5).row();
+                orderTable.add(rowTable).pad(5).row();
+            }
         }
     }
 

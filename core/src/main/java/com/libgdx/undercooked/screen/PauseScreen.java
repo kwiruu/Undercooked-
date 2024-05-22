@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
@@ -19,7 +19,6 @@ import com.libgdx.undercooked.Main;
 import static com.libgdx.undercooked.GameManager.timesUp;
 
 public class PauseScreen implements Screen {
-    public Skin skin;
     public Stage stage;
     private final Main context;
 
@@ -29,37 +28,49 @@ public class PauseScreen implements Screen {
 
     @Override
     public void show() {
-        skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json")); // Change this to your own skin file
-
         stage = new Stage(new ScreenViewport());
 
         Gdx.input.setInputProcessor(stage);
 
         Table root = new Table();
         root.setFillParent(true);
-        stage.addActor(root);
-
-        // Set background image
-        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/screens/mainscreen.png"));
+        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
         root.setBackground(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
+        stage.addActor(root);
 
         root.pad(20);
 
-        TextButton startButton = new TextButton("Start", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
-        TextButton selectMapButton = new TextButton("Back To Menu", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        // Load button textures
+        Texture playTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/play.png"));
+        Texture playClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/play_clicked.png"));
+        Texture settingsTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/settings.png"));
+        Texture settingsClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/settings_clicked.png"));
+        Texture menuTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/menu.png"));
+        Texture menuClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/menu_clicked.png"));
+        Texture exitTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/exit.png"));
+        Texture exitClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/exit_clicked.png"));
 
-        root.add(startButton).width(100).fillX().uniformX().padBottom(20);
+        // Create ImageButtons
+        ImageButton startButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(playTexture)),
+            new TextureRegionDrawable(new TextureRegion(playClickedTexture)));
+        ImageButton optionsButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(settingsTexture)),
+            new TextureRegionDrawable(new TextureRegion(settingsClickedTexture)));
+        ImageButton selectMapButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(menuTexture)),
+            new TextureRegionDrawable(new TextureRegion(menuClickedTexture)));
+        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(exitTexture)),
+            new TextureRegionDrawable(new TextureRegion(exitClickedTexture)));
+
+        // Add buttons to the table
+        root.add(startButton).width(200).fillX().uniformX().padBottom(20);
         root.row();
-        root.add(optionsButton).width(100).fillX().uniformX().padBottom(20);
+        root.add(optionsButton).width(200).fillX().uniformX().padBottom(20);
         root.row();
         root.add(selectMapButton).width(200).fillX().uniformX().padBottom(20);
         root.row();
-        root.add(exitButton).width(100).fillX().uniformX().padBottom(20);
+        root.add(exitButton).width(200).fillX().uniformX().padBottom(20);
         root.row();
 
-        startButton.setDisabled(true);
+        // Add listeners to buttons
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -67,7 +78,6 @@ public class PauseScreen implements Screen {
             }
         });
 
-        optionsButton.setDisabled(true);
         optionsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -75,7 +85,6 @@ public class PauseScreen implements Screen {
             }
         });
 
-        selectMapButton.setDisabled(true);
         selectMapButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -85,19 +94,16 @@ public class PauseScreen implements Screen {
             }
         });
 
-        exitButton.setDisabled(true);
         exitButton.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event,float x, float y){
-                Gdx.app.exit();
+            public void clicked(InputEvent event, float x, float y){
+                context.setScreen(ScreenType.MAINMENUTRANSITION);
             }
         });
 
         // Add stage to input processor
         Gdx.input.setInputProcessor(stage);
-
     }
-
 
     @Override
     public void render(float v) {
@@ -135,6 +141,5 @@ public class PauseScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
     }
 }

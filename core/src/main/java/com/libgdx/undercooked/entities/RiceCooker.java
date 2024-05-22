@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class RiceCooker extends Station implements canUpdate {
     int max_timer = 10;
     float timer = 10;
+
+    GameSound gameSound = new GameSound();
 
     public RiceCooker(World world, float x, float y, int width, int height, SpriteBatch batch) {
         super(world, x, y, width, height, batch);
@@ -21,36 +24,30 @@ public class RiceCooker extends Station implements canUpdate {
         TextureRegion currentFrame;
         if (timer >= 0) {
 //            System.out.println((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
-            currentFrame = floatingIconFrames[0].get((int) (((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size));
+            int x = (int) ((1f - (timer/max_timer)) * floatingIconFrames[0].size) % floatingIconFrames[0].size;
+            currentFrame = floatingIconFrames[0].get(x);
         } else {
             stateTime += 0.2f;
             currentFrame = floatingIconFrames[1].get((int) (stateTime / frameDuration) % floatingIconFrames[1].size);
         }
-        batch.draw(currentFrame, getX(), getY());
+        batch.draw(currentFrame, getX(), getY() + 40);
     }
 
     @Override
     public boolean interact(Player p) {
         System.out.println("interacted with a " + this);
-        if (timer <= 0 && p.hasHeldItem()) {
+        if (timer <= 0 && !p.hasHeldItem()) {
             p.setHeldItem(FoodType.rice);
-            timer = 100;
-            return true;
-        } else if (timer <= 0 && validate(p.getHeldItem())) {
-            p.setHeldItem(transmute(p.getHeldItem()));
-
-            timer = 100;
-
-            timer = max_timer;
+            gameSound.startPoofSound();
+            timer = 10;
             return true;
         } else if (timer <= 0 && validate(p.getHeldItem())) {
             p.setHeldItem(transmute(p.getHeldItem()));
             timer = max_timer;
-
-            timer = max_timer;
+            gameSound.startCookingSound();
             return true;
-
         }
+        gameSound.startErrorSound();
         return false;
     }
 

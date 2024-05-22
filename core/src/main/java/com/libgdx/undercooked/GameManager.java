@@ -2,6 +2,7 @@
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.StationList;
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
@@ -39,6 +40,7 @@ public class GameManager implements Disposable {
     private Orders orders;
     private UIUpdater uiUpdater;
 
+
     public GameManager(UIUpdater uiUpdater) {
         this.world = new World(new Vector2(0f, 0f), false);
         this.uiUpdater = uiUpdater;
@@ -52,6 +54,7 @@ public class GameManager implements Disposable {
             batch = playerManager.getBatch();
             npcManager = new Npc(world);
             score = 0;
+
 
             // Load NPC texture
             npcTexture = new Texture(Gdx.files.internal("assets/sprites/Chef2/idle_down_01.png"));
@@ -93,7 +96,7 @@ public class GameManager implements Disposable {
         npcManager.update(deltaTime);
         stationList.update(deltaTime);
         orders.update(deltaTime);
-        if(checkEntry){
+        if (checkEntry) {
             uiUpdater.updateOrdersUI(orders); // Update the orders UI
             checkEntry = false;
         }

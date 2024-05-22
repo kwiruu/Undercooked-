@@ -40,7 +40,7 @@ public class SelectionScreen implements Screen {
     private Skin skin;
     private MapSound mapSound;
     private Table mapTable;
-    private static String selectedMap;
+    private static String selectedMap = "Map1";
 
     //This will handle the drag movement sa background
     private SpriteBatch spriteBatch;
@@ -53,10 +53,10 @@ public class SelectionScreen implements Screen {
 
     public SelectionScreen(final Main context) {
         this.context = context;
-        mapSound = new MapSound("assets/audio/spirited_away.wav");
-        Thread mapSoundThread = new Thread(mapSound);
-        mapRunning = true;
-        mapSoundThread.start();
+      //  mapSound = new MapSound("assets/audio/spirited_away.wav");
+       // Thread mapSoundThread = new Thread(mapSound);
+       // mapRunning = true;
+       // mapSoundThread.start();
     }
 
     @Override
@@ -64,11 +64,8 @@ public class SelectionScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
-
         backgroundTexture = new Texture(Gdx.files.internal("assets/tilesets/map_selector.png"));
         spriteBatch = new SpriteBatch();
-
-
 
         //For the Unlocked Map Buttons
         map1Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked.png"));
@@ -78,8 +75,6 @@ public class SelectionScreen implements Screen {
         //map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked"));
 
         //For the Locked Map Buttons
-
-
 
         //Wala pani
         UserInfo userInfo = getInfo(getUsername());
@@ -174,9 +169,9 @@ public class SelectionScreen implements Screen {
                     mapId = mapNumber;
                     mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
                     context.setScreen(ScreenType.GAME);
-                    Thread mapSoundThread = new Thread(mapSound);
-                    mapRunning = true;
-                    mapSoundThread.start();
+                //    Thread mapSoundThread = new Thread(mapSound);
+                  mapRunning = true;
+                 //   mapSoundThread.start();
                 }
             }
         });

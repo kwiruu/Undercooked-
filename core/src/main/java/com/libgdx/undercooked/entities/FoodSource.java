@@ -1,12 +1,16 @@
 package com.libgdx.undercooked.entities;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 
 public class FoodSource extends Station {
+
+    GameSound gameSound = new GameSound();
     public FoodSource(World world, float x, float y, int width, int height, SpriteBatch batch, FoodType foodType) {
         super(world, x, y, width, height, batch);
         containedItem = foodType;
@@ -34,20 +38,22 @@ public class FoodSource extends Station {
         stateTime += Gdx.graphics.getDeltaTime();
         stateTime += 0.2f;
         TextureRegion currentFrame = floatingIconFrames[0].get((int) (stateTime / frameDuration) % floatingIconFrames[0].size);
-        batch.draw(currentFrame, getX(), getY());
+        batch.draw(currentFrame, getX(), getY() + 55);
     }
     @Override
     public boolean interact(Player p) {
         System.out.println("interacted with a " + this);
         if (!p.hasHeldItem()) {
             p.setHeldItem(containedItem);
+            gameSound.startPoofSound();
             return true;
         }
+        gameSound.startErrorSound();
         return false;
     }
 
     @Override
     public String toString() {
-        return "FoodSource  (" + containedItem + ")";
+        return "FoodSource(" + containedItem + ")";
     }
 }

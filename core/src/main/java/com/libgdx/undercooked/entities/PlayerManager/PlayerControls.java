@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Station;
 import com.libgdx.undercooked.entities.animLocker;
@@ -20,6 +21,7 @@ public class PlayerControls {
     public float playerLock;
     public int invalidTimer;
     private float speedBoostTimer;
+
 
     PlayerAnimations playerAnimations;
 
@@ -40,15 +42,12 @@ public class PlayerControls {
             if (animLock == null) {
                 Station st = player.stationList.pointStation(player.getInteractPos());
                 FoodType oft = player.getHeldItem();
-                isLifting = true;
                 if (st != null) {
                     if (st.interact(player)) {
                         if (st instanceof animLocker) {
-                            System.out.println("interacted with animLocker");
                             animLock = ((animLocker) st);
                         }
-                        playerLock = 1f;
-                        currentTime = 0;
+                        playerLock = .8f;
                         if (oft != player.getHeldItem()) {
                             poof();
                         }
@@ -66,10 +65,10 @@ public class PlayerControls {
         }
         debugKeys();
 
-        if (playerLock <= 0 && animLock == null) {
+        if (playerLock > 0 || animLock == null) {
             int speed = 1;
             if (speedBoostTimer >= 0) speed = 2;
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speedUp();
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 2;
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 verticalForce += speed;
             }
@@ -102,13 +101,7 @@ public class PlayerControls {
         float animationSpeed = playerAnimations.getAnimation("lifting_" + lastDir).getAnimationDuration();
         currentTime += deltaTimes * animationSpeed;
             if (animLock != null) {
-                // TODO change this to chopping anim
-                Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
-                if (currentTime >= liftingAnimation.getAnimationDuration() * 0.8f) {
-                    return playerAnimations.getAnimation("running_lifting_"+lastDir);
-                } else {
-                    return liftingAnimation;
-                }
+                return playerAnimations.getAnimation("interacting_" + lastDir);
             }
             if (isLifting) {
                 Animation<TextureRegion> liftingAnimation = playerAnimations.getAnimation("lifting_" + lastDir);
@@ -175,7 +168,7 @@ public class PlayerControls {
         }
     }
     public void poof() {
-        player.poofFrames = .8f;
+        player.poofFrames = .5f;
     }
     public void poof2() {
         playerAnimations.setAnimationPlaying(true);
@@ -190,6 +183,7 @@ public class PlayerControls {
     }
     public void removeAnimLocker() {
         animLock = null;
+        currentTime = 0;
     }
     void speedUp() {
         speedBoostTimer = 10f;
