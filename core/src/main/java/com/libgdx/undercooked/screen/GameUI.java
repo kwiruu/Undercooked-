@@ -171,7 +171,7 @@ public class GameUI implements UIUpdater {
 
     @Override
     public void updateOrdersUI(Orders orders) {
-        orderTable.clear(); // Clear previous orders
+        orderTable.clear();
 
         ArrayList<FoodOrder> orderList = orders.getOrderList();
 
@@ -184,7 +184,7 @@ public class GameUI implements UIUpdater {
         TextureRegionDrawable itemBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(itemBackgroundTexture));
 
         for (FoodOrder order : orderList) {
-            if (order.isActive()) {
+            if (order.isActive() && orderList.indexOf(order) < orders.getActiveOrder()) {
                 Table rowTable = new Table();
                 rowTable.padRight(10f);
                 rowTable.align(Align.left);

@@ -18,10 +18,10 @@ public class Orders {
         switch (selectedMap) {
             case "Map1":
                 totalOrders = 5;
-                orderList.add(new FoodOrder(FoodType.rice, 0));
-                orderList.add(new FoodOrder(FoodType.chopped_pickle, 3));
-                orderList.add(new FoodOrder(FoodType.cooked_meat, 3));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 3));
+                orderList.add(new FoodOrder(FoodType.rice, 5));
+                orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
+                orderList.add(new FoodOrder(FoodType.cooked_meat, 1));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 1));
                 orderList.add(new FoodOrder(FoodType.rice, .5f));
                 break;
             case "Map2":
@@ -37,6 +37,10 @@ public class Orders {
 
     public ArrayList<FoodOrder> getOrderList() {
         return orderList;
+    }
+
+    public int getActiveOrder() {
+        return activeOrder;
     }
 
     public void rewardPoints(FoodType foodType) {
@@ -70,13 +74,15 @@ public class Orders {
         }
     }
     public void update(float deltaTime) {
+        System.out.println(timer);
         for (int i = 0; i < activeOrder; i++) {
             if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
         }
+        System.out.println(activeOrder + " - " + totalOrders);
         if (timer > 0) {
             timer -= deltaTime;
         } else if (activeOrder < totalOrders) {
-            timer = orderList.get(activeOrder).getTimer();
+            timer = orderList.get(activeOrder).timer;
             activeOrder++;
         }
     }
@@ -86,7 +92,7 @@ public class Orders {
 
     public static class FoodOrder {
         private final FoodType foodType;
-        private final float timer;
+        final float timer;
         float patience = 100;
         private boolean active = true;
 
@@ -99,17 +105,12 @@ public class Orders {
             return foodType;
         }
 
-        public float getTimer() {
-            return timer;
-        }
-
         public boolean isActive(){
             return this.active;
         }
 
         void setInactive(){
             this.active = false;
-            totalOrders--;
         }
     }
 }
