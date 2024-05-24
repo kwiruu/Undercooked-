@@ -25,6 +25,7 @@ import database.UserInfo;
 import database.SQLOperations;
 import database.HighScore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
@@ -53,16 +54,17 @@ public class SelectionScreen implements Screen {
 
     public SelectionScreen(final Main context) {
         this.context = context;
-      //  mapSound = new MapSound("assets/audio/spirited_away.wav");
-       // Thread mapSoundThread = new Thread(mapSound);
-       // mapRunning = true;
-       // mapSoundThread.start();
+        mapSound = new MapSound("assets/audio/spirited_away.wav");
+        Thread mapSoundThread = new Thread(mapSound);
+        mapRunning = true;
+        //mapSoundThread.start();
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+
 
         backgroundTexture = new Texture(Gdx.files.internal("assets/tilesets/map_selector.png"));
         spriteBatch = new SpriteBatch();
@@ -72,11 +74,9 @@ public class SelectionScreen implements Screen {
         map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map2_unlocked.png"));
         map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map3_unlocked.png"));
         map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map4_unlocked.png"));
-
         //map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked"));
 
         //For the Locked Map Buttons
-
         //Wala pani
         UserInfo userInfo = getInfo(getUsername());
         //Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
@@ -92,7 +92,7 @@ public class SelectionScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = 0.5f; //Adjust lang ni if you want to zoom in or zoom less
+        camera.zoom = .5f; //Adjust lang ni if you want to zoom in or zoom less
 
         //Sets the camera pos
         camera.position.set((backgroundTexture.getWidth()/3) * camera.zoom - 600, Gdx.graphics.getHeight() - ((backgroundTexture.getHeight()/3) * camera.zoom) - 200, 0);
@@ -133,49 +133,61 @@ public class SelectionScreen implements Screen {
         }
     }
 
+
+
     public void setupMapButtons(int userLevel) {
         ImageButton map1Button = createMapButton(map1Texture, "Map1", 1, userLevel);
         ImageButton map2Button = createMapButton(map2Texture, "Map2", 2, userLevel);
         ImageButton map3Button = createMapButton(map3Texture, "Map3", 3, userLevel);
         ImageButton map4Button = createMapButton(map4Texture, "Map4", 4, userLevel);
-        //ImageButton map5Button = createMapButton(map5Texture, "Map 5", 5, userLevel);
+        // ImageButton map5Button = createMapButton(map5Texture, "Map5", 5, userLevel);
 
-        // Set positions for map buttons manually
-        map1Button.setPosition(50, Gdx.graphics.getHeight() - 250);
-        map2Button.setPosition(300, Gdx.graphics.getHeight() - 250);
-        map3Button.setPosition(550, Gdx.graphics.getHeight() - 250);
-        map4Button.setPosition(800, Gdx.graphics.getHeight() - 250);
-        //map5Button.setPosition(1050, Gdx.graphics.getHeight() - 250);
+        // Set positions for map buttons to align with the background image
+        map1Button.setPosition(10, Gdx.graphics.getHeight() - 310);
+        map2Button.setPosition(340, Gdx.graphics.getHeight() - 341);
+        map3Button.setPosition(555, Gdx.graphics.getHeight() - 216);
+        map4Button.setPosition(106, Gdx.graphics.getHeight() - 590);
+        // map5Button.setPosition(1050, Gdx.graphics.getHeight() - 250);
 
         // Add buttons to the stage
         stage.addActor(map1Button);
         stage.addActor(map2Button);
         stage.addActor(map3Button);
         stage.addActor(map4Button);
-        //stage.addActor(map5Button);
+        // stage.addActor(map5Button);
     }
+
+
+    private List<ImageButton> mapButtons = new ArrayList<>();
 
     private ImageButton createMapButton(Texture texture, String mapName, int mapNumber, int userLevel) {
         Drawable drawable = new TextureRegionDrawable(texture);
         ImageButton mapButton = new ImageButton(drawable);
-        mapButton.setSize(texture.getWidth()/3, texture.getHeight()/3); // Set size as needed
-        System.out.println("Map width: " + texture.getWidth() + " Map height: " + texture.getHeight());
+
+        // Set initial size based on original texture size
+        float originalWidth = texture.getWidth();
+        float originalHeight = texture.getHeight();
+        float buttonWidth = originalWidth / 3; // Divide by 3 to adjust size as needed
+        float buttonHeight = originalHeight / 3; // Divide by 3 to adjust size as needed
+        mapButton.setSize(buttonWidth, buttonHeight);
 
         // Click listener for map selection
         mapButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Na click ko");
                 if (mapNumber <= userLevel) {
                     setSelectedMap(mapName);
                     mapId = mapNumber;
                     mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
                     context.setScreen(ScreenType.GAME);
-                //    Thread mapSoundThread = new Thread(mapSound);
-                  mapRunning = true;
-                 //   mapSoundThread.start();
+                    Thread mapSoundThread = new Thread(mapSound);
+                    mapRunning = true;
+                    //mapSoundThread.start();
                 }
             }
         });
+
         // Hover listener for changing appearance
         mapButton.addListener(new InputListener() {
             @Override
@@ -185,8 +197,18 @@ public class SelectionScreen implements Screen {
         });
 
         return mapButton;
-
     }
+
+    private void updateButtonSizes() {
+        for (Actor actor : stage.getActors()) {
+            if (actor instanceof ImageButton) {
+                ImageButton button = (ImageButton) actor;
+                // Update button size based on camera zoom
+                button.setSize(button.getWidth() / camera.zoom, button.getHeight() / camera.zoom);
+            }
+        }
+    }
+
 
 
     private class MyGestureListener extends GestureDetector.GestureAdapter {
@@ -203,8 +225,10 @@ public class SelectionScreen implements Screen {
 
         @Override
         public boolean pan(float x, float y, float deltaX, float deltaY) {
-            camera.translate(-deltaX * camera.zoom, deltaY * camera.zoom);
+            camera.translate(-deltaX , deltaY );
             clampCameraPosition();
+            updateButtonPositions(-deltaX, deltaY);
+
             return true;
         }
 
@@ -213,6 +237,8 @@ public class SelectionScreen implements Screen {
             float ratio = initialDistance / distance;
             camera.zoom = initialScale * ratio;
             clampCameraPosition();
+            updateButtonSizes();
+            //updateButtonPositions();
             return true;
         }
 
@@ -223,21 +249,49 @@ public class SelectionScreen implements Screen {
             float minX = effectiveViewportWidth / 2;
             float maxX = backgroundTexture.getWidth()/3 - effectiveViewportWidth / 2;
             float minY = effectiveViewportHeight / 2;
-            float maxY = backgroundTexture.getHeight()/3 - effectiveViewportHeight / 2;
+            float maxY = backgroundTexture.getHeight() /3- effectiveViewportHeight / 2;
 
             if (camera.position.x < minX) camera.position.x = minX;
             if (camera.position.x > maxX) camera.position.x = maxX;
             if (camera.position.y < minY) camera.position.y = minY;
             if (camera.position.y > maxY) camera.position.y = maxY;
         }
-
     }
+
+    private void updateButtonPositions(float deltaX, float deltaY) {
+        // Iterate over all actors in the stage
+        for (Actor actor : stage.getActors()) {
+            if (actor instanceof ImageButton) {
+                // Adjust the position of the button relative to the camera's movement
+                actor.moveBy(deltaX, deltaY);
+                clampButtonPosition(actor);
+            }
+        }
+    }
+
+    private void clampButtonPosition(Actor actor) {
+        float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
+        float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
+
+        float buttonMinX = 0;
+        float buttonMaxX = (backgroundTexture.getWidth()/3) - effectiveViewportWidth / 2;
+        float buttonMinY = 0;
+        float buttonMaxY = (backgroundTexture.getHeight()/3) - effectiveViewportHeight / 2;
+
+        if (actor.getX() < buttonMinX) actor.setX(buttonMinX);
+        if (actor.getX() > buttonMaxX) actor.setX(buttonMaxX);
+        if (actor.getY() < buttonMinY) actor.setY(buttonMinY);
+        if (actor.getY() > buttonMaxY) actor.setY(buttonMaxY);
+    }
+
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         camera.setToOrtho(false, width, height);
         clampCameraPosition();
+        updateButtonSizes();
+        //updateButtonPositions();
     }
 
     @Override
