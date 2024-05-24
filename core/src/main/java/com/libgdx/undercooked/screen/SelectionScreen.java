@@ -70,10 +70,10 @@ public class SelectionScreen implements Screen {
         spriteBatch = new SpriteBatch();
 
         //For the Unlocked Map Buttons
-        map1Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked.png"));
-        map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map2_unlocked.png"));
-        map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map3_unlocked.png"));
-        map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map4_unlocked.png"));
+        map1Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map1_unlocked.png"));
+        map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map2_unlocked.png"));
+        map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map3_unlocked.png"));
+        map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map4_unlocked.png"));
         //map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked"));
 
         //For the Locked Map Buttons
@@ -143,10 +143,10 @@ public class SelectionScreen implements Screen {
         // ImageButton map5Button = createMapButton(map5Texture, "Map5", 5, userLevel);
 
         // Set positions for map buttons to align with the background image
-        map1Button.setPosition(10, Gdx.graphics.getHeight() - 310);
-        map2Button.setPosition(340, Gdx.graphics.getHeight() - 341);
-        map3Button.setPosition(555, Gdx.graphics.getHeight() - 216);
-        map4Button.setPosition(106, Gdx.graphics.getHeight() - 590);
+        map1Button.setPosition(10 * 2f, (Gdx.graphics.getHeight() - 310) * 2);
+        map2Button.setPosition(340 * 2f, (Gdx.graphics.getHeight() - 341) * 2);
+        map3Button.setPosition(555 * 2f, (Gdx.graphics.getHeight() - 216) * 2);
+        map4Button.setPosition(106 * 2f, (Gdx.graphics.getHeight() - 590) * 2);
         // map5Button.setPosition(1050, Gdx.graphics.getHeight() - 250);
 
         // Add buttons to the stage
@@ -259,24 +259,27 @@ public class SelectionScreen implements Screen {
     }
 
     private void updateButtonPositions(float deltaX, float deltaY) {
+        float tempX = deltaX;
+        float tempY = deltaY;
         // Iterate over all actors in the stage
         for (Actor actor : stage.getActors()) {
             if (actor instanceof ImageButton) {
                 // Adjust the position of the button relative to the camera's movement
-                actor.moveBy(deltaX, deltaY);
-                clampButtonPosition(actor);
+                actor.moveBy(-(tempX * 2f), -(tempY * 2f));
+                clampButtonPosition(actor, actor.getX(), actor.getY());
             }
         }
     }
 
-    private void clampButtonPosition(Actor actor) {
+    private void clampButtonPosition(Actor actor, float x, float y) {
         float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
         float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
 
-        float buttonMinX = 0;
-        float buttonMaxX = (backgroundTexture.getWidth()/3) - effectiveViewportWidth / 2;
-        float buttonMinY = 0;
-        float buttonMaxY = (backgroundTexture.getHeight()/3) - effectiveViewportHeight / 2;
+        float buttonMinX = x;
+        float buttonMaxX = (actor.getWidth()) - effectiveViewportWidth / 2;
+        System.out.println( actor + " " + x + " " + actor.getWidth());
+        float buttonMinY = y;
+        float buttonMaxY = (actor.getHeight()) - effectiveViewportHeight / 2;
 
         if (actor.getX() < buttonMinX) actor.setX(buttonMinX);
         if (actor.getX() > buttonMaxX) actor.setX(buttonMaxX);
