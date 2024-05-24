@@ -227,8 +227,13 @@ public class SelectionScreen implements Screen {
         public boolean pan(float x, float y, float deltaX, float deltaY) {
             camera.translate(-deltaX , deltaY );
             clampCameraPosition();
-            updateButtonPositions(-deltaX, deltaY);
-
+            if(camera.position.x >= 0){
+                updateButtonPositions(0, deltaY);
+            } else if (camera.position.y <= 0) {
+                updateButtonPositions(-deltaX, 0);
+            }else{
+                updateButtonPositions(-deltaX, deltaY);
+            }
             return true;
         }
 
@@ -259,34 +264,14 @@ public class SelectionScreen implements Screen {
     }
 
     private void updateButtonPositions(float deltaX, float deltaY) {
-        float tempX = deltaX;
-        float tempY = deltaY;
         // Iterate over all actors in the stage
         for (Actor actor : stage.getActors()) {
             if (actor instanceof ImageButton) {
                 // Adjust the position of the button relative to the camera's movement
-                actor.moveBy(-(tempX * 2f), -(tempY * 2f));
-                clampButtonPosition(actor, actor.getX(), actor.getY());
+                actor.moveBy(-(deltaX * 2f), -(deltaY * 2f));
             }
         }
     }
-
-    private void clampButtonPosition(Actor actor, float x, float y) {
-        float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
-        float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
-
-        float buttonMinX = x;
-        float buttonMaxX = (actor.getWidth()) - effectiveViewportWidth / 2;
-        System.out.println( actor + " " + x + " " + actor.getWidth());
-        float buttonMinY = y;
-        float buttonMaxY = (actor.getHeight()) - effectiveViewportHeight / 2;
-
-        if (actor.getX() < buttonMinX) actor.setX(buttonMinX);
-        if (actor.getX() > buttonMaxX) actor.setX(buttonMaxX);
-        if (actor.getY() < buttonMinY) actor.setY(buttonMinY);
-        if (actor.getY() > buttonMaxY) actor.setY(buttonMaxY);
-    }
-
 
     @Override
     public void resize(int width, int height) {
