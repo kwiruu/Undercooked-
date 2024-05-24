@@ -225,17 +225,37 @@ public class SelectionScreen implements Screen {
 
         @Override
         public boolean pan(float x, float y, float deltaX, float deltaY) {
-            camera.translate(-deltaX , deltaY );
-            clampCameraPosition();
-            if(camera.position.x >= 0){
-                updateButtonPositions(0, deltaY);
-            } else if (camera.position.y <= 0) {
-                updateButtonPositions(-deltaX, 0);
-            }else{
-                updateButtonPositions(-deltaX, deltaY);
-            }
+            // Calculate the desired new camera position
+            float desiredCameraX = camera.position.x - deltaX;
+            float desiredCameraY = camera.position.y + deltaY;
+
+            // Clamp the desired position to the allowed bounds
+            float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
+            float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
+
+            float minX = effectiveViewportWidth / 2;
+            float maxX = backgroundTexture.getWidth() / 3 - effectiveViewportWidth / 2;
+            float minY = effectiveViewportHeight / 2;
+            float maxY = backgroundTexture.getHeight() / 3 - effectiveViewportHeight / 2;
+
+            desiredCameraX = Math.max(minX, Math.min(maxX, desiredCameraX));
+            desiredCameraY = Math.max(minY, Math.min(maxY, desiredCameraY));
+
+            // Calculate actual movement
+            float actualDeltaX = desiredCameraX - camera.position.x;
+            float actualDeltaY = desiredCameraY - camera.position.y;
+
+            // Move the camera to the clamped position
+            camera.position.x = desiredCameraX;
+            camera.position.y = desiredCameraY;
+
+            // Update button positions based on the actual movement
+            updateButtonPositions(actualDeltaX, actualDeltaY);
+
             return true;
         }
+
+
 
         @Override
         public boolean zoom(float initialDistance, float distance) {
@@ -268,10 +288,14 @@ public class SelectionScreen implements Screen {
         for (Actor actor : stage.getActors()) {
             if (actor instanceof ImageButton) {
                 // Adjust the position of the button relative to the camera's movement
-                actor.moveBy(-(deltaX * 2f), -(deltaY * 2f));
+                if (deltaX != 0 || deltaY != 0) {
+                    actor.moveBy(-deltaX * 2f, -deltaY * 2f);
+                }
             }
         }
     }
+
+
 
     @Override
     public void resize(int width, int height) {
