@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,11 +21,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 import database.UserInfo;
-import database.SQLOperations;
-import database.HighScore;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
@@ -40,7 +35,6 @@ public class SelectionScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private MapSound mapSound;
-    private Table mapTable;
     private static String selectedMap = "Map1";
 
     //This will handle the drag movement sa background
@@ -49,9 +43,7 @@ public class SelectionScreen implements Screen {
     private OrthographicCamera camera;
 
     //Buttons for each map
-    private Sprite map1, map2, map3, map4, map5;
     private Texture map1Texture, map2Texture, map3Texture, map4Texture, map5Texture;
-
     public SelectionScreen(final Main context) {
         this.context = context;
         mapSound = new MapSound("assets/audio/spirited_away.wav");
@@ -74,7 +66,7 @@ public class SelectionScreen implements Screen {
         map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map2_unlocked.png"));
         map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map3_unlocked.png"));
         map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map4_unlocked.png"));
-        //map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons/map1_unlocked"));
+        map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map5_unlocked.png"));
 
         //For the Locked Map Buttons
         //Wala pani
@@ -95,7 +87,7 @@ public class SelectionScreen implements Screen {
         camera.zoom = .5f; //Adjust lang ni if you want to zoom in or zoom less
 
         //Sets the camera pos
-        camera.position.set((backgroundTexture.getWidth()/3) * camera.zoom - 600, Gdx.graphics.getHeight() - ((backgroundTexture.getHeight()/3) * camera.zoom) - 200, 0);
+        camera.position.set(backgroundTexture.getWidth()/2, Gdx.graphics.getHeight() /2, 0);
         System.out.println(backgroundTexture.getHeight());
         System.out.println(backgroundTexture.getWidth());
         System.out.println("Camera position: (" + camera.position.x + ", " + camera.position.y + ")");
@@ -140,29 +132,35 @@ public class SelectionScreen implements Screen {
         ImageButton map2Button = createMapButton(map2Texture, "Map2", 2, userLevel);
         ImageButton map3Button = createMapButton(map3Texture, "Map3", 3, userLevel);
         ImageButton map4Button = createMapButton(map4Texture, "Map4", 4, userLevel);
-        // ImageButton map5Button = createMapButton(map5Texture, "Map5", 5, userLevel);
+        ImageButton map5Button = createMapButton(map5Texture, "Map5", 5, userLevel);
 
         // Set positions for map buttons to align with the background image
         map1Button.setPosition(10 * 2f, (Gdx.graphics.getHeight() - 310) * 2);
         map2Button.setPosition(340 * 2f, (Gdx.graphics.getHeight() - 341) * 2);
         map3Button.setPosition(555 * 2f, (Gdx.graphics.getHeight() - 216) * 2);
         map4Button.setPosition(106 * 2f, (Gdx.graphics.getHeight() - 590) * 2);
-        // map5Button.setPosition(1050, Gdx.graphics.getHeight() - 250);
+        map5Button.setPosition(1004 * 2f, (Gdx.graphics.getHeight() - 632) * 2);
 
         // Add buttons to the stage
         stage.addActor(map1Button);
         stage.addActor(map2Button);
         stage.addActor(map3Button);
         stage.addActor(map4Button);
-        // stage.addActor(map5Button);
+        stage.addActor(map5Button);
     }
 
 
-    private List<ImageButton> mapButtons = new ArrayList<>();
-
     private ImageButton createMapButton(Texture texture, String mapName, int mapNumber, int userLevel) {
-        Drawable drawable = new TextureRegionDrawable(texture);
-        ImageButton mapButton = new ImageButton(drawable);
+        Drawable normalDrawable = new TextureRegionDrawable(texture);
+
+        // Load hover and clicked textures
+        Texture hoverTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_hovered.png"));
+        Texture clickedTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_clicked.png"));
+
+        Drawable hoverDrawable = new TextureRegionDrawable(hoverTexture);
+        Drawable clickedDrawable = new TextureRegionDrawable(clickedTexture);
+
+        ImageButton mapButton = new ImageButton(normalDrawable);
 
         // Set initial size based on original texture size
         float originalWidth = texture.getWidth();
@@ -186,18 +184,34 @@ public class SelectionScreen implements Screen {
                     //mapSoundThread.start();
                 }
             }
-        });
 
-        // Hover listener for changing appearance
-        mapButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                mapButton.getStyle().imageUp = hoverDrawable;
+            }
+
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                mapButton.setColor(1, 1, 1, 1); // Reset to original opacity
+                mapButton.getStyle().imageUp = normalDrawable;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                mapButton.getStyle().imageUp = clickedDrawable;
+                super.touchDown(event, x, y, pointer, button);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                mapButton.getStyle().imageUp = normalDrawable;
+                super.touchUp(event, x, y, pointer, button);
             }
         });
 
         return mapButton;
     }
+
 
     private void updateButtonSizes() {
         for (Actor actor : stage.getActors()) {
@@ -234,7 +248,7 @@ public class SelectionScreen implements Screen {
             float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
 
             float minX = effectiveViewportWidth / 2;
-            float maxX = backgroundTexture.getWidth() / 3 - effectiveViewportWidth / 2;
+            float maxX = (backgroundTexture.getWidth() / 3) - effectiveViewportWidth / 2;
             float minY = effectiveViewportHeight / 2;
             float maxY = backgroundTexture.getHeight() / 3 - effectiveViewportHeight / 2;
 
