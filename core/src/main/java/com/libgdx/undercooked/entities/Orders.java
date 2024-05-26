@@ -1,10 +1,14 @@
 package com.libgdx.undercooked.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.libgdx.undercooked.GameManager;
+import com.libgdx.undercooked.screen.FinishScreen;
 
 import java.util.ArrayList;
 
 import static com.libgdx.undercooked.GameManager.score;
+import static com.libgdx.undercooked.GameManager.timesUp;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 
 public class Orders {
@@ -22,8 +26,8 @@ public class Orders {
                 totalOrders = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 5));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
-                orderList.add(new FoodOrder(FoodType.cooked_meat, 1));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 1));
+                orderList.add(new FoodOrder(FoodType.cooked_meat, 4));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 2));
                 orderList.add(new FoodOrder(FoodType.rice, .5f));
                 break;
             case "Map2":
@@ -76,15 +80,26 @@ public class Orders {
         }
     }
     public void update(float deltaTime) {
-        for (int i = 0; i < activeOrder; i++) {
-            if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.F1)){
+            totalOrders=0;
         }
-        if (timer > 0) {
-            timer -= deltaTime;
-        } else if (activeOrder < totalOrders) {
-            timer = orderList.get(activeOrder).timer;
-            activeOrder++;
-            GameManager.setCheckEntry(true);
+        if(Gdx.input.isKeyPressed(Input.Keys.F2)){
+            timesUp=true;
+        }
+        try {
+            for (int i = 0; i < activeOrder; i++) {
+                if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
+            }
+            if (timer > 0) {
+                timer -= deltaTime;
+            } else if (activeOrder < totalOrders) {
+                timer = orderList.get(activeOrder).timer;
+                activeOrder++;
+                GameManager.setCheckEntry(true);
+            }
+        }catch (IndexOutOfBoundsException e){
+            totalOrders=0;
+            timesUp=true;
         }
     }
     public static void freeOrderList() {

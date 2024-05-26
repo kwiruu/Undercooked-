@@ -15,6 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.libgdx.undercooked.entities.Npc.Npc;
+import com.libgdx.undercooked.screen.FinishScreen;
+import com.libgdx.undercooked.screen.ScreenType;
 
 import static com.libgdx.undercooked.entities.Orders.totalOrders;
 
@@ -36,17 +38,18 @@ public class GameManager implements Disposable {
     private Texture npcTexture;
     private StationList stationList;
 
-    private static boolean win;
+    public static boolean win;
     private Orders orders;
     private UIUpdater uiUpdater;
+    private final Main context;
 
 
-    public GameManager(UIUpdater uiUpdater) {
+    public GameManager(Main context, UIUpdater uiUpdater) {
+        this.context = context;
         this.world = new World(new Vector2(0f, 0f), false);
         this.uiUpdater = uiUpdater;
         initialize();
     }
-
     private void initialize() {
         if (!initialized) {
             playerManager = new Player(world);
@@ -85,8 +88,10 @@ public class GameManager implements Disposable {
             timesUp = true;
             checkEntry = true;
             win = true;
+            System.out.println("checkCompletion is true!");
         }
     }
+
 
     public void update(float deltaTime) {
         checkCompletion();

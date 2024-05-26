@@ -32,15 +32,18 @@ public class GameScreen extends ScreenAdapter {
     private GameUI gameUI;
     private GameManager gameManager;
     private float elapsedTime = 0f;
+
     public GameScreen(final Main context) {
         this.context = context;
     }
+
     @Override
     public void show() {
         if (gameManager == null) {
             initCamera();
             gameUI = new GameUI(context);
-            gameManager = new GameManager(gameUI);
+            // Pass the Main context to the GameManager
+            gameManager = new GameManager(context, gameUI);
             Gdx.input.setInputProcessor(gameUI.getStage());
             debugRenderer = new Box2DDebugRenderer();
         }
@@ -61,28 +64,29 @@ public class GameScreen extends ScreenAdapter {
             gameManager.render(currentFrame);
             batch.end();
             gameUI.render();
-        } catch (NullPointerException e){
-            e.printStackTrace();
-            context.setScreen(ScreenType.SELECTMAP);
+        } catch (NullPointerException e) {
+            // Handle exception if gameManager is null
+            Gdx.app.log("GameScreen","Game Ended!");
         }
     }
 
     private void update(float deltaTime) {
         gameManager.update(deltaTime);
         cameraUpdate(deltaTime);
+
+        Gdx.app.log("GameScreen"," : "+score);
         MapManager.tmr.setView(camera);
         gameUI.update(gameManager.getPlayerManager());
         if (timesUp) {
-            if(gameManager.getWin()){
+            if (gameManager.getWin()) {
                 System.out.println(score);
-                insertScore(getUsername(),1, (int) (180 - gameUI.getElapsedTime() + score));
-                levelUp(getUsername(),findLevel(getUsername()));
+                insertScore(getUsername(), 1, (int) (180 - gameUI.getElapsedTime() + score));
+                levelUp(getUsername(), findLevel(getUsername()));
+                context.setScreen(new FinishScreen(context, elapsedTime));
             }
-            finishGame();
-            context.setScreen(ScreenType.SELECTMAP);
-            Main.deleteScreen(ScreenType.GAME);
+            // Switch to the FinishScreen
+            context.setScreen(new FinishScreen(context, elapsedTime));
         }
-
     }
 
     private void cameraUpdate(float deltaTime) {
@@ -96,7 +100,7 @@ public class GameScreen extends ScreenAdapter {
         viewport.update(width, height);
     }
 
-    public void initCamera(){
+    public void initCamera() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera();
@@ -113,12 +117,11 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void finishGame(){
+    public void finishGame() {
         Orders.freeOrderList();
         timesUp = false;
         gameManager.dispose();
         gameManager = null;
-        score = 0;
         mapRunning = false;
         MapSound.stop();
         mapId = 0;
