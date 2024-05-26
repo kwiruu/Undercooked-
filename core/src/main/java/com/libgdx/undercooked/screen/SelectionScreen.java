@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -72,7 +71,8 @@ public class SelectionScreen implements Screen {
         //Wala pani
         UserInfo userInfo = getInfo(getUsername());
         //Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
-        setupMapButtons(userInfo.getLevel());
+        //setupMapButtons(userInfo.getLevel());
+        setupMapButtons(4);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -93,8 +93,6 @@ public class SelectionScreen implements Screen {
         System.out.println("Camera position: (" + camera.position.x + ", " + camera.position.y + ")");
         camera.update();
 
-        //Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
-        //Gdx.input.setInputProcessor(stage);
 
         //Since mag handle man tag stage and gesture InputMultiplexer ato gamiton to handle both at the same time
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
@@ -149,16 +147,21 @@ public class SelectionScreen implements Screen {
         stage.addActor(map5Button);
     }
 
-
     private ImageButton createMapButton(Texture texture, String mapName, int mapNumber, int userLevel) {
-        Drawable normalDrawable = new TextureRegionDrawable(texture);
+        Drawable normalDrawable;
 
         // Load hover and clicked textures
         Texture hoverTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_hovered.png"));
         Texture clickedTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_clicked.png"));
-
+        Texture unlockedTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_locked.png"));
         Drawable hoverDrawable = new TextureRegionDrawable(hoverTexture);
         Drawable clickedDrawable = new TextureRegionDrawable(clickedTexture);
+
+        if(userLevel >= mapNumber){
+            normalDrawable = new TextureRegionDrawable(texture);
+        } else {
+            normalDrawable = new TextureRegionDrawable(unlockedTexture);
+        }
 
         ImageButton mapButton = new ImageButton(normalDrawable);
 
@@ -170,47 +173,53 @@ public class SelectionScreen implements Screen {
         mapButton.setSize(buttonWidth, buttonHeight);
 
         // Click listener for map selection
-        mapButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Na click ko");
-                if (mapNumber <= userLevel) {
+        if (mapNumber <= userLevel) {
+            mapButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("Selected Map: " + mapName);
+                    System.out.println("Na click ko");
+
+
                     setSelectedMap(mapName);
                     mapId = mapNumber;
-                    mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
+                    System.out.println("Selected Map: " + mapName);
                     context.setScreen(ScreenType.GAME);
+
+                    mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
                     Thread mapSoundThread = new Thread(mapSound);
                     mapRunning = true;
                     //mapSoundThread.start();
                 }
-            }
 
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                mapButton.getStyle().imageUp = hoverDrawable;
-            }
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    mapButton.getStyle().imageUp = hoverDrawable;
+                }
 
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                mapButton.getStyle().imageUp = normalDrawable;
-            }
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    mapButton.getStyle().imageUp = normalDrawable;
+                }
 
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                mapButton.getStyle().imageUp = clickedDrawable;
-                super.touchDown(event, x, y, pointer, button);
-                return true;
-            }
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    mapButton.getStyle().imageUp = clickedDrawable;
+                    super.touchDown(event, x, y, pointer, button);
+                    return true;
+                }
 
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                mapButton.getStyle().imageUp = normalDrawable;
-                super.touchUp(event, x, y, pointer, button);
-            }
-        });
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    mapButton.getStyle().imageUp = normalDrawable;
+                    super.touchUp(event, x, y, pointer, button);
+                }
+            });
+        }
 
         return mapButton;
     }
+
 
 
     private void updateButtonSizes() {
