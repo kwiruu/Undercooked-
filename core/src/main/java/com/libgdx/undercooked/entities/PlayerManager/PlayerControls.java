@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.FoodType;
-import com.libgdx.undercooked.entities.Station;
-import com.libgdx.undercooked.entities.animLocker;
+import com.libgdx.undercooked.entities.Stations.Station;
+import com.libgdx.undercooked.entities.Stations.animLocker;
 
 public class PlayerControls {
 
@@ -42,7 +42,7 @@ public class PlayerControls {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (animLock == null) {
-                Station st = player.stationList.pointStation(player.getInteractPos());
+                Station st = player.entityList.pointStation(player.getInteractPos());
                 FoodType oft = player.getHeldItem();
                 if (st != null) {
                     if (st.interact(player)) {

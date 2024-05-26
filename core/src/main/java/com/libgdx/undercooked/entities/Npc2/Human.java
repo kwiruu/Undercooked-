@@ -7,4 +7,14 @@ public class Human extends Npc2 {
     public Human(World world, int x, int y, int height, int width, SpriteBatch batch) {
         super(x, y, height, width, batch);
     }
+
+    @Override
+    public void render() {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
 }

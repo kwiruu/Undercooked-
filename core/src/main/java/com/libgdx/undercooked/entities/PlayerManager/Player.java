@@ -11,8 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.AudioManager.GameSound;
-import com.libgdx.undercooked.entities.StationList;
+import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.utils.CreateBox;
 
@@ -28,7 +27,7 @@ public class Player implements Runnable {
     private PlayerAnimations playerAnimations;
     float poofFrames;
     private FoodType heldItem;
-    StationList stationList;
+    EntityList entityList;
 
     public static int x;
     public static int y;
@@ -143,8 +142,8 @@ public class Player implements Runnable {
         this.heldItem = heldItem;
     }
 
-    public void setEntityList(StationList stationList) {
-        this.stationList = stationList;
+    public void setEntityList(EntityList entityList) {
+        this.entityList = entityList;
     }
 
     private void renderPoofAnimation(SpriteBatch batch, float itemX, float itemY) {
