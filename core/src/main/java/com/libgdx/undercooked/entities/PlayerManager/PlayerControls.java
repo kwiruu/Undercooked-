@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.Stations.Station;
-import com.libgdx.undercooked.entities.animLocker;
+import com.libgdx.undercooked.entities.Stations.animLocker;
 
 public class PlayerControls {
 

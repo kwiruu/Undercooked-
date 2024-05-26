@@ -7,8 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
-import com.libgdx.undercooked.entities.animLocker;
-import com.libgdx.undercooked.entities.canUpdate;
 
 import java.util.Objects;
 

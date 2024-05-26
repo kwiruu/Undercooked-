@@ -3,7 +3,6 @@ package com.libgdx.undercooked.entities.Stations;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
-import com.libgdx.undercooked.entities.canUpdate;
 
 import java.util.ArrayList;
 
