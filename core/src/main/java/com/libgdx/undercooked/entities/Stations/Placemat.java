@@ -1,9 +1,10 @@
-package com.libgdx.undercooked.entities;
+package com.libgdx.undercooked.entities.Stations;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
+import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import java.util.HashMap;
 

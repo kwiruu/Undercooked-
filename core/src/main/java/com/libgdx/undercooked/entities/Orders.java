@@ -77,7 +77,13 @@ public class Orders {
     }
     public void update(float deltaTime) {
         for (int i = 0; i < activeOrder; i++) {
-            if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
+            if (orderList.get(i).isActive()) {
+                orderList.get(i).patience -= deltaTime;
+                if (orderList.get(i).patience < 0) {
+                    orderList.get(i).setInactive();
+                    // spawn ghost
+                }
+            }
         }
         if (timer > 0) {
             timer -= deltaTime;
@@ -110,7 +116,7 @@ public class Orders {
             return this.active;
         }
 
-        void setInactive(){
+        public void setInactive(){
             this.active = false;
         }
     }

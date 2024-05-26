@@ -1,12 +1,13 @@
-package com.libgdx.undercooked.entities;
+package com.libgdx.undercooked.entities.Stations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.AudioManager.ErrorSound;
 import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.GameManager;
+import com.libgdx.undercooked.entities.FoodType;
+import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import static com.libgdx.undercooked.entities.Orders.totalOrders;
 

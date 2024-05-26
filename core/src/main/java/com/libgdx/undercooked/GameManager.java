@@ -2,9 +2,8 @@
 package com.libgdx.undercooked;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.entities.Orders;
-import com.libgdx.undercooked.entities.StationList;
+import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.Npc.components.NpcB2D;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.badlogic.gdx.Gdx;
@@ -34,7 +33,7 @@ public class GameManager implements Disposable {
     public static NpcB2D npc;
     private Npc npcManager;
     private Texture npcTexture;
-    private StationList stationList;
+    private EntityList entityList;
 
     private static boolean win;
     private Orders orders;
@@ -66,8 +65,8 @@ public class GameManager implements Disposable {
 
             orders = new Orders();
 
-            stationList = new StationList(world, mapManager.getMap(), batch, orders);
-            playerManager.setEntityList(stationList);
+            entityList = new EntityList(world, mapManager.getMap(), batch, orders);
+            playerManager.setEntityList(entityList);
 
             initialized = true;
             checkEntry = true;
@@ -94,7 +93,7 @@ public class GameManager implements Disposable {
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
-        stationList.update(deltaTime);
+        entityList.update(deltaTime);
         orders.update(deltaTime);
         if (checkEntry) {
             uiUpdater.updateOrdersUI(orders); // Update the orders UI
@@ -105,7 +104,7 @@ public class GameManager implements Disposable {
     public void render(TextureRegion currentFrame) {
         getMapManager().drawLayerTextures(batch, currentFrame);
         npcManager.render(batch);
-        stationList.render();
+        entityList.render();
         getPlayerManager().render(batch);
     }
 

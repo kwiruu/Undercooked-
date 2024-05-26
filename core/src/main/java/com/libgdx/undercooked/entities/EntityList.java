@@ -8,24 +8,29 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.libgdx.undercooked.entities.Npc2.Npc2;
+import com.libgdx.undercooked.entities.Stations.*;
 
-public class StationList {
+public class EntityList {
     private final SpriteBatch batch;
-    private  Array<Station> stationArray;
+    private Array<Station> stationArray = new Array<>();
+    private Array<Npc2> npc2Array = new Array<>();
     private final TiledMap map;
 
     private Orders orders;
 
-    public StationList(World world, TiledMap map, SpriteBatch batch, Orders orders) {
+    public EntityList(World world, TiledMap map, SpriteBatch batch, Orders orders) {
         this.map = map;
         this.batch = batch;
         this.orders = orders;
-        stationArray = new Array<>();
-        renderEntity(world, map);
+        renderStation(world, map);
     }
     public void render() {
         for (Station st : stationArray) {
             st.render();
+        }
+        for (Npc2 npc2 : npc2Array) {
+            npc2.render();
         }
     }
     public void update(float deltaTime) {
@@ -34,9 +39,12 @@ public class StationList {
                 ((canUpdate) st).update(deltaTime);
             }
         }
+        for (Npc2 npc2 : npc2Array) {
+            npc2.update();
+        }
     }
 
-    private void renderEntity(World world, TiledMap map) {
+    private void renderStation(World world, TiledMap map) {
         float x, y, width, height;
         MapLayer objectLayer = map.getLayers().get("station_layer");
 
