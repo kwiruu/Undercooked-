@@ -13,7 +13,7 @@ public class Orders {
     private int activeOrder = 0;
     public static int totalOrders;
     private float timer = 0;
-    public boolean noOrders = false;
+    public static boolean noOrders = false;
 
     public Orders() {
         orderList = new ArrayList<>();
@@ -85,12 +85,16 @@ public class Orders {
         }
     }
     public void update(float deltaTime, EntityList entityList) {
+        Gdx.app.log("Orders", " : " + totalOrders );
         if(Gdx.input.isKeyPressed(Input.Keys.F1)){
             totalOrders=0;
+            noOrders=true;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.F2)){
             GameManager.timesUp=true;
         }
+
+
         for (int i = 0; i < activeOrder; i++) {
             if (orderList.get(i).isActive()) {
                 orderList.get(i).patience -= deltaTime;
