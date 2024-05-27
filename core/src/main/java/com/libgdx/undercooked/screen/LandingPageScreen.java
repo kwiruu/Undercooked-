@@ -212,6 +212,10 @@ public class LandingPageScreen implements Screen {
 
     }
 
+    public void setUsername(){
+        username = username;
+    }
+
     public static String getUsername() {
         return username;
     }

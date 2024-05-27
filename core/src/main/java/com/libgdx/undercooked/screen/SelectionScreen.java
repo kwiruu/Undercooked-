@@ -225,8 +225,10 @@ public class SelectionScreen implements Screen {
                     mapId = mapNumber;
                     System.out.println("Selected Map: " + mapName);
                     context.setScreen(ScreenType.GAME);
-
+                    String oten = "assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav";
+                    System.out.println(oten);
                     mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
+                    System.out.println(mapSound.toString());
                     Thread mapSoundThread = new Thread(mapSound);
                     mapRunning = true;
                     mapSoundThread.start();

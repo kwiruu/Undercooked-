@@ -21,10 +21,10 @@ public class Main extends Game implements SplashScreen.SplashScreenListener{
     public void create() {
 
 
-//        createDatabase();
-//        createTableAccount("tblAccount");
-//        createTableMap();
-//        createTableHighScore();
+        createDatabase();
+        createTableAccount("tblAccount");
+        createTableMap();
+        createTableHighScore();
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         screenCache = new EnumMap<ScreenType, Screen>(ScreenType.class);
@@ -35,8 +35,8 @@ public class Main extends Game implements SplashScreen.SplashScreenListener{
             public void onSplashScreenFinished() {
                 // NOTE debug
 
-                //setScreen(ScreenType.MAINMENUTRANSITION);
-                setScreen(ScreenType.GAME);
+                setScreen(ScreenType.MAINMENUTRANSITION);
+                //setScreen(ScreenType.GAME);
             }
         });
         setScreen(splashScreen);

@@ -79,10 +79,12 @@ public class GameScreen extends ScreenAdapter {
         gameUI.update(gameManager.getPlayerManager());
         if (timesUp || gameManager.getOrders().noOrders) {
             if (gameManager.getWin()) {
-                System.out.println(score);
-                insertScore(getUsername(), 1, (int) (180 - gameUI.getElapsedTime() + score));
+                score = (int) (180 - gameUI.getElapsedTime() + score);
+                insertScore(getUsername(), 1, score);
                 levelUp(getUsername(), findLevel(getUsername()));
                 context.setScreen(new FinishScreen(context, elapsedTime));
+                mapRunning = false;
+                MapSound.stop();
             }
             // Switch to the FinishScreen
             context.setScreen(new FinishScreen(context, elapsedTime));
