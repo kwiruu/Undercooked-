@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.AudioManager.MainMenuSound;
@@ -38,6 +40,7 @@ public class LandingPageScreen implements Screen {
     private Table userTable;
     private SelectBox<String> userSelectBox;
     private TextField usernameField;
+    private Texture backgroundTexture;
 
     public LandingPageScreen(final Main context) {
         this.context = context;
@@ -77,44 +80,27 @@ public class LandingPageScreen implements Screen {
             .target(Gdx.graphics.getWidth())
             .start(tweenManager);
 
-        skin1 = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
-
-        Table root = new Table();
-        stage.addActor(root);
-        mapTable = new Table();
-        setupMapButtons(skin1);
-
-        float tableWidth = stage.getWidth() * 0.2f;
-        float tableHeight = stage.getHeight() * 0.15f;
-        root.setSize(tableWidth, tableHeight);
-        root.setPosition((stage.getWidth() - tableWidth) / 2f, 500);
-        root.defaults().colspan(3);
-        root.top().left();
-
-        root.pad(10);
-        root.add(mapTable).expand().colspan(2).pad(20);
-        root.row();
-
         skin = new Skin(Gdx.files.internal("assets/metal-ui.json"));
+        backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
+        Table root = new Table();
+        root.setFillParent(true);
+        stage.addActor(root);
 
+        // User table setup
         userTable = new Table();
-        stage.addActor(userTable);
-        userTable.setFillParent(true);
-
-        // Scatter elements by adjusting their positions
         float padding = 20f;
 
         userTable.add(new Label("Select User:", skin)).pad(padding).left();
-        userTable.row().padTop(padding);
         userSelectBox = new SelectBox<>(skin);
         loadUserSelectBoxData();
         userTable.add(userSelectBox).width(200).pad(padding).left();
+
         userTable.row().padTop(padding);
 
         userTable.add(new Label("Or Enter Username:", skin)).pad(padding).left();
-        userTable.row().padTop(padding);
         usernameField = new TextField("", skin);
         userTable.add(usernameField).width(200).pad(padding).left();
+
         userTable.row().padTop(padding);
 
         TextButton okButton = new TextButton("Sign In", skin);
@@ -143,6 +129,17 @@ public class LandingPageScreen implements Screen {
                 }
             }
         });
+
+        // Map table setup
+        mapTable = new Table();
+        setupMapButtons(skin);
+
+        // Add userTable and mapTable to root, centered vertically
+        root.add(userTable).expand().center().top().pad(20).left();
+        root.add(mapTable).expand().center().top().pad(20).right();
+
+        // Set background image
+        root.background(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
     }
 
     @Override
@@ -152,6 +149,7 @@ public class LandingPageScreen implements Screen {
         tweenManager.update(delta);
 
         batch.begin();
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         blockClouds1.draw(batch);
         blockClouds2.draw(batch);
         batch.end();
@@ -175,7 +173,7 @@ public class LandingPageScreen implements Screen {
             });
 
             mapTable.add(highScoreButton).width(200F).pad(10);
-            mapTable.row();
+            mapTable.row(); // Align buttons in a column
         }
     }
 
@@ -227,4 +225,5 @@ public class LandingPageScreen implements Screen {
         batch.dispose();
         mainMenuSound.dispose();
     }
+
 }
