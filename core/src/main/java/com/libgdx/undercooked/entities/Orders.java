@@ -1,7 +1,8 @@
 package com.libgdx.undercooked.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.libgdx.undercooked.GameManager;
-
 import java.util.ArrayList;
 
 import static com.libgdx.undercooked.GameManager.score;
@@ -26,6 +27,14 @@ public class Orders {
                 orderList.add(new FoodOrder(FoodType.rice, .5f));
                 break;
             case "Map2":
+                totalOrders = 5;
+                orderList.add(new FoodOrder(FoodType.rice, 3));
+                orderList.add(new FoodOrder(FoodType.tomato_soup, 3));
+                orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 0));
+                orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
+                break;
+            case "Map3":
                 totalOrders = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 3));
                 orderList.add(new FoodOrder(FoodType.tomato_soup, 3));
@@ -75,6 +84,12 @@ public class Orders {
         }
     }
     public void update(float deltaTime, EntityList entityList) {
+        if(Gdx.input.isKeyPressed(Input.Keys.F1)){
+            totalOrders=0;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.F2)){
+            GameManager.timesUp=true;
+        }
         for (int i = 0; i < activeOrder; i++) {
             if (orderList.get(i).isActive()) {
                 orderList.get(i).patience -= deltaTime;
@@ -105,7 +120,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         final float timer;
-        float patience = 4f;
+        float patience = 20f;
         private boolean active = true;
 
         public FoodOrder(FoodType foodType, float timer) {

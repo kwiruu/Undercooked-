@@ -13,64 +13,61 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 
+import java.util.Random;
+
 import static com.libgdx.undercooked.GameManager.*;
 
 public class FinishScreen implements Screen {
-    private final Main context;
     private final float elapsedTime;
     private OrthographicCamera camera;
     private SpriteBatch batch;
-    private BitmapFont font;
+    private final BitmapFont font;
     private Stage stage;
-    private Skin skin;
+    private final Skin skin;
 
-    // Declare texture variables
     private Texture winTexture;
     private Texture loseTexture;
     private Texture backgroundTexture;
+    private Texture scorebox;
+
+    private Label scoreLabel;
+    private Label timeLabel;
+
+    private float randomDisplayTime = 2.0f; // Duration to display random numbers
+    private float randomTimeElapsed = 0.0f;
+
+    private Random random;
 
     public FinishScreen(Main context, float elapsedTime) {
-        this.context = context;
         this.elapsedTime = elapsedTime;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.setToOrtho(false);
         this.skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json")); // Initialize the skin
+        this.random = new Random();
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        // Load textures
         winTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/youwin_text.png"));
         loseTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/youlose_text.png"));
         backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
+        scorebox = new Texture(Gdx.files.internal("assets/screens/title_screen/score-box.png"));
 
-        // Create a label for the score using the skin
-        Label scoreLabel = new Label("Score: " + score, skin);
-        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2f - 50, Gdx.graphics.getHeight() / 2f-50);
+        scoreLabel = new Label("", skin);
+        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2f - 30, Gdx.graphics.getHeight() / 2f-50);
 
-        // Calculate minutes and remaining seconds
-        int minutes = (int) elapsedTime / 60;
-        int seconds = (int) elapsedTime % 60;
+        timeLabel = new Label("", skin);
+        timeLabel.setPosition(Gdx.graphics.getWidth() / 2f - 30, Gdx.graphics.getHeight() / 2f - 100);
 
-        // Format the elapsed time
-        String formattedTime = String.format("Time: %02d:%02d", minutes, seconds);
-
-        // Create a label for the elapsed time using the skin
-        Label timeLabel = new Label(formattedTime, skin);
-        timeLabel.setPosition(Gdx.graphics.getWidth() / 2f - 50, Gdx.graphics.getHeight() / 2f - 100);
-
-        // Add labels to the stage
         stage.addActor(scoreLabel);
         stage.addActor(timeLabel);
 
-        // Add stage to input processor (if you have buttons or interactive elements)
         Gdx.input.setInputProcessor(stage);
     }
-
 
     @Override
     public void render(float deltaTime) {
@@ -78,25 +75,48 @@ public class FinishScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // Draw the background texture
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Draw win or lose image
         if (win) {
             batch.draw(winTexture,
-                Gdx.graphics.getWidth() / 2 - (winTexture.getWidth() * 3) / 2,
-                Gdx.graphics.getHeight() / 2 - (winTexture.getHeight() * 3) / 2 + 150,
+                (float) Gdx.graphics.getWidth() / 2 - (float) (winTexture.getWidth() * 3) / 2,
+                (float) Gdx.graphics.getHeight() / 2 - (float) (winTexture.getHeight() * 3) / 2 + 150,
                 winTexture.getWidth() * 3,
                 winTexture.getHeight() * 3);
         } else {
             batch.draw(loseTexture,
-                Gdx.graphics.getWidth() / 2 - (loseTexture.getWidth() * 3) / 2,
-                Gdx.graphics.getHeight() / 2 - (loseTexture.getHeight() * 3) / 2 + 150,
+                (float) Gdx.graphics.getWidth() / 2 - (float) (loseTexture.getWidth() * 3) / 2,
+                (float) Gdx.graphics.getHeight() / 2 - (float) (loseTexture.getHeight() * 3) / 2 + 150,
                 loseTexture.getWidth() * 3,
                 loseTexture.getHeight() * 3);
         }
 
+        batch.draw(scorebox,
+            (float) (Gdx.graphics.getWidth()) / 2 - (scorebox.getWidth() * 1.5f) / 2,
+            (float) (Gdx.graphics.getHeight()) / 2 - (scorebox.getHeight() * 1.5f) / 2 - 80,
+            scorebox.getWidth() * 1.5f,
+            scorebox.getHeight() * 1.5f);
+
         batch.end();
+
+        randomTimeElapsed += deltaTime;
+        if (randomTimeElapsed < randomDisplayTime) {
+            // Display random numbers
+            scoreLabel.setText("Score: " + random.nextInt(1000));
+            int randomMinutes = random.nextInt(60);
+            int randomSeconds = random.nextInt(60);
+            String formattedRandomTime = String.format("Time: %02d:%02d", randomMinutes, randomSeconds);
+            timeLabel.setText(formattedRandomTime);
+        } else {
+            // Display the actual score and elapsed time
+            scoreLabel.setText("Score: " + score);
+
+            int minutes = (int) elapsedTime / 60;
+            int seconds = (int) elapsedTime % 60;
+            String formattedTime = String.format("Time: %02d:%02d", minutes, seconds);
+            timeLabel.setText(formattedTime);
+        }
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
@@ -129,7 +149,7 @@ public class FinishScreen implements Screen {
         winTexture.dispose();
         loseTexture.dispose();
         backgroundTexture.dispose();
-        skin.dispose(); // Dispose of the skin
+        skin.dispose();
         score = 0;
     }
 }

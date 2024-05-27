@@ -1,5 +1,7 @@
 package com.libgdx.undercooked.screen;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -47,6 +50,8 @@ public class SelectionScreen implements Screen {
 
     //Buttons for each map
     private Texture map1Texture, map2Texture, map3Texture, map4Texture, map5Texture;
+    private TweenManager tweenManager;
+
     public SelectionScreen(final Main context) {
         this.context = context;
         mapSound = new MapSound("assets/audio/spirited_away.wav");
@@ -59,6 +64,35 @@ public class SelectionScreen implements Screen {
     public void show() {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+
+        // animation my friend
+        tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
+
+        Sprite blockClouds1 = new Sprite(blockCloud1Texture);
+        Sprite blockClouds2 = new Sprite(blockCloud2Texture);
+
+        float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
+
+        blockClouds1.setSize(blockCloud1Texture.getWidth() * 4, blockCloud1Texture.getHeight() * 4);
+        blockClouds2.setSize(blockCloud2Texture.getWidth() * 4, blockCloud2Texture.getHeight() * 4);
+
+        // Set initial positions to the middle of the screen
+        blockClouds1.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds1.getHeight() / 2);
+        blockClouds2.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds2.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds2.getHeight() / 2);
+
+        // Tween to move to the outside
+        Tween.to(blockClouds1, SpriteAccessor.POS_X, 3f)
+            .target(-blockClouds1.getWidth()) // Move to the left outside
+            .start(tweenManager);
+        Tween.to(blockClouds2, SpriteAccessor.POS_X, 3f)
+            .target(Gdx.graphics.getWidth()) // Move to the right outside
+            .start(tweenManager);
+
+        // end animation!
 
 
         backgroundTexture = new Texture(Gdx.files.internal("assets/tilesets/map_selector.png"));
