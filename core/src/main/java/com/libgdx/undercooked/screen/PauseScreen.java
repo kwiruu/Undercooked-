@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 
 import static com.libgdx.undercooked.GameManager.timesUp;
+import static com.libgdx.undercooked.screen.GameScreen.finishGame;
 
 public class PauseScreen implements Screen {
     public Stage stage;
@@ -87,9 +88,8 @@ public class PauseScreen implements Screen {
         selectMapButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                timesUp = false;
+                finishGame();
                 context.setScreen(ScreenType.SELECTMAP);
-                Main.deleteScreen(ScreenType.GAME);
             }
         });
 

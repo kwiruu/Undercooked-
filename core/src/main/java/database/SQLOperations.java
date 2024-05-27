@@ -126,7 +126,7 @@ public class SQLOperations {
     }
 
 
-    public static void levelUp(String username, int currLevel) {
+    public static void levelUp(String username) {
 
         if (!checkProgress(username)) {
             String sql = "UPDATE tblAccount SET level = level + 1 WHERE userName = ?";
@@ -155,6 +155,7 @@ public class SQLOperations {
             stmnt.setString(1, user);
             ResultSet res = stmnt.executeQuery();
             if (res.next()) {
+                System.out.println(res + "testing here");
                 return true;
             }
         } catch (SQLException e) {
