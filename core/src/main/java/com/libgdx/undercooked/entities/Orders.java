@@ -11,7 +11,7 @@ import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 public class Orders {
     static ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
-    public static int totalOrders;
+    public static int totalOrders = 0;
     private float timer = 0;
     public static boolean noOrders = false;
 
@@ -94,23 +94,28 @@ public class Orders {
             GameManager.timesUp=true;
         }
 
-
-        for (int i = 0; i < activeOrder; i++) {
-            if (orderList.get(i).isActive()) {
-                orderList.get(i).patience -= deltaTime;
-                if (orderList.get(i).patience < 0 && !orderList.get(i).patienceDone) {
-                    orderList.get(i).patienceDone = true;
-                    entityList.addGhost();
+        try{
+            for (int i = 0; i < activeOrder; i++) {
+                if (orderList.get(i).isActive()) {
+                    orderList.get(i).patience -= deltaTime;
+                    if (orderList.get(i).patience < 0 && !orderList.get(i).patienceDone) {
+                        orderList.get(i).patienceDone = true;
+                        entityList.addGhost();
+                    }
                 }
             }
+            if (timer > 0) {
+                timer -= deltaTime;
+            } else if (activeOrder < totalOrders && activeOrder >= 0) {
+                timer = orderList.get(activeOrder).timer;
+                activeOrder++;
+                GameManager.setCheckEntry(true);
+            }
+        }catch (IndexOutOfBoundsException e){
+            totalOrders = 0;
+            noOrders = true;
         }
-        if (timer > 0) {
-            timer -= deltaTime;
-        } else if (activeOrder < totalOrders && activeOrder >= 0) {
-            timer = orderList.get(activeOrder).timer;
-            activeOrder++;
-            GameManager.setCheckEntry(true);
-        }
+
     }
 
     public static void freeOrderList() {

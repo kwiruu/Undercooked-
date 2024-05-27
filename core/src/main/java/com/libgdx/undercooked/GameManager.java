@@ -19,6 +19,7 @@ import com.libgdx.undercooked.screen.ScreenType;
 
 import static com.libgdx.undercooked.entities.Orders.totalOrders;
 
+
 public class GameManager implements Disposable {
 
     private final World world;
@@ -57,7 +58,6 @@ public class GameManager implements Disposable {
             npcManager = new Npc(world);
             score = 0;
 
-
             // Load NPC texture
             npcTexture = new Texture(Gdx.files.internal("assets/sprites/Chef2/idle_down_01.png"));
             Sprite npcSprite = new Sprite(npcTexture);
@@ -85,7 +85,6 @@ public class GameManager implements Disposable {
             timesUp = true;
             checkEntry = true;
             win = true;
-            Orders.noOrders = true;
             System.out.println("checkCompletion is true!");
         }
     }

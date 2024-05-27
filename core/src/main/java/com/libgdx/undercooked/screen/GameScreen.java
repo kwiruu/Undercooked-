@@ -30,7 +30,7 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer debugRenderer;
     private FitViewport viewport;
     private GameUI gameUI;
-    private GameManager gameManager;
+    private static GameManager gameManager;
     private float elapsedTime = 0f;
 
     public GameScreen(final Main context) {
@@ -77,16 +77,14 @@ public class GameScreen extends ScreenAdapter {
         Gdx.app.log("GameScreen"," : "+score);
         MapManager.tmr.setView(camera);
         gameUI.update(gameManager.getPlayerManager());
-        if (timesUp || gameManager.getOrders().noOrders) {
+        if (timesUp || Orders.noOrders) {
+            Gdx.app.log("GameScreen", " : "+ timesUp + " " + Orders.noOrders);
             if (gameManager.getWin()) {
                 score = (int) (180 - gameUI.getElapsedTime() + score);
                 insertScore(getUsername(), 1, score);
                 levelUp(getUsername(), findLevel(getUsername()));
-                context.setScreen(new FinishScreen(context, elapsedTime));
-                mapRunning = false;
-                MapSound.stop();
+
             }
-            // Switch to the FinishScreen
             context.setScreen(new FinishScreen(context, elapsedTime));
         }
     }
@@ -111,21 +109,16 @@ public class GameScreen extends ScreenAdapter {
         viewport = new FitViewport(w / SCALE, h / SCALE, camera);
     }
 
-    @Override
-    public void dispose() {
-        if (gameManager != null) {
-            gameManager.dispose();
-            debugRenderer.dispose();
-        }
-    }
 
-    public void finishGame() {
+    public static void finishGame() {
         Orders.freeOrderList();
         timesUp = false;
+        mapRunning = false;
         gameManager.dispose();
         gameManager = null;
-        mapRunning = false;
         MapSound.stop();
         mapId = 0;
+        Orders.noOrders = false;
+
     }
 }

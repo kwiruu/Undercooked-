@@ -18,6 +18,7 @@ import com.libgdx.undercooked.Main;
 import java.util.Random;
 
 import static com.libgdx.undercooked.GameManager.*;
+import static com.libgdx.undercooked.screen.GameScreen.finishGame;
 
 public class FinishScreen implements Screen {
     private final float elapsedTime;
@@ -53,6 +54,7 @@ public class FinishScreen implements Screen {
 
     @Override
     public void show() {
+
         stage = new Stage(new ScreenViewport());
 
         winTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/youwin_text.png"));
@@ -82,6 +84,7 @@ public class FinishScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             context.setScreen(ScreenType.SELECTMAP);
+            finishGame();
         }
 
         if (win) {
