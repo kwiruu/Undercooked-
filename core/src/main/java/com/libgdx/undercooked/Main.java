@@ -7,9 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.libgdx.undercooked.screen.LandingPageScreen;
-import com.libgdx.undercooked.screen.ScreenType;
-import com.libgdx.undercooked.screen.SplashScreen;
+import com.libgdx.undercooked.screen.*;
 
 import java.util.EnumMap;
 
@@ -42,6 +40,18 @@ public class Main extends Game implements SplashScreen.SplashScreenListener{
             }
         });
         setScreen(splashScreen);
+    }
+
+    public void switchToGameScreen() {
+        setScreen(new GameScreen(this));
+    }
+
+    public void switchToFinishScreen(int score, float timeFinished) {
+        setScreen(new FinishScreen(this, timeFinished));
+    }
+
+    public void switchToMainMenuScreen() {
+        setScreen(new SelectionScreen(this));
     }
 
     @Override

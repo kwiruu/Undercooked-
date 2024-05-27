@@ -1,5 +1,7 @@
 package com.libgdx.undercooked.screen;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,7 +22,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import database.UserInfo;
+
 
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
@@ -43,6 +50,8 @@ public class SelectionScreen implements Screen {
 
     //Buttons for each map
     private Texture map1Texture, map2Texture, map3Texture, map4Texture, map5Texture;
+    private TweenManager tweenManager;
+
     public SelectionScreen(final Main context) {
         this.context = context;
         mapSound = new MapSound("assets/audio/spirited_away.wav");
@@ -55,6 +64,35 @@ public class SelectionScreen implements Screen {
     public void show() {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+
+        // animation my friend
+        tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
+
+        Sprite blockClouds1 = new Sprite(blockCloud1Texture);
+        Sprite blockClouds2 = new Sprite(blockCloud2Texture);
+
+        float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
+
+        blockClouds1.setSize(blockCloud1Texture.getWidth() * 4, blockCloud1Texture.getHeight() * 4);
+        blockClouds2.setSize(blockCloud2Texture.getWidth() * 4, blockCloud2Texture.getHeight() * 4);
+
+        // Set initial positions to the middle of the screen
+        blockClouds1.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds1.getHeight() / 2);
+        blockClouds2.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds2.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds2.getHeight() / 2);
+
+        // Tween to move to the outside
+        Tween.to(blockClouds1, SpriteAccessor.POS_X, 3f)
+            .target(-blockClouds1.getWidth()) // Move to the left outside
+            .start(tweenManager);
+        Tween.to(blockClouds2, SpriteAccessor.POS_X, 3f)
+            .target(Gdx.graphics.getWidth()) // Move to the right outside
+            .start(tweenManager);
+
+        // end animation!
 
 
         backgroundTexture = new Texture(Gdx.files.internal("assets/tilesets/map_selector.png"));
@@ -70,9 +108,10 @@ public class SelectionScreen implements Screen {
         //For the Locked Map Buttons
         //Wala pani
         UserInfo userInfo = getInfo(getUsername());
-        //Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
+        int userlevel = userInfo.getLevel();
+        // ********** uncomment this if mo gana na ang landing page ***************
         //setupMapButtons(userInfo.getLevel());
-        setupMapButtons(4);
+        setupMapButtons(2);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -82,16 +121,17 @@ public class SelectionScreen implements Screen {
             }
         });
 
+
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = .5f; //Adjust lang ni if you want to zoom in or zoom less
-
-        //Sets the camera pos
-        camera.position.set(backgroundTexture.getWidth()/2, Gdx.graphics.getHeight() /2, 0);
-        System.out.println(backgroundTexture.getHeight());
-        System.out.println(backgroundTexture.getWidth());
-        System.out.println("Camera position: (" + camera.position.x + ", " + camera.position.y + ")");
+        float backgroundWidth = backgroundTexture.getWidth() / 3;
+        float backgroundHeight = backgroundTexture.getHeight() / 6;
+        camera.position.set(backgroundWidth, backgroundHeight, 0);
+        System.out.println("camera at: " + camera.position.x + " " + camera.position.y);
+        camera.zoom = .5f;
         camera.update();
+
 
 
         //Since mag handle man tag stage and gesture InputMultiplexer ato gamiton to handle both at the same time
@@ -110,7 +150,7 @@ public class SelectionScreen implements Screen {
         spriteBatch.setProjectionMatrix(camera.combined);
 
         spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
         spriteBatch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -189,7 +229,7 @@ public class SelectionScreen implements Screen {
                     mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
                     Thread mapSoundThread = new Thread(mapSound);
                     mapRunning = true;
-                    //mapSoundThread.start();
+                    mapSoundThread.start();
                 }
 
                 @Override
@@ -231,8 +271,6 @@ public class SelectionScreen implements Screen {
             }
         }
     }
-
-
 
     private class MyGestureListener extends GestureDetector.GestureAdapter {
         private float initialScale = 1f;
@@ -304,6 +342,8 @@ public class SelectionScreen implements Screen {
             if (camera.position.y < minY) camera.position.y = minY;
             if (camera.position.y > maxY) camera.position.y = maxY;
         }
+
+
     }
 
     private void updateButtonPositions(float deltaX, float deltaY) {

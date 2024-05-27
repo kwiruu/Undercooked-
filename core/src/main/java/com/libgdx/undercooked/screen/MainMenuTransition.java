@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.Timer;
 import com.libgdx.undercooked.Main;
 import database.SQLOperations;
 
+import static com.libgdx.undercooked.screen.LandingPageScreen.username;
+import static database.SQLOperations.userDefaultSignIn;
+
 public class MainMenuTransition implements Screen {
     private SpriteBatch batch;
     private Sprite bgSprite, cloudSprite, textSprite, cloud1Sprite, cloud2Sprite, blockClouds1, blockClouds2;
@@ -309,6 +312,7 @@ public class MainMenuTransition implements Screen {
                         profileButtonPressed=false;
                     }
                     if(playButtonPressed){
+                        username = userDefaultSignIn();
                         context.setScreen(ScreenType.SELECTMAP);
                         playButtonPressed=false;
                     }
@@ -316,11 +320,6 @@ public class MainMenuTransition implements Screen {
             })
             .start(tweenManager);
     }
-
-
-
-
-
 
     private void showButtons() {
         float duration = 1.5f;
