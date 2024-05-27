@@ -85,6 +85,7 @@ public class GameManager implements Disposable {
             timesUp = true;
             checkEntry = true;
             win = true;
+            Orders.noOrders = true;
             System.out.println("checkCompletion is true!");
         }
     }
