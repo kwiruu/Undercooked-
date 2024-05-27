@@ -19,7 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import database.UserInfo;
+
 
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
@@ -70,9 +74,10 @@ public class SelectionScreen implements Screen {
         //For the Locked Map Buttons
         //Wala pani
         UserInfo userInfo = getInfo(getUsername());
-        //Label titleLabel = new Label("Select Map - Level: " + userInfo.getLevel() + ", Info: " + userInfo.getUserName(), skin);
+        int userlevel = userInfo.getLevel();
+        // ********** uncomment this if mo gana na ang landing page ***************
         //setupMapButtons(userInfo.getLevel());
-        setupMapButtons(4);
+        setupMapButtons(2);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -82,16 +87,17 @@ public class SelectionScreen implements Screen {
             }
         });
 
+
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = .5f; //Adjust lang ni if you want to zoom in or zoom less
-
-        //Sets the camera pos
-        camera.position.set(backgroundTexture.getWidth()/2, Gdx.graphics.getHeight() /2, 0);
-        System.out.println(backgroundTexture.getHeight());
-        System.out.println(backgroundTexture.getWidth());
-        System.out.println("Camera position: (" + camera.position.x + ", " + camera.position.y + ")");
+        float backgroundWidth = backgroundTexture.getWidth() / 3;
+        float backgroundHeight = backgroundTexture.getHeight() / 6;
+        camera.position.set(backgroundWidth, backgroundHeight, 0);
+        System.out.println("camera at: " + camera.position.x + " " + camera.position.y);
+        camera.zoom = .5f;
         camera.update();
+
 
 
         //Since mag handle man tag stage and gesture InputMultiplexer ato gamiton to handle both at the same time
@@ -110,7 +116,7 @@ public class SelectionScreen implements Screen {
         spriteBatch.setProjectionMatrix(camera.combined);
 
         spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
         spriteBatch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -232,8 +238,6 @@ public class SelectionScreen implements Screen {
         }
     }
 
-
-
     private class MyGestureListener extends GestureDetector.GestureAdapter {
         private float initialScale = 1f;
         private float initialCameraX, initialCameraY;
@@ -304,6 +308,8 @@ public class SelectionScreen implements Screen {
             if (camera.position.y < minY) camera.position.y = minY;
             if (camera.position.y > maxY) camera.position.y = maxY;
         }
+
+
     }
 
     private void updateButtonPositions(float deltaX, float deltaY) {
