@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
@@ -88,7 +87,7 @@ public class PauseScreen implements Screen {
         selectMapButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                timesUp = true;
+                timesUp = false;
                 context.setScreen(ScreenType.SELECTMAP);
                 Main.deleteScreen(ScreenType.GAME);
             }

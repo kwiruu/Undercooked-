@@ -51,6 +51,8 @@ public class SelectionScreen implements Screen {
     //Buttons for each map
     private Texture map1Texture, map2Texture, map3Texture, map4Texture, map5Texture;
     private TweenManager tweenManager;
+    private Sprite blockClouds1;
+    private Sprite blockClouds2;
 
     public SelectionScreen(final Main context) {
         this.context = context;
@@ -72,8 +74,8 @@ public class SelectionScreen implements Screen {
         Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
         Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
 
-        Sprite blockClouds1 = new Sprite(blockCloud1Texture);
-        Sprite blockClouds2 = new Sprite(blockCloud2Texture);
+         blockClouds1 = new Sprite(blockCloud1Texture);
+         blockClouds2 = new Sprite(blockCloud2Texture);
 
         float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
 
@@ -145,6 +147,9 @@ public class SelectionScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        tweenManager.update(delta);
+
+        stage.act(Gdx.graphics.getDeltaTime());
 
         camera.update();
         spriteBatch.setProjectionMatrix(camera.combined);
@@ -153,8 +158,14 @@ public class SelectionScreen implements Screen {
         spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
         spriteBatch.end();
 
-        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        spriteBatch.begin();
+        blockClouds1.draw(spriteBatch);
+        blockClouds2.draw(spriteBatch);
+        spriteBatch.end();
+
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
             String mapText = "Map1";
