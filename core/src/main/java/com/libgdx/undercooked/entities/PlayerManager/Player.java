@@ -11,8 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.AudioManager.GameSound;
-import com.libgdx.undercooked.entities.StationList;
+import com.libgdx.undercooked.entities.EntityList;
 import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.utils.CreateBox;
 
@@ -27,8 +26,9 @@ public class Player implements Runnable {
     private String lastDirection;
     private PlayerAnimations playerAnimations;
     float poofFrames;
+    float stunTime;
     private FoodType heldItem;
-    StationList stationList;
+    EntityList entityList;
 
     public static int x;
     public static int y;
@@ -47,6 +47,7 @@ public class Player implements Runnable {
         playerControls = new PlayerControls(this,playerAnimations);
         setLocation();
         player = CreateBox.createBox(world, x, y, 16, 8, false);
+        player.setUserData("Player");
         playerBatch = new SpriteBatch();
         lastDirection = "down";
 
@@ -78,7 +79,7 @@ public class Player implements Runnable {
         return playerBatch;
     }
 
-    void timeUpdate() {
+    void timeUpdate(float deltaTime) {
         poofFrames -= .02f;
         if (playerControls.playerLock > 0) {
             playerControls.playerLock -= .03f;
@@ -87,6 +88,7 @@ public class Player implements Runnable {
                 playerControls.isLifting = false;
             }
         }
+        stunTime -= deltaTime;
     }
 
 
@@ -143,8 +145,8 @@ public class Player implements Runnable {
         this.heldItem = heldItem;
     }
 
-    public void setEntityList(StationList stationList) {
-        this.stationList = stationList;
+    public void setEntityList(EntityList entityList) {
+        this.entityList = entityList;
     }
 
     private void renderPoofAnimation(SpriteBatch batch, float itemX, float itemY) {
@@ -226,5 +228,8 @@ public class Player implements Runnable {
     }
     public void transport(Vector2 v2) {
         player.setTransform(v2, 0);
+    }
+    public void hitByProjectile() {
+        stunTime = 1f;
     }
 }
