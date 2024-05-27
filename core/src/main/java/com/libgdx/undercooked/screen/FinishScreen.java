@@ -1,6 +1,7 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Select;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 
@@ -24,7 +26,7 @@ public class FinishScreen implements Screen {
     private final BitmapFont font;
     private Stage stage;
     private final Skin skin;
-
+    private final Main context;
     private Texture winTexture;
     private Texture loseTexture;
     private Texture backgroundTexture;
@@ -46,6 +48,7 @@ public class FinishScreen implements Screen {
         this.camera.setToOrtho(false);
         this.skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json")); // Initialize the skin
         this.random = new Random();
+        this.context = context;
     }
 
     @Override
@@ -76,6 +79,10 @@ public class FinishScreen implements Screen {
         batch.begin();
 
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            context.setScreen(ScreenType.SELECTMAP);
+        }
 
         if (win) {
             batch.draw(winTexture,
@@ -110,7 +117,6 @@ public class FinishScreen implements Screen {
         } else {
             // Display the actual score and elapsed time
             scoreLabel.setText("Score: " + score);
-
             int minutes = (int) elapsedTime / 60;
             int seconds = (int) elapsedTime % 60;
             String formattedTime = String.format("Time: %02d:%02d", minutes, seconds);

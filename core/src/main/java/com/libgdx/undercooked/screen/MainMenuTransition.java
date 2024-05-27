@@ -284,6 +284,7 @@ public class MainMenuTransition implements Screen {
                         startTransitionScreen(); // Only start screen transition if play button was pressed
                     }
                     if (playButtonPressed) {
+
                         startTransitionScreen(); // Only start screen transition if play button was pressed
                     }
                 }
