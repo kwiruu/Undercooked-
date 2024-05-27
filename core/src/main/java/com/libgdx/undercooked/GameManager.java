@@ -67,8 +67,7 @@ public class GameManager implements Disposable {
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
 
             orders = new Orders();
-
-            entityList = new EntityList(world, mapManager.getMap(), batch, orders);
+            entityList = new EntityList(world, mapManager.getMap(), batch, orders, playerManager);
             playerManager.setEntityList(entityList);
 
             initialized = true;
@@ -98,8 +97,8 @@ public class GameManager implements Disposable {
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
         npcManager.update(deltaTime);
-        entityList.update(deltaTime);
-        orders.update(deltaTime);
+        entityList.update(deltaTime, playerManager);
+        orders.update(deltaTime, entityList);
         if (checkEntry) {
             uiUpdater.updateOrdersUI(orders); // Update the orders UI
             checkEntry = false;

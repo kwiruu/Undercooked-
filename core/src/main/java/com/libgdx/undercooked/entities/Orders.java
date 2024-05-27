@@ -1,18 +1,13 @@
 package com.libgdx.undercooked.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.libgdx.undercooked.GameManager;
-import com.libgdx.undercooked.screen.FinishScreen;
 
 import java.util.ArrayList;
 
 import static com.libgdx.undercooked.GameManager.score;
-import static com.libgdx.undercooked.GameManager.timesUp;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 
 public class Orders {
-
     static ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
     public static int totalOrders;
@@ -26,8 +21,8 @@ public class Orders {
                 totalOrders = 5;
                 orderList.add(new FoodOrder(FoodType.rice, 5));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
-                orderList.add(new FoodOrder(FoodType.cooked_meat, 4));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 2));
+                orderList.add(new FoodOrder(FoodType.cooked_meat, 1));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 1));
                 orderList.add(new FoodOrder(FoodType.rice, .5f));
                 break;
             case "Map2":
@@ -79,29 +74,30 @@ public class Orders {
                 break;
         }
     }
-    public void update(float deltaTime) {
-        if(Gdx.input.isKeyPressed(Input.Keys.F1)){
-            totalOrders=0;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.F2)){
-            timesUp=true;
-        }
-        try {
-            for (int i = 0; i < activeOrder; i++) {
-                if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
+    public void update(float deltaTime, EntityList entityList) {
+        for (int i = 0; i < activeOrder; i++) {
+            if (orderList.get(i).isActive()) {
+                orderList.get(i).patience -= deltaTime;
+                if (orderList.get(i).patience < 0) {
+                    setInactive(i);
+                    entityList.addGhost();
+                }
             }
-            if (timer > 0) {
-                timer -= deltaTime;
-            } else if (activeOrder < totalOrders) {
-                timer = orderList.get(activeOrder).timer;
-                activeOrder++;
-                GameManager.setCheckEntry(true);
-            }
-        }catch (IndexOutOfBoundsException e){
-            totalOrders=0;
-            timesUp=true;
+        }
+        if (timer > 0) {
+            timer -= deltaTime;
+        } else if (activeOrder < totalOrders) {
+            timer = orderList.get(activeOrder).timer;
+            activeOrder++;
+            GameManager.setCheckEntry(true);
         }
     }
+
+    public void setInactive(int i) {
+        orderList.get(i).setInactive();
+        GameManager.setCheckEntry(true);
+    }
+
     public static void freeOrderList() {
         orderList.clear();
     }
@@ -109,7 +105,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         final float timer;
-        float patience = 100;
+        float patience = 4f;
         private boolean active = true;
 
         public FoodOrder(FoodType foodType, float timer) {
@@ -125,7 +121,7 @@ public class Orders {
             return this.active;
         }
 
-        void setInactive(){
+        public void setInactive(){
             this.active = false;
         }
     }

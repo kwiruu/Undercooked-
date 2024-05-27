@@ -8,22 +8,27 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.libgdx.undercooked.entities.Npc2.Ghost;
 import com.libgdx.undercooked.entities.Npc2.Npc2;
+import com.libgdx.undercooked.entities.Npc2.ProjectileManager;
+import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.libgdx.undercooked.entities.Stations.*;
 
 public class EntityList {
     private final SpriteBatch batch;
     private Array<Station> stationArray = new Array<>();
     private Array<Npc2> npc2Array = new Array<>();
+    private ProjectileManager projectileManager;
     private final TiledMap map;
 
     private Orders orders;
 
-    public EntityList(World world, TiledMap map, SpriteBatch batch, Orders orders) {
+    public EntityList(World world, TiledMap map, SpriteBatch batch, Orders orders, Player player) {
         this.map = map;
         this.batch = batch;
         this.orders = orders;
         renderStation(world, map);
+        projectileManager = new ProjectileManager(player);
     }
     public void render() {
         for (Station st : stationArray) {
@@ -32,16 +37,18 @@ public class EntityList {
         for (Npc2 npc2 : npc2Array) {
             npc2.render();
         }
+        projectileManager.render();
     }
-    public void update(float deltaTime) {
+    public void update(float deltaTime, Player player) {
         for (Station st : stationArray) {
             if (st instanceof canUpdate) {
                 ((canUpdate) st).update(deltaTime);
             }
         }
         for (Npc2 npc2 : npc2Array) {
-            npc2.update();
+            npc2.update(player.getPosition());
         }
+        projectileManager.update();
     }
 
     private void renderStation(World world, TiledMap map) {
@@ -198,13 +205,21 @@ public class EntityList {
         float displacement = 48F;
         for (Station s: stationArray) {
             System.out.println(s + " checking (" + s.getX() + "-" + (s.getX()+displacement) + ", " + s.getY() + "-" + (s.getY()+displacement) + ")");
-            // needs tweaking
-
             r = new Rectangle(s.getX(), s.getY(), 32f, 64f);
             if (r.contains(v2)) {
                 return s;
             }
         }
         return null;
+    }
+
+    public void addGhost() {
+        for (Npc2 n : npc2Array) {
+            if (n instanceof Ghost) {
+                ((Ghost) n).upgrade();
+                return;
+            }
+        }
+        npc2Array.add(new Ghost(0, 0, batch));
     }
 }
