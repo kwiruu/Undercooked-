@@ -2,48 +2,40 @@ package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.AudioManager.MainMenuSound;
-
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
-import aurelienribon.tweenengine.equations.Sine;
 import database.HighScore;
 import database.SQLOperations;
 
 import java.util.List;
-
-import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static database.SQLOperations.userSignIn;
 
 public class LandingPageScreen implements Screen {
     private final Main context;
     private TweenManager tweenManager;
     private Stage stage;
-    private Skin skin,skin1;
+    private Skin skin, skin1;
     private SpriteBatch batch;
 
     private Table mapTable;
-    private static String username = null;
+    static String username = null;
     private Texture imgTexture; // Declare imgTexture here
     private MainMenuSound mainMenuSound;
     private Sprite blockClouds1, blockClouds2;
+
+    private Table userTable;
+    private SelectBox<String> userSelectBox;
 
     public LandingPageScreen(final Main context) {
         this.context = context;
@@ -65,7 +57,6 @@ public class LandingPageScreen implements Screen {
         Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
         Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
 
-
         blockClouds1 = new Sprite(blockCloud1Texture);
         blockClouds2 = new Sprite(blockCloud2Texture);
 
@@ -86,7 +77,6 @@ public class LandingPageScreen implements Screen {
             .target(Gdx.graphics.getWidth()) // Move to the right outside
             .start(tweenManager);
 
-
         skin1 = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
 
         Table root = new Table();
@@ -94,16 +84,12 @@ public class LandingPageScreen implements Screen {
         mapTable = new Table();
         setupMapButtons(skin1);
 
-        // Calculate table size based on the stage's viewport dimensions
         float tableWidth = stage.getWidth() * 0.2f;
         float tableHeight = stage.getHeight() * 0.15f;
         root.setSize(tableWidth, tableHeight);
-        // Center the table on the stage
         root.setPosition((stage.getWidth() - tableWidth) / 2f, 500);
-
-        // Set the number of columns for the table
         root.defaults().colspan(3);
-        root.top().left(); // Align content to the top-left corner
+        root.top().left();
 
         // Adjust padding
         root.pad(10);
@@ -112,57 +98,52 @@ public class LandingPageScreen implements Screen {
         // Load the skin
         skin = new Skin(Gdx.files.internal("assets/metal-ui.json"));
 
-        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-        BitmapFont yourFont = skin.getFont("font");
-        yourFont.getData().setScale(16/ yourFont.getCapHeight());
-        textFieldStyle.font = yourFont;
-        textFieldStyle.fontColor = Color.BROWN; // Change the font color if needed
+        userTable = new Table();
+        stage.addActor(userTable);
+        userTable.setFillParent(true); // Make sure userTable fills the stage
+        userTable.add(new Label("Select User:", skin)).pad(10).colspan(2);
+        userTable.row();
 
-        final TextField usernameField = new TextField("", skin);
+        userSelectBox = new SelectBox<>(skin);
+        loadUserSelectBoxData();
 
+        userTable.add(userSelectBox).width(200).pad(10).colspan(2);
+        userTable.row();
 
-//        MainMenuSound.running = true;
-//        new Thread(mainMenuSound).start();
-
-
-
-        TextButton okButton = new TextButton("Sign In", skin); // Create the button without specifying a skin
-
-        root.add(okButton).width(100).height(45).pad(3).padTop(0);
-        root.add(usernameField).height(100).fillX().uniformX().padBottom(20).pad(3);
-        root.row();
+        TextButton okButton = new TextButton("Sign In", skin);
+        userTable.add(okButton).width(100).height(45).pad(3).padTop(0);
 
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                username = usernameField.getText();
+                username = userSelectBox.getSelected();
 
-                if (username.isEmpty()) {
+                if (username == null || username.isEmpty()) {
                     Dialog warningDialog = new Dialog("Warning", skin);
-                    warningDialog.text("Please enter a username.");
+                    warningDialog.text("Please select a username.");
                     warningDialog.button("OK", true);
                     warningDialog.show(stage);
+                    MainMenuSound.running = true;
+                    new Thread(mainMenuSound).start();
                 } else {
-                    if(userSignIn(username)){
+                    if (userSignIn(username)) {
                         context.setScreen(ScreenType.SELECTMAP);
-                       // mainMenuSound.stop();
+                        mainMenuSound.stop();
                     }
                 }
             }
         });
-
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0, 1f);
+        Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         tweenManager.update(delta);
 
         batch.begin();
         blockClouds1.draw(batch);
         blockClouds2.draw(batch);
-
         batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -206,6 +187,11 @@ public class LandingPageScreen implements Screen {
         dialog.show(stage);
     }
 
+    private void loadUserSelectBoxData() {
+        List<String> users = SQLOperations.getAccounts(); // Modify this method based on your database implementation
+        userSelectBox.setItems(users.toArray(new String[0])); // Set the items of the select box
+    }
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -226,15 +212,15 @@ public class LandingPageScreen implements Screen {
 
     }
 
+    public static String getUsername() {
+        return username;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
         skin.dispose();
         batch.dispose();
-        //mainMenuSound.stop(); // Stop the sound when disposing
-    }
-
-    public static String getUsername(){
-        return username;
+        mainMenuSound.dispose();
     }
 }
