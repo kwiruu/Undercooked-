@@ -79,7 +79,6 @@ public class GameManager implements Disposable {
 
     private void checkCompletion() {
         if (totalOrders == 0) {
-            Orders.freeOrderList();
             timesUp = true;
             checkEntry = true;
             win = true;
@@ -113,6 +112,10 @@ public class GameManager implements Disposable {
 
     public MapManager getMapManager() {
         return mapManager;
+    }
+
+    public Orders getOrders() {
+        return orders;
     }
 
     public SpriteBatch getBatch() {

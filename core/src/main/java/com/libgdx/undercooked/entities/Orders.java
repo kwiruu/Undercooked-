@@ -12,6 +12,7 @@ public class Orders {
     private int activeOrder = 0;
     public static int totalOrders;
     private float timer = 0;
+    public boolean noOrders = false;
 
     public Orders() {
         orderList = new ArrayList<>();
@@ -78,24 +79,19 @@ public class Orders {
         for (int i = 0; i < activeOrder; i++) {
             if (orderList.get(i).isActive()) {
                 orderList.get(i).patience -= deltaTime;
-                if (orderList.get(i).patience < 0) {
-                    setInactive(i);
+                if (orderList.get(i).patience < 0 && !orderList.get(i).patienceDone) {
+                    orderList.get(i).patienceDone = true;
                     entityList.addGhost();
                 }
             }
         }
         if (timer > 0) {
             timer -= deltaTime;
-        } else if (activeOrder < totalOrders) {
+        } else if (activeOrder < totalOrders && activeOrder >= 0) {
             timer = orderList.get(activeOrder).timer;
             activeOrder++;
             GameManager.setCheckEntry(true);
         }
-    }
-
-    public void setInactive(int i) {
-        orderList.get(i).setInactive();
-        GameManager.setCheckEntry(true);
     }
 
     public static void freeOrderList() {
@@ -105,7 +101,8 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         final float timer;
-        float patience = 4f;
+        float patience = 15f;
+        boolean patienceDone = false;
         private boolean active = true;
 
         public FoodOrder(FoodType foodType, float timer) {
