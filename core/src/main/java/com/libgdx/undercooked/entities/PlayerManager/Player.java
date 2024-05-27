@@ -26,6 +26,7 @@ public class Player implements Runnable {
     private String lastDirection;
     private PlayerAnimations playerAnimations;
     float poofFrames;
+    float stunTime;
     private FoodType heldItem;
     EntityList entityList;
 
@@ -46,6 +47,7 @@ public class Player implements Runnable {
         playerControls = new PlayerControls(this,playerAnimations);
         setLocation();
         player = CreateBox.createBox(world, x, y, 16, 8, false);
+        player.setUserData("Player");
         playerBatch = new SpriteBatch();
         lastDirection = "down";
 
@@ -77,7 +79,7 @@ public class Player implements Runnable {
         return playerBatch;
     }
 
-    void timeUpdate() {
+    void timeUpdate(float deltaTime) {
         poofFrames -= .02f;
         if (playerControls.playerLock > 0) {
             playerControls.playerLock -= .03f;
@@ -86,6 +88,7 @@ public class Player implements Runnable {
                 playerControls.isLifting = false;
             }
         }
+        stunTime -= deltaTime;
     }
 
 
@@ -225,5 +228,8 @@ public class Player implements Runnable {
     }
     public void transport(Vector2 v2) {
         player.setTransform(v2, 0);
+    }
+    public void hitByProjectile() {
+        stunTime = 1f;
     }
 }

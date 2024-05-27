@@ -1,6 +1,7 @@
 package com.libgdx.undercooked.entities.Npc2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Human extends Npc2 {
@@ -14,7 +15,7 @@ public class Human extends Npc2 {
     }
 
     @Override
-    public void update() {
+    public void update(Vector2 v2) {
 
     }
 }

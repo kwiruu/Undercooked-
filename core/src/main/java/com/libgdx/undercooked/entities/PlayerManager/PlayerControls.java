@@ -37,9 +37,9 @@ public class PlayerControls {
         float horizontalForce = 0;
         float verticalForce = 0;
         playerAnimations.updateStateTime(deltaTime);
-        player.timeUpdate();
+        player.timeUpdate(deltaTime);
         updateTimer(deltaTime);
-
+        if (player.stunTime > 0) return;
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (animLock == null) {
                 Station st = player.entityList.pointStation(player.getInteractPos());
@@ -118,6 +118,7 @@ public class PlayerControls {
         String lastDir = player.getLastDirection();
         float animationSpeed = playerAnimations.getAnimation("lifting_" + lastDir).getAnimationDuration();
         currentTime += deltaTimes * animationSpeed;
+            if (player.stunTime > 0) return playerAnimations.getAnimation("idle_" + lastDir);
             if (animLock != null) {
                 return playerAnimations.getAnimation("interacting_" + lastDir);
             }

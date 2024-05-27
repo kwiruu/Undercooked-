@@ -2,6 +2,7 @@ package com.libgdx.undercooked.entities.Npc2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import static com.libgdx.undercooked.utils.Constants.PPM;
@@ -26,17 +27,12 @@ public abstract class Npc2 {
     }
 
     public abstract void render();
-    public abstract void update();
+    public abstract void update(Vector2 v2);
 
     @Override
     public String toString() {
         return "NPC";
     }
-
-    public void orbitPlayer() {
-
-    }
-
     public float getX() {
         return x;
     }

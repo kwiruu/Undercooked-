@@ -3,15 +3,17 @@ package com.libgdx.undercooked.entities.Npc2;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Ghost extends Npc2 {
     float shotFrequency = 2f;
-    double rotationSpeed = 10f;
+    int shotCount = 1;
+    float rotationSpeed = 1f;
     float dist;
-    public Ghost(float x, float y, int height, int width, SpriteBatch batch) {
-        super(x, y, height, width, batch);
-        dist = (float) (Math.random()*10f) + 5;
+    public Ghost(float x, float y, SpriteBatch batch) {
+        super(x, y, 32, 32, batch);
+        dist = 144f;
         iconFrames = iconAtlas.findRegions("question_icon");
     }
 
@@ -27,9 +29,16 @@ public class Ghost extends Npc2 {
     }
 
     @Override
-    public void update() {
+    public void update(Vector2 v2) {
         float deltaTime = Gdx.graphics.getDeltaTime();
-        setX((float) (getX()+dist*Math.cos(deltaTime * rotationSpeed)));
-        setY((float) (getY()+dist*Math.cos(deltaTime * rotationSpeed)));
+        float angle = (float) (rotationSpeed * deltaTime);
+//        setX((v2.x*32)+z);
+//        setY((v2.y*32)+z);
+        setX((float) ((v2.x * 32) + dist * Math.cos(angle)));
+        setY((float) ((v2.y * 32) + dist * Math.sin(angle)));
+    }
+
+    public void upgrade() {
+        shotCount++;
     }
 }

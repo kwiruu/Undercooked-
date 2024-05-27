@@ -35,10 +35,10 @@ public class Counter extends Station {
     public boolean interact(Player p) {
         System.out.println("interacted with a " + this);
         if (validate(p.getHeldItem())) {
-            for (Orders.FoodOrder f : orders.getOrderList()) {
-                if (p.getHeldItem() == f.getFoodType() && f.isActive()){
+            for (Orders.FoodOrder fo : orders.getOrderList()) {
+                if (p.getHeldItem() == fo.getFoodType() && fo.isActive()){
                     orders.rewardPoints(p.getHeldItem());
-                    f.setInactive();
+                    fo.setInactive();
                     p.removeHeldItem();
                     totalOrders--;
                     GameManager.setCheckEntry(true);
