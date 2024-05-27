@@ -183,7 +183,7 @@ public class SelectionScreen implements Screen {
                     context.setScreen(ScreenType.GAME);
                     Thread mapSoundThread = new Thread(mapSound);
                     mapRunning = true;
-                    //mapSoundThread.start();
+                    mapSoundThread.start();
                 }
             }
         });

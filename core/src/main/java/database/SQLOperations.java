@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static database.SQLConnection.getConnection;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 public class SQLOperations {
 
-    public static void createDatabase(){
-        try (Connection conn = getConnection();){
+    public static void createDatabase() {
+        try (Connection conn = getConnection();) {
             Statement stmt = conn.createStatement();
             String sql = "CREATE DATABASE IF NOT EXISTS dbUndercooked;";
             stmt.execute(sql);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     public static void createTableAccount(String tblName) {
         try (Connection conn = getConnection();) {
             Statement stmt = conn.createStatement();
@@ -30,14 +33,14 @@ public class SQLOperations {
         }
     }
 
-    public static void createTableMap(){
-        try(Connection conn = getConnection();){
+    public static void createTableMap() {
+        try (Connection conn = getConnection();) {
             Statement stmt = conn.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS tblMap " +
                 "(mapId INT PRIMARY KEY AUTO_INCREMENT," +
                 "mapName TEXT(20) NOT NULL);";
             stmt.execute(sql);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -71,18 +74,49 @@ public class SQLOperations {
         }
     }
 
+    public static String userDefaultSignIn(){
+        String usernamez = "";
+        try(Connection conn = getConnection();
+            PreparedStatement stmnt = conn.prepareStatement("SELECT * FROM tblAccount WHERE lastPlayed = ?")){
+            stmnt.setBoolean(1,TRUE);
+            ResultSet res = stmnt.executeQuery();
+            if(res.next()){
+                usernamez = res.getString("userName");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return usernamez;
+    }
+
     public static boolean userSignIn(String userName) {
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(
-                 "SELECT * FROM tblAccount WHERE userName = ?");
-        ) {
-            stmt.setString(1, userName);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                System.out.println("User signed in successfully. Welcome");
+        try (Connection conn = getConnection()) {
+            boolean userExists = false;
+            try (PreparedStatement selectStmt = conn.prepareStatement(
+                "SELECT * FROM tblAccount WHERE userName = ?")) {
+                selectStmt.setString(1, userName);
+                ResultSet resultSet = selectStmt.executeQuery();
+                if (resultSet.next()) {
+                    userExists = true;
+                }
+            }
+
+            if (userExists) {
+                try (PreparedStatement updateStmt = conn.prepareStatement(
+                    "UPDATE tblAccount " +
+                        "SET lastPlayed = CASE WHEN userName = ? THEN TRUE ELSE FALSE END")) {
+                    updateStmt.setString(1, userName);
+                    updateStmt.executeUpdate();
+                    System.out.println("User signed in successfully. Welcome");
+                }
             } else {
                 insertAccount(userName);
-                System.out.println("New account created. Proceeding to the game...");
+                try (PreparedStatement updateStmt = conn.prepareStatement(
+                    "UPDATE tblAccount SET lastPlayed = TRUE WHERE userName = ?")) {
+                    updateStmt.setString(1, userName);
+                    updateStmt.executeUpdate();
+                    System.out.println("New account created. Proceeding to the game...");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,9 +125,10 @@ public class SQLOperations {
         return true;
     }
 
-    public static void levelUp(String username,int currLevel) {
 
-        if(!checkProgress(username)){
+    public static void levelUp(String username, int currLevel) {
+
+        if (!checkProgress(username)) {
             String sql = "UPDATE tblAccount SET level = level + 1 WHERE userName = ?";
             try (Connection conn = getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -111,15 +146,15 @@ public class SQLOperations {
     }
 
 
-    public static boolean checkProgress(String user){
+    public static boolean checkProgress(String user) {
 
         String sql = "SELECT userName FROM tblHighscore WHERE userName = ?";
 
-        try(Connection conn = getConnection();
-            PreparedStatement stmnt = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmnt = conn.prepareStatement(sql)) {
             stmnt.setString(1, user);
             ResultSet res = stmnt.executeQuery();
-            if(res.next()){
+            if (res.next()) {
                 return true;
             }
         } catch (SQLException e) {
@@ -160,7 +195,7 @@ public class SQLOperations {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new UserInfo(level,userName);
+        return new UserInfo(level, userName);
     }
 
     public static List<HighScore> getTopHighScores(int mapId) {
@@ -182,7 +217,7 @@ public class SQLOperations {
     }
 
     public static void insertScore(String username, int mapId, int score) {
-        try (Connection conn = getConnection()) {
+        try (Connection conn = getConnection();) {
             String checkQuery = "SELECT highScore FROM tblHighscore WHERE mapId = ? AND userName = ?";
             try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
                 checkStmt.setInt(1, mapId);
@@ -215,5 +250,19 @@ public class SQLOperations {
         }
     }
 
-
+    public static List<String> getAccounts() {
+        List<String> accounts = new ArrayList<>();
+        try (Connection conn = getConnection()) {
+            String sql = "SELECT * FROM tblAccount";
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            ResultSet res = stmnt.executeQuery();
+            while (res.next()) {
+                String username = res.getString("username");
+                accounts.add(username);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
 }
