@@ -41,6 +41,7 @@ public class PlayerControls {
         updateTimer(deltaTime);
         if (player.stunTime > 0) return;
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            isLifting = true;
             if (animLock == null) {
                 Station st = player.entityList.pointStation(player.getInteractPos());
                 FoodType oft = player.getHeldItem();
