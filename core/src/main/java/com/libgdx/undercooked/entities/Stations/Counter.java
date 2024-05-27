@@ -1,12 +1,13 @@
-package com.libgdx.undercooked.entities;
+package com.libgdx.undercooked.entities.Stations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
-import com.libgdx.undercooked.AudioManager.ErrorSound;
 import com.libgdx.undercooked.AudioManager.GameSound;
 import com.libgdx.undercooked.GameManager;
+import com.libgdx.undercooked.entities.FoodType;
+import com.libgdx.undercooked.entities.Orders;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import static com.libgdx.undercooked.entities.Orders.totalOrders;
 
@@ -34,10 +35,10 @@ public class Counter extends Station {
     public boolean interact(Player p) {
         System.out.println("interacted with a " + this);
         if (validate(p.getHeldItem())) {
-            for (Orders.FoodOrder f : orders.getOrderList()) {
-                if (p.getHeldItem() == f.getFoodType() && f.isActive()){
+            for (Orders.FoodOrder fo : orders.getOrderList()) {
+                if (p.getHeldItem() == fo.getFoodType() && fo.isActive()){
                     orders.rewardPoints(p.getHeldItem());
-                    f.setInactive();
+                    fo.setInactive();
                     p.removeHeldItem();
                     totalOrders--;
                     GameManager.setCheckEntry(true);

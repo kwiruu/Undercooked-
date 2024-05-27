@@ -1,10 +1,11 @@
-package com.libgdx.undercooked.entities;
+package com.libgdx.undercooked.entities.Stations;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.libgdx.undercooked.entities.FoodType;
 import com.libgdx.undercooked.entities.PlayerManager.Player;
 import com.libgdx.undercooked.utils.CreateBox;
 
@@ -18,11 +19,11 @@ public abstract class Station {
     private final float y;
     private final int width;
     private final int height;
-    protected TextureAtlas floating_iconAtlas;
     protected float frameDuration;
     protected float stateTime; // Time elapsed since the start of the animation
     SpriteBatch batch;
-    protected Array<TextureAtlas.AtlasRegion>[] floatingIconFrames;
+    protected static TextureAtlas floating_iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
+    protected Array<TextureAtlas.AtlasRegion>[] floatingIconFrames = new Array[3];
     @SuppressWarnings("unchecked")
     public Station(World world, float x, float y, int width, int height, SpriteBatch batch) {
         this.x = x;
@@ -31,8 +32,6 @@ public abstract class Station {
         this.height = (int) (height / 2 / PPM);
         this.batch = batch;
         body = CreateBox.createBox(world, (int) x, (int) y, width, height, true);
-        floatingIconFrames = new Array[3];
-        floating_iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
         frameDuration = 1f;
         stateTime = 0f;
     }

@@ -8,7 +8,6 @@ import static com.libgdx.undercooked.GameManager.score;
 import static com.libgdx.undercooked.screen.SelectionScreen.getSelectedMap;
 
 public class Orders {
-
     static ArrayList<FoodOrder> orderList;
     private int activeOrder = 0;
     public static int totalOrders;
@@ -75,9 +74,15 @@ public class Orders {
                 break;
         }
     }
-    public void update(float deltaTime) {
+    public void update(float deltaTime, EntityList entityList) {
         for (int i = 0; i < activeOrder; i++) {
-            if (orderList.get(i).active) orderList.get(i).patience -= deltaTime;
+            if (orderList.get(i).isActive()) {
+                orderList.get(i).patience -= deltaTime;
+                if (orderList.get(i).patience < 0) {
+                    setInactive(i);
+                    entityList.addGhost();
+                }
+            }
         }
         if (timer > 0) {
             timer -= deltaTime;
@@ -87,6 +92,12 @@ public class Orders {
             GameManager.setCheckEntry(true);
         }
     }
+
+    public void setInactive(int i) {
+        orderList.get(i).setInactive();
+        GameManager.setCheckEntry(true);
+    }
+
     public static void freeOrderList() {
         orderList.clear();
     }
@@ -94,7 +105,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         final float timer;
-        float patience = 100;
+        float patience = 4f;
         private boolean active = true;
 
         public FoodOrder(FoodType foodType, float timer) {
@@ -110,7 +121,7 @@ public class Orders {
             return this.active;
         }
 
-        void setInactive(){
+        public void setInactive(){
             this.active = false;
         }
     }
