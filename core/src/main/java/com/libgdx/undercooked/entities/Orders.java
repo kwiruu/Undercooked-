@@ -21,7 +21,7 @@ public class Orders {
         switch (selectedMap) {
             case "Map1":
                 totalOrders = 5;
-                orderList.add(new FoodOrder(FoodType.rice, 5));
+                orderList.add(new FoodOrder(FoodType.meat_meal_onion, 5));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 1));
                 orderList.add(new FoodOrder(FoodType.cooked_fish, 1));

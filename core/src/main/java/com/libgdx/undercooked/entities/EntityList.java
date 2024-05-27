@@ -152,9 +152,10 @@ public class EntityList {
                     height = object.getProperties().get("height", Float.class);
 
                     Stove stove = new Stove(world, x, y, (int) width, (int) height, batch, 55);
-                    Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch, 25);
-                    PolyStation polyStation = new PolyStation(world, x, y, (int) width, (int) height, batch, stove, placemat);
-                    stationArray.add(polyStation);
+                    FoodSource onion = new FoodSource(world, x, y, (int) width, (int) height, batch, FoodType.onion);
+                    //Placemat placemat = new Placemat(world, x, y, (int) width, (int) height, batch, 25);
+                    //PolyStation polyStation = new PolyStation(world, x, y, (int) width, (int) height, batch, stove, placemat);
+                    stationArray.add(onion);
 
 //                    x = object.getProperties().get("x", Float.class);
 //                    y = object.getProperties().get("y", Float.class);
