@@ -90,7 +90,6 @@ public class PauseScreen implements Screen {
             public void clicked(InputEvent event, float x, float y){
                 finishGame();
                 context.setScreen(ScreenType.SELECTMAP);
-                Main.deleteScreen(ScreenType.GAME);
             }
         });
 

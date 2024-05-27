@@ -112,8 +112,7 @@ public class SelectionScreen implements Screen {
         UserInfo userInfo = getInfo(getUsername());
         int userlevel = userInfo.getLevel();
         // ********** uncomment this if mo gana na ang landing page ***************
-        //setupMapButtons(userInfo.getLevel());
-        setupMapButtons(5);
+        setupMapButtons(userInfo.getLevel());
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -279,7 +278,6 @@ public class SelectionScreen implements Screen {
         for (Actor actor : stage.getActors()) {
             if (actor instanceof ImageButton) {
                 ImageButton button = (ImageButton) actor;
-                // Update button size based on camera zoom
                 button.setSize(button.getWidth() / camera.zoom, button.getHeight() / camera.zoom);
             }
         }
