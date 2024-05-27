@@ -96,6 +96,7 @@ public class PauseScreen implements Screen {
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                finishGame();
                 context.setScreen(ScreenType.MAINMENUTRANSITION);
             }
         });

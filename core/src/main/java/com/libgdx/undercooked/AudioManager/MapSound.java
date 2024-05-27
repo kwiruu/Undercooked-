@@ -7,6 +7,7 @@ public class MapSound implements Runnable {
     private static Sound startSound;
     public static boolean mapRunning = false;
     private float volume = 0.3f;
+    private long soundId;
 
     public MapSound(String songpath) {
         startSound = Gdx.audio.newSound(Gdx.files.internal(songpath));
@@ -16,26 +17,28 @@ public class MapSound implements Runnable {
     public void run() {
         if (mapRunning) {
             if (startSound != null) {
-                startSound.play(volume);
-                long loop = startSound.loop();
+                soundId = startSound.loop(volume);
+                setVolume(volume);
             }
         }
     }
 
     public void setVolume(float volume) {
         this.volume = volume;
+        if (startSound != null && mapRunning) {
+            startSound.setVolume(soundId, volume);
+        }
     }
 
     private long startSoundDuration() {
         if (startSound == null) return 0;
         long startTime = System.currentTimeMillis();
-        startSound.play(volume);
+        soundId = startSound.play(volume);
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        // startSound.stop();
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         return duration;
@@ -50,7 +53,6 @@ public class MapSound implements Runnable {
     public static void dispose() {
         if (startSound != null) {
             startSound.dispose();
-            startSound = null; // Optional: set to null after disposing
         }
     }
 }

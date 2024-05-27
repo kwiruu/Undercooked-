@@ -5,9 +5,10 @@ import com.badlogic.gdx.audio.Sound;
 
 public abstract class BaseSound implements Runnable {
     protected boolean running = true;
-    protected float volume = 0.3f;
+    protected float volume = 2f;
     protected Thread thread;
     protected Sound sound;
+    private long soundId;
 
     public BaseSound(String soundFilePath) {
         this.sound = Gdx.audio.newSound(Gdx.files.internal(soundFilePath));
@@ -22,7 +23,8 @@ public abstract class BaseSound implements Runnable {
     public abstract void run();
 
     protected void playSound() {
-        sound.play(volume);
+        soundId = sound.play(volume);
+        sound.setVolume(soundId, volume);
     }
 
     public synchronized void start() {
@@ -46,6 +48,9 @@ public abstract class BaseSound implements Runnable {
 
     public void setVolume(float volume) {
         this.volume = volume;
+        if (soundId != 0) {
+            sound.setVolume(soundId, volume);
+        }
     }
 
     public void dispose() {
