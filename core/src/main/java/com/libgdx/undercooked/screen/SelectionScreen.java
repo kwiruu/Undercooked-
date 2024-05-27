@@ -113,7 +113,7 @@ public class SelectionScreen implements Screen {
         int userlevel = userInfo.getLevel();
         // ********** uncomment this if mo gana na ang landing page ***************
         //setupMapButtons(userInfo.getLevel());
-        setupMapButtons(2);
+        setupMapButtons(5);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
