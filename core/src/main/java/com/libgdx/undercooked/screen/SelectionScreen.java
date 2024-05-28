@@ -56,10 +56,18 @@ public class SelectionScreen implements Screen {
 
     public SelectionScreen(final Main context) {
         this.context = context;
-        mapSound = new MapSound("assets/audio/spirited_away.wav");
+        startMapSound("assets/audio/spirited_away.wav");
+
+    }
+
+    private void startMapSound(String filePath) {
+        if (mapSound != null) {
+            mapSound.stop();
+        }
+        mapSound = new MapSound(filePath);
         Thread mapSoundThread = new Thread(mapSound);
         mapRunning = true;
-        //mapSoundThread.start();
+        mapSoundThread.start();
     }
 
     @Override
@@ -74,8 +82,8 @@ public class SelectionScreen implements Screen {
         Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
         Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
 
-         blockClouds1 = new Sprite(blockCloud1Texture);
-         blockClouds2 = new Sprite(blockCloud2Texture);
+        blockClouds1 = new Sprite(blockCloud1Texture);
+        blockClouds2 = new Sprite(blockCloud2Texture);
 
         float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
 
@@ -113,6 +121,7 @@ public class SelectionScreen implements Screen {
         int userlevel = userInfo.getLevel();
         // ********** uncomment this if mo gana na ang landing page ***************
         setupMapButtons(userInfo.getLevel());
+        //setupMapButtons(5);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -163,8 +172,6 @@ public class SelectionScreen implements Screen {
         blockClouds1.draw(spriteBatch);
         blockClouds2.draw(spriteBatch);
         spriteBatch.end();
-
-
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
             String mapText = "Map1";
@@ -227,21 +234,12 @@ public class SelectionScreen implements Screen {
             mapButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Selected Map: " + mapName);
-                    System.out.println("Na click ko");
-
-
+                    mapRunning = false;
+                    MapSound.stop();
                     setSelectedMap(mapName);
                     mapId = mapNumber;
-                    System.out.println("Selected Map: " + mapName);
                     context.setScreen(ScreenType.GAME);
-                    String oten = "assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav";
-                    System.out.println(oten);
-                    mapSound = new MapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
-                    System.out.println(mapSound.toString());
-                    Thread mapSoundThread = new Thread(mapSound);
-                    mapRunning = true;
-                    mapSoundThread.start();
+                    startMapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
                 }
 
                 @Override
