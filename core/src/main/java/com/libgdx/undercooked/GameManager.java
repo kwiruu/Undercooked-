@@ -61,7 +61,7 @@ public class GameManager implements Disposable {
             // Load NPC texture
             npcTexture = new Texture(Gdx.files.internal("assets/sprites/Chef2/idle_down_01.png"));
             Sprite npcSprite = new Sprite(npcTexture);
-            createAndAddNpc(new Vector2(96, 72), npcSprite);
+            //createAndAddNpc(new Vector2(96, 72), npcSprite);
             System.out.println("Created ");
 
             mapManager = new MapManager(world, batch, npcManager);  // Pass NPC manager to MapManager
@@ -95,7 +95,7 @@ public class GameManager implements Disposable {
         world.step(1 / 60f, 6, 2);
         playerManager.inputUpdate(deltaTime);
         playerManager.renderItemUpdate(deltaTime);
-        npcManager.update(deltaTime);
+        //npcManager.update(deltaTime);
         entityList.update(deltaTime, playerManager);
         orders.update(deltaTime, entityList);
         if (checkEntry) {
@@ -106,7 +106,7 @@ public class GameManager implements Disposable {
 
     public void render(TextureRegion currentFrame) {
         getMapManager().drawLayerTextures(batch, currentFrame);
-        npcManager.render(batch);
+        //npcManager.render(batch);
         entityList.render();
         getPlayerManager().render(batch);
     }
@@ -136,7 +136,7 @@ public class GameManager implements Disposable {
         MapManager.dispose();
         world.dispose();
         batch.dispose();
-        npcTexture.dispose();
+        //npcTexture.dispose();
         initialized = false;
         Gdx.app.log("GameManager", "World disposed after 3 minutes");
     }
