@@ -22,3 +22,10 @@ INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (6, 'marso', 9);
 INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (7, 'griin', 8);
 
 //'not' yet final
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (1, 'valceven', 99);
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (2, 'kwiruu', 99);
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (3, 'griin', 99);
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (4, 'marso',9);
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (1, 'kwiruu', 89);
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (1, 'marso', 77);
+INSERT INTO tblHighScore (mapId, userName, highScore) VALUES (2, 'griin', 77);
