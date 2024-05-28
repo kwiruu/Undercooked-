@@ -95,9 +95,32 @@ public class Orders {
             case fish_meal:
                 score += 30;
                 break;
-            case struggle_meal:
+            case sushi:
                 score += 7;
                 break;
+            case sushi_pickle:
+                score += 14;
+                break;
+            case sushi_tomato:
+                score += 12;
+                break;
+            case meat_meal_tomato:
+            case fish_meal_tomato:
+                score += 30;
+                break;
+            case fish_meal_onion:
+            case meat_meal_onion:
+                score += 31;
+                break;
+            case cooked_meat_tomato:
+            case cooked_chopped_fish:
+            case cooked_chopped_meat:
+            case cooked_fish_onion:
+                score+= 17;
+                break;
+            case cooked_fish_tomato:
+            case cooked_meat_onion:
+                score+=14;
             default:
                 System.out.println("Unknown food type...");
                 break;

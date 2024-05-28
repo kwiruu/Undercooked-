@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="41">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="42">
  <tileset firstgid="1" source="Room_Builder_32x32.tsx"/>
  <tileset firstgid="8285" source="Interiors_32x32.tsx"/>
  <tileset firstgid="25309" source="../objects.tsx"/>
@@ -102,7 +102,7 @@
  <objectgroup id="12" name="station_layer">
   <object id="21" gid="2147508973" x="384" y="352" width="32" height="96"/>
   <object id="22" name="station_chopping_board" type="station_chopping_board" gid="25326" x="384" y="192" width="64" height="32"/>
-  <object id="24" name="fish__tank_source" gid="25312" x="544" y="384" width="96" height="96"/>
+  <object id="24" name="fish_tank_source" gid="25312" x="544" y="384" width="96" height="96"/>
   <object id="25" name="station_stove" type="station_stove" gid="25309" x="544" y="96" width="32" height="64"/>
   <object id="26" name="station_stove" type="station_stove" gid="25309" x="512" y="96" width="32" height="64"/>
   <object id="27" name="station_stove" type="station_stove" gid="25309" x="480" y="96" width="32" height="64"/>
@@ -116,8 +116,9 @@
   <object id="35" name="tomato_source" gid="25313" x="544" y="512" width="32" height="64"/>
   <object id="36" name="onion_source" gid="25313" x="576" y="512" width="32" height="64"/>
   <object id="37" name="pickle_source" gid="25313" x="384" y="512" width="32" height="64"/>
+  <object id="41" name="potato_source" gid="25314" x="512" y="512" width="32" height="64"/>
  </objectgroup>
- <layer id="5" name="on_top_player" width="30" height="20">
+ <layer id="5" name="on_top_player" width="30" height="20" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -158,14 +159,14 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25314,25313,25313,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="8" name="collision_layer" visible="0">
+ <objectgroup id="8" name="collision_layer">
   <object id="10" x="64" y="607.333">
    <polyline points="0,0 -2,-244.667 22,-246.667 22,-258.667 30.6667,-259.333 30,-302.667 -1.33333,-302.667 0,-381.333 126.667,-381.333 126,-389.333 178.667,-390 178,-298.667 64,-298 63.3333,-257.333 316.667,-258.667 344.667,-258.333 345.333,-338.667 318,-339.333 317.667,-332.667 222.667,-332.667 222.667,-530 513,-530.667 514,-487.333 481.333,-488 480,-327.333 382.667,-328.667 384,-256 430,-257.333 429.333,-238 575.333,-238.667 576,-184 542.667,-184 542.667,-148.667 450,-149.333 450,-102 575.333,-101.333 576,-72 352,-70.6667 318.667,-70.6667 319.333,-104.667 351.333,-104 350.667,-147.333 319.333,-147.333 319.333,-208 288.667,-208 289.333,-199.333 152.667,-200 152.667,-227.333 130,-227.333 130.667,-168.667 287.417,-169.417 287.333,2.66667 288,32 -0.666667,32.6667 -7.10543e-15,8"/>
   </object>
