@@ -28,7 +28,7 @@ public class LandingPageScreen implements Screen {
     private final Main context;
     private TweenManager tweenManager;
     private Stage stage;
-    private Skin skin, skin1;
+    private Skin skin;
     private SpriteBatch batch;
 
     private Table mapTable;
@@ -93,6 +93,15 @@ public class LandingPageScreen implements Screen {
         userTable.add(new Label("Select User:", skin)).pad(padding).left();
         userSelectBox = new SelectBox<>(skin);
         loadUserSelectBoxData();
+        userSelectBox.setSelected(null);
+        userSelectBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (userSelectBox.getSelected() == null) {
+                    userSelectBox.setSelected("Select a user");
+                }
+            }
+        });
         userTable.add(userSelectBox).width(200).pad(padding).left();
 
         userTable.row().padTop(padding);
@@ -109,12 +118,10 @@ public class LandingPageScreen implements Screen {
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                String selectedUser = userSelectBox.getSelected();
                 username = usernameField.getText().trim();
-                if (username.isEmpty()) {
-                    username = userSelectBox.getSelected();
-                }
 
-                if (username == null || username.isEmpty()) {
+                if ((selectedUser == null || selectedUser.equals("Select a user")) && username.isEmpty()) {
                     Dialog warningDialog = new Dialog("Warning", skin);
                     warningDialog.text("Please select or enter a username.");
                     warningDialog.button("OK", true);
@@ -122,7 +129,11 @@ public class LandingPageScreen implements Screen {
                     MainMenuSound.running = true;
                     new Thread(mainMenuSound).start();
                 } else {
-                    if (userSignIn(username)) {
+                    if (!username.isEmpty()) {
+                        selectedUser = username;
+                    }
+
+                    if (userSignIn(selectedUser)) {
                         context.setScreen(ScreenType.SELECTMAP);
                         mainMenuSound.stop();
                     }
@@ -201,7 +212,9 @@ public class LandingPageScreen implements Screen {
 
     private void loadUserSelectBoxData() {
         List<String> users = SQLOperations.getAccounts();
+        users.add(0, "Select a user");
         userSelectBox.setItems(users.toArray(new String[0]));
+        userSelectBox.setSelected("Select a user");
     }
 
     @Override
@@ -229,5 +242,4 @@ public class LandingPageScreen implements Screen {
         batch.dispose();
         mainMenuSound.dispose();
     }
-
 }
