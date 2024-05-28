@@ -41,6 +41,7 @@ public class LandingPageScreen implements Screen {
     private SelectBox<String> userSelectBox;
     private TextField usernameField;
     private Texture backgroundTexture;
+    private Texture landingBox;
 
     public LandingPageScreen(final Main context) {
         this.context = context;
@@ -82,6 +83,8 @@ public class LandingPageScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("assets/metal-ui.json"));
         backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
+        landingBox = new Texture(Gdx.files.internal("assets/screens/title_screen/landing_box.png"));
+
         Table root = new Table();
         root.setFillParent(true);
         stage.addActor(root);
@@ -154,7 +157,6 @@ public class LandingPageScreen implements Screen {
         root.add(parentTable).expand().center();
 
         // Set background image
-        root.background(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
     }
 
     @Override
@@ -165,6 +167,7 @@ public class LandingPageScreen implements Screen {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(landingBox, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         blockClouds1.draw(batch);
         blockClouds2.draw(batch);
         batch.end();
@@ -175,11 +178,12 @@ public class LandingPageScreen implements Screen {
 
     public void setupMapButtons(Skin skin) {
         mapTable.clear();
+        mapTable.add(new Label("Or Enter Username:", skin)).pad(20f).left().row();
 
         for (int i = 1; i <= 5; i++) {
             final int mapNumber = i;
 
-            TextButton highScoreButton = new TextButton("Map " + mapNumber + " High Scores", skin);
+            TextButton highScoreButton = new TextButton(String.valueOf(mapNumber), skin);
             highScoreButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
