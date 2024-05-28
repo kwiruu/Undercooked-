@@ -82,8 +82,8 @@ public class SelectionScreen implements Screen {
         Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
         Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
 
-         blockClouds1 = new Sprite(blockCloud1Texture);
-         blockClouds2 = new Sprite(blockCloud2Texture);
+        blockClouds1 = new Sprite(blockCloud1Texture);
+        blockClouds2 = new Sprite(blockCloud2Texture);
 
         float targetX = Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2;
 
