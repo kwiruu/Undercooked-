@@ -121,8 +121,7 @@ public class SelectionScreen implements Screen {
         map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map4_unlocked.png"));
         map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map5_unlocked.png"));
 
-        //For the Locked Map Buttons
-        //Wala pani
+
         UserInfo userInfo = getInfo(getUsername());
         int userlevel = userInfo.getLevel();
         setupMapButtons(userInfo.getLevel());

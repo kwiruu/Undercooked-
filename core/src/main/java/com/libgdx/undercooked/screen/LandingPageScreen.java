@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -98,14 +100,7 @@ public class LandingPageScreen implements Screen {
         userSelectBox = new SelectBox<>(skin);
         loadUserSelectBoxData();
         userSelectBox.setSelected(null);
-        userSelectBox.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (userSelectBox.getSelected() == null) {
-                    userSelectBox.setSelected("Select a user");
-                }
-            }
-        });
+
         userTable.add(userSelectBox).width(200).pad(padding).left();
 
         userTable.row().padTop(padding);
@@ -119,6 +114,18 @@ public class LandingPageScreen implements Screen {
         TextButton okButton = new TextButton("Sign In", skin);
         userTable.add(okButton).width(100).height(45).pad(padding).left();
 
+        userSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selectedUser = userSelectBox.getSelected();
+                if (selectedUser != null && !selectedUser.equals("Select a user")) {
+                    usernameField.setText(selectedUser);
+                } else {
+                    usernameField.setText("");
+                }
+            }
+        });
+
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -130,16 +137,20 @@ public class LandingPageScreen implements Screen {
                     warningDialog.text("Please select or enter a username.");
                     warningDialog.button("OK", true);
                     warningDialog.show(stage);
-                    MainMenuSound.running = true;
-                    new Thread(mainMenuSound).start();
                 } else {
                     if (!username.isEmpty()) {
                         selectedUser = username;
+                    } else {
+                        usernameField.setText(selectedUser);
                     }
 
                     if (userSignIn(selectedUser)) {
                         context.setScreen(ScreenType.SELECTMAP);
-                        mainMenuSound.stop();
+                    } else {
+                        Dialog warningDialog = new Dialog("Warning", skin);
+                        warningDialog.text("Sign-in failed. Please try again.");
+                        warningDialog.button("OK", true);
+                        warningDialog.show(stage);
                     }
                 }
             }
@@ -180,7 +191,7 @@ public class LandingPageScreen implements Screen {
 
     public void setupMapButtons(Skin skin) {
         mapTable.clear();
-        mapTable.add(new Label("Or Enter Username:", skin)).pad(20f).left().row();
+        mapTable.add(new Label("HALL OF FAME:", skin)).pad(20f).left().row();
 
         for (int i = 1; i <= 5; i++) {
             final int mapNumber = i;
