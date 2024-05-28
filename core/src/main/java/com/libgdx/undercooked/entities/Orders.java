@@ -29,11 +29,11 @@ public class Orders {
                 break;
             case "Map2":
                 totalOrders = 5;
-                orderList.add(new FoodOrder(FoodType.rice, 3));
-                orderList.add(new FoodOrder(FoodType.tomato_soup, 3));
-                orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 0));
-                orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
+                orderList.add(new FoodOrder(FoodType.sushi, 3));
+                orderList.add(new FoodOrder(FoodType.sushi_tomato, 3));
+                orderList.add(new FoodOrder(FoodType.sushi_pickle, 5));
+                orderList.add(new FoodOrder(FoodType.rice, 0));
+                orderList.add(new FoodOrder(FoodType.sushi, 1));
                 break;
             case "Map3":
                 totalOrders = 5;
