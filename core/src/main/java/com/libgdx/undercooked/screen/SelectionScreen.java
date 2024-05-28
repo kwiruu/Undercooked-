@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.libgdx.undercooked.AudioManager.MainMenuSound;
 import com.libgdx.undercooked.AudioManager.MapSound;
 import com.libgdx.undercooked.Main;
 import java.awt.event.MouseWheelEvent;
@@ -119,9 +120,7 @@ public class SelectionScreen implements Screen {
         //Wala pani
         UserInfo userInfo = getInfo(getUsername());
         int userlevel = userInfo.getLevel();
-        // ********** uncomment this if mo gana na ang landing page ***************
         setupMapButtons(userInfo.getLevel());
-        //setupMapButtons(5);
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -149,6 +148,8 @@ public class SelectionScreen implements Screen {
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(new GestureDetector(new MyGestureListener()));
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+
     }
 
     @Override
@@ -177,6 +178,13 @@ public class SelectionScreen implements Screen {
             String mapText = "Map1";
             setSelectedMap(mapText);
             context.setScreen(ScreenType.GAME);
+        }
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Main.deleteScreen(ScreenType.SELECTMAP);
+            context.setScreen(ScreenType.MAINMENUTRANSITION);
+            MainMenuSound.stop();
         }
     }
 
@@ -393,6 +401,7 @@ public class SelectionScreen implements Screen {
         skin.dispose();
         backgroundTexture.dispose();
         spriteBatch.dispose();
+        MainMenuSound.stop();
     }
 
     public static String getSelectedMap() {
