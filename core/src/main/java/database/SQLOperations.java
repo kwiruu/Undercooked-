@@ -131,9 +131,9 @@ public class SQLOperations {
     }
 
 
-    public static void levelUp(String username) {
+    public static void levelUp(String username, int mapId) {
 
-        if (!checkProgress(username)) {
+        if (!checkProgress(username,mapId)) {
             String sql = "UPDATE tblAccount SET level = level + 1 WHERE userName = ?";
             try (Connection conn = getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -151,7 +151,7 @@ public class SQLOperations {
     }
 
 
-    public static boolean checkProgress(String user) {
+    public static boolean checkProgress(String user, int currLevel) {
 
         String sql = "SELECT userName FROM tblHighscore WHERE userName = ?";
 

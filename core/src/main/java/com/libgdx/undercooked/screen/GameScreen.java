@@ -81,8 +81,8 @@ public class GameScreen extends ScreenAdapter {
             Gdx.app.log("GameScreen", " : "+ timesUp + " " + Orders.noOrders);
             if (gameManager.getWin()) {
                 score = (int) (180 - gameUI.getElapsedTime() + score);
-                levelUp(getUsername());
-                insertScore(getUsername(), 1, score);
+                levelUp(getUsername(),mapId);
+                insertScore(getUsername(), mapId, score);
 
             }
             context.setScreen(new FinishScreen(context, elapsedTime));
