@@ -43,14 +43,13 @@ public class Orders {
                 orderList.add(new FoodOrder(FoodType.cooked_fish, 0));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
                 break;
-
             case "Map4":
                 totalOrders = 5;
-                orderList.add(new FoodOrder(FoodType.rice, 3));
+                orderList.add(new FoodOrder(FoodType.fish_meal_onion, 3));
                 orderList.add(new FoodOrder(FoodType.tomato_soup, 3));
-                orderList.add(new FoodOrder(FoodType.cooked_meat, 5));
-                orderList.add(new FoodOrder(FoodType.cooked_fish, 0));
-                orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
+                orderList.add(new FoodOrder(FoodType.fish_meal_tomato, 5));
+                orderList.add(new FoodOrder(FoodType.cooked_fish, 10));
+                orderList.add(new FoodOrder(FoodType.fish_meal, 1));
                 break;
 
             case "Map5":
@@ -61,7 +60,6 @@ public class Orders {
                 orderList.add(new FoodOrder(FoodType.cooked_fish, 0));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
                 break;
-
         }
     }
 
