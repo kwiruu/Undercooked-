@@ -119,7 +119,7 @@ public class Orders {
                     orderList.get(i).patience -= deltaTime;
                     if (orderList.get(i).patience < 0 && !orderList.get(i).patienceDone) {
                         orderList.get(i).patienceDone = true;
-                        entityList.addGhost();
+                        //entityList.addGhost();
                     }
                 }
             }
@@ -144,7 +144,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         final float timer;
-        float patience = 15f;
+        float patience = 30f;
         boolean patienceDone = false;
         private boolean active = true;
 
