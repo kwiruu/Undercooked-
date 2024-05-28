@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="42">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="43">
  <tileset firstgid="1" source="Room_Builder_32x32.tsx"/>
  <tileset firstgid="8285" source="Interiors_32x32.tsx"/>
  <tileset firstgid="25309" source="../objects.tsx"/>
- <layer id="1" name="Floor" width="30" height="20" visible="0">
+ <layer id="1" name="Floor" width="30" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,164,2662,2662,2662,2662,2662,2662,2662,2662,2662,2662,166,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,164,2738,2738,2738,2738,2738,2738,2738,2738,2738,2738,166,0,0,0,0,0,0,0,0,0,0,0,
@@ -27,7 +27,7 @@
 0,620,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="black_wall" width="30" height="20" visible="0">
+ <layer id="7" name="black_wall" width="30" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,315,315,0,0,0,0,0,0,0,0,0,0,315,315,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,315,315,0,0,0,0,0,0,0,0,0,0,315,315,0,0,0,0,0,0,0,0,0,0,
@@ -51,7 +51,7 @@
 315,315,315,315,315,315,315,315,315,315,315,315,315,315,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="wall" width="30" height="20" visible="0">
+ <layer id="2" name="wall" width="30" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,88,241,241,241,241,241,0,12888,12888,12888,12888,90,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,164,12413,12418,12418,12418,12418,12419,12581,12581,12581,12581,166,0,0,0,0,0,0,0,0,0,0,0,
@@ -75,7 +75,7 @@
 0,240,89,89,0,0,241,241,241,241,241,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="furnitures" width="30" height="20" visible="0">
+ <layer id="4" name="furnitures" width="30" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,12874,241,241,241,241,241,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,12533,12534,0,12890,12891,536883910,536883910,536883910,536883910,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -117,6 +117,7 @@
   <object id="36" name="onion_source" gid="25313" x="576" y="512" width="32" height="64"/>
   <object id="37" name="pickle_source" gid="25313" x="384" y="512" width="32" height="64"/>
   <object id="41" name="potato_source" gid="25314" x="512" y="512" width="32" height="64"/>
+  <object id="42" name="station_rice_cooker" gid="25311" x="256" y="128" width="32" height="48"/>
  </objectgroup>
  <layer id="5" name="on_top_player" width="30" height="20" visible="0">
   <data encoding="csv">
