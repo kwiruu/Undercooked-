@@ -134,9 +134,13 @@ public class LandingPageScreen implements Screen {
         mapTable = new Table();
         setupMapButtons(skin);
 
-        // Add userTable and mapTable to root, centered vertically
-        root.add(userTable).expand().center().top().pad(20).left();
-        root.add(mapTable).expand().center().top().pad(20).right();
+        // Create a parent table to hold both userTable and mapTable
+        Table parentTable = new Table();
+        parentTable.add(userTable).expandY().center().pad(20).left();
+        parentTable.add(mapTable).expandY().center().pad(20).right();
+
+        // Add parentTable to root, centered vertically
+        root.add(parentTable).expand().center();
 
         // Set background image
         root.background(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
