@@ -111,6 +111,10 @@ public class Placemat extends Station implements Disposable {
                     return FoodType.cooked_meat_tomato;
                 } else if (containedItem == FoodType.cooked_fish) {
                     return FoodType.cooked_fish_tomato;
+                } else if (containedItem == FoodType.meat_meal) {
+                    return FoodType.meat_meal_tomato;
+                } else if (containedItem == FoodType.fish_meal) {
+                    return FoodType.fish_meal_tomato;
                 }
                 break;
             case chopped_onion:
@@ -118,6 +122,17 @@ public class Placemat extends Station implements Disposable {
                     return FoodType.cooked_meat_onion;
                 } else if (containedItem == FoodType.cooked_fish) {
                     return FoodType.cooked_fish_onion;
+                } else if (containedItem == FoodType.meat_meal) {
+                    return FoodType.meat_meal_onion;
+                } else if (containedItem == FoodType.fish_meal) {
+                    return FoodType.fish_meal_onion;
+                }
+                break;
+            case rice:
+                if (containedItem == FoodType.cooked_meat) {
+                    return FoodType.meat_meal;
+                } else if (containedItem == FoodType.cooked_fish) {
+                    return FoodType.fish_meal;
                 }
                 break;
         }
