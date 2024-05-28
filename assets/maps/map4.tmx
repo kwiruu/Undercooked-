@@ -102,7 +102,7 @@
  <objectgroup id="12" name="station_layer">
   <object id="21" gid="2147508973" x="384" y="352" width="32" height="96"/>
   <object id="22" name="station_chopping_board" type="station_chopping_board" gid="25326" x="384" y="192" width="64" height="32"/>
-  <object id="24" name="fish_source" gid="25312" x="544" y="384" width="96" height="96"/>
+  <object id="24" name="fish__tank_source" gid="25312" x="544" y="384" width="96" height="96"/>
   <object id="25" name="station_stove" type="station_stove" gid="25309" x="544" y="96" width="32" height="64"/>
   <object id="26" name="station_stove" type="station_stove" gid="25309" x="512" y="96" width="32" height="64"/>
   <object id="27" name="station_stove" type="station_stove" gid="25309" x="480" y="96" width="32" height="64"/>

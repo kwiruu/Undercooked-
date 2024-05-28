@@ -118,6 +118,13 @@ public class Placemat extends Station implements Disposable {
                     return FoodType.meat_meal_tomato;
                 } else if (containedItem == FoodType.fish_meal) {
                     return FoodType.fish_meal_tomato;
+                } else if (containedItem == FoodType.sushi) {
+                    return FoodType.sushi_tomato;
+                }
+                break;
+            case chopped_pickle:
+                if (containedItem == FoodType.sushi) {
+                    return FoodType.sushi_pickle;
                 }
                 break;
             case chopped_onion:
