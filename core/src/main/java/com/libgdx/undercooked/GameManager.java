@@ -55,7 +55,7 @@ public class GameManager implements Disposable {
             playerManager = new Player(world);
             playerManager.run();
             batch = playerManager.getBatch();
-            npcManager = new Npc(world);
+            //npcManager = new Npc(world);
             score = 0;
 
             // Load NPC texture

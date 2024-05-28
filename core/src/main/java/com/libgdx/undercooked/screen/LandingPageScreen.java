@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.AudioManager.MainMenuSound;
@@ -19,6 +21,7 @@ import database.HighScore;
 import database.SQLOperations;
 
 import java.util.List;
+
 import static database.SQLOperations.userSignIn;
 
 public class LandingPageScreen implements Screen {
@@ -30,12 +33,14 @@ public class LandingPageScreen implements Screen {
 
     private Table mapTable;
     static String username = null;
-    private Texture imgTexture; // Declare imgTexture here
+    private Texture imgTexture;
     private MainMenuSound mainMenuSound;
     private Sprite blockClouds1, blockClouds2;
 
     private Table userTable;
     private SelectBox<String> userSelectBox;
+    private TextField usernameField;
+    private Texture backgroundTexture;
 
     public LandingPageScreen(final Main context) {
         this.context = context;
@@ -44,7 +49,7 @@ public class LandingPageScreen implements Screen {
 
     @Override
     public void show() {
-        tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
+        tweenManager = new TweenManager();
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
         stage = new Stage(new ScreenViewport());
@@ -65,62 +70,53 @@ public class LandingPageScreen implements Screen {
         blockClouds1.setSize(blockCloud1Texture.getWidth() * 4, blockCloud1Texture.getHeight() * 4);
         blockClouds2.setSize(blockCloud2Texture.getWidth() * 4, blockCloud2Texture.getHeight() * 4);
 
-        // Set initial positions to the middle of the screen
         blockClouds1.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds1.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds1.getHeight() / 2);
         blockClouds2.setPosition(Gdx.graphics.getWidth() / 2f - blockClouds2.getWidth() / 2, Gdx.graphics.getHeight() / 2f - blockClouds2.getHeight() / 2);
 
-        // Tween to move to the outside
         Tween.to(blockClouds1, SpriteAccessor.POS_X, 3f)
-            .target(-blockClouds1.getWidth()) // Move to the left outside
+            .target(-blockClouds1.getWidth())
             .start(tweenManager);
         Tween.to(blockClouds2, SpriteAccessor.POS_X, 3f)
-            .target(Gdx.graphics.getWidth()) // Move to the right outside
+            .target(Gdx.graphics.getWidth())
             .start(tweenManager);
 
-        skin1 = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
-
-        Table root = new Table();
-        stage.addActor(root);
-        mapTable = new Table();
-        setupMapButtons(skin1);
-
-        float tableWidth = stage.getWidth() * 0.2f;
-        float tableHeight = stage.getHeight() * 0.15f;
-        root.setSize(tableWidth, tableHeight);
-        root.setPosition((stage.getWidth() - tableWidth) / 2f, 500);
-        root.defaults().colspan(3);
-        root.top().left();
-
-        // Adjust padding
-        root.pad(10);
-        root.add(mapTable).expand().colspan(2).pad(20);
-        root.row();
-        // Load the skin
         skin = new Skin(Gdx.files.internal("assets/metal-ui.json"));
+        backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
+        Table root = new Table();
+        root.setFillParent(true);
+        stage.addActor(root);
 
+        // User table setup
         userTable = new Table();
-        stage.addActor(userTable);
-        userTable.setFillParent(true); // Make sure userTable fills the stage
-        userTable.add(new Label("Select User:", skin)).pad(10).colspan(2);
-        userTable.row();
+        float padding = 20f;
 
+        userTable.add(new Label("Select User:", skin)).pad(padding).left();
         userSelectBox = new SelectBox<>(skin);
         loadUserSelectBoxData();
+        userTable.add(userSelectBox).width(200).pad(padding).left();
 
-        userTable.add(userSelectBox).width(200).pad(10).colspan(2);
-        userTable.row();
+        userTable.row().padTop(padding);
+
+        userTable.add(new Label("Or Enter Username:", skin)).pad(padding).left();
+        usernameField = new TextField("", skin);
+        userTable.add(usernameField).width(200).pad(padding).left();
+
+        userTable.row().padTop(padding);
 
         TextButton okButton = new TextButton("Sign In", skin);
-        userTable.add(okButton).width(100).height(45).pad(3).padTop(0);
+        userTable.add(okButton).width(100).height(45).pad(padding).left();
 
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                username = userSelectBox.getSelected();
+                username = usernameField.getText().trim();
+                if (username.isEmpty()) {
+                    username = userSelectBox.getSelected();
+                }
 
                 if (username == null || username.isEmpty()) {
                     Dialog warningDialog = new Dialog("Warning", skin);
-                    warningDialog.text("Please select a username.");
+                    warningDialog.text("Please select or enter a username.");
                     warningDialog.button("OK", true);
                     warningDialog.show(stage);
                     MainMenuSound.running = true;
@@ -133,6 +129,21 @@ public class LandingPageScreen implements Screen {
                 }
             }
         });
+
+        // Map table setup
+        mapTable = new Table();
+        setupMapButtons(skin);
+
+        // Create a parent table to hold both userTable and mapTable
+        Table parentTable = new Table();
+        parentTable.add(userTable).expandY().center().pad(20).left();
+        parentTable.add(mapTable).expandY().center().pad(20).right();
+
+        // Add parentTable to root, centered vertically
+        root.add(parentTable).expand().center();
+
+        // Set background image
+        root.background(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
     }
 
     @Override
@@ -142,6 +153,7 @@ public class LandingPageScreen implements Screen {
         tweenManager.update(delta);
 
         batch.begin();
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         blockClouds1.draw(batch);
         blockClouds2.draw(batch);
         batch.end();
@@ -165,7 +177,7 @@ public class LandingPageScreen implements Screen {
             });
 
             mapTable.add(highScoreButton).width(200F).pad(10);
-            mapTable.row();
+            mapTable.row(); // Align buttons in a column
         }
     }
 
@@ -188,8 +200,8 @@ public class LandingPageScreen implements Screen {
     }
 
     private void loadUserSelectBoxData() {
-        List<String> users = SQLOperations.getAccounts(); // Modify this method based on your database implementation
-        userSelectBox.setItems(users.toArray(new String[0])); // Set the items of the select box
+        List<String> users = SQLOperations.getAccounts();
+        userSelectBox.setItems(users.toArray(new String[0]));
     }
 
     @Override
@@ -198,23 +210,13 @@ public class LandingPageScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
-
-    public void setUsername(){
-        username = username;
-    }
+    public void hide() {}
 
     public static String getUsername() {
         return username;
@@ -227,4 +229,5 @@ public class LandingPageScreen implements Screen {
         batch.dispose();
         mainMenuSound.dispose();
     }
+
 }

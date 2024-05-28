@@ -65,7 +65,7 @@ public class Player implements Runnable {
                 Player.y = 14;
                 break;
             case "Map3":
-                Player.x = 13;
+                Player.x = 7;
                 Player.y = 13;
                 break;
             case "Map4":

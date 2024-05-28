@@ -21,7 +21,7 @@ public class Orders {
         switch (selectedMap) {
             case "Map1":
                 totalOrders = 5;
-                orderList.add(new FoodOrder(FoodType.rice, 5));
+                orderList.add(new FoodOrder(FoodType.meat_meal_onion, 5));
                 orderList.add(new FoodOrder(FoodType.chopped_pickle, 1));
                 orderList.add(new FoodOrder(FoodType.cooked_meat, 1));
                 orderList.add(new FoodOrder(FoodType.cooked_fish, 1));
@@ -119,7 +119,7 @@ public class Orders {
                     orderList.get(i).patience -= deltaTime;
                     if (orderList.get(i).patience < 0 && !orderList.get(i).patienceDone) {
                         orderList.get(i).patienceDone = true;
-                        entityList.addGhost();
+                        //entityList.addGhost();
                     }
                 }
             }
@@ -144,7 +144,7 @@ public class Orders {
     public static class FoodOrder {
         private final FoodType foodType;
         final float timer;
-        float patience = 15f;
+        float patience = 30f;
         boolean patienceDone = false;
         private boolean active = true;
 
