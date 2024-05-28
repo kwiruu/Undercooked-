@@ -310,11 +310,13 @@ public class MainMenuTransition implements Screen {
                     if(profileButtonPressed){
                         context.setScreen(ScreenType.LANDING);
                         profileButtonPressed=false;
+                        transitionStarted = false;
                     }
                     if(playButtonPressed){
                         username = userDefaultSignIn();
                         context.setScreen(ScreenType.SELECTMAP);
                         playButtonPressed=false;
+                        transitionStarted = false;
                     }
                 }
             })

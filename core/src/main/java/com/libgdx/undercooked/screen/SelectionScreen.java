@@ -45,6 +45,7 @@ public class SelectionScreen implements Screen {
     private static String selectedMap = "Map1";
 
     //This will handle the drag movement sa background
+    private Thread mapSoundThread;
     private SpriteBatch spriteBatch;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
@@ -58,17 +59,21 @@ public class SelectionScreen implements Screen {
     public SelectionScreen(final Main context) {
         this.context = context;
         startMapSound("assets/audio/spirited_away.wav");
-
     }
 
     private void startMapSound(String filePath) {
-        if (mapSound != null) {
-            mapSound.stop();
-        }
         mapSound = new MapSound(filePath);
-        Thread mapSoundThread = new Thread(mapSound);
-        mapRunning = true;
+        mapSoundThread = new Thread(mapSound);
         mapSoundThread.start();
+        mapRunning = true;
+    }
+
+    private void stopMapSound(){
+        if (mapSound != null) {
+            mapRunning = false;
+            mapSoundThread.interrupt();
+            MapSound.stop();
+        }
     }
 
     @Override
@@ -182,9 +187,9 @@ public class SelectionScreen implements Screen {
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            stopMapSound();
             Main.deleteScreen(ScreenType.SELECTMAP);
             context.setScreen(ScreenType.MAINMENUTRANSITION);
-            MainMenuSound.stop();
         }
     }
 
