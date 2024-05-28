@@ -25,7 +25,8 @@ public class SQLOperations {
             Statement stmt = conn.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + tblName +
                 " (userName VARCHAR(20) PRIMARY KEY NOT NULL DEFAULT 'user'," +
-                " level INT DEFAULT 1 CHECK (level >= 1 AND level <= 7));";
+                " level INT DEFAULT 1 CHECK (level >= 1 AND level <= 7)," +
+                " lastPlayed INT DEFAULT 0);";
             stmt.execute(sql);
             System.out.println("Database " + tblName + " created successfully");
         } catch (SQLException e) {
