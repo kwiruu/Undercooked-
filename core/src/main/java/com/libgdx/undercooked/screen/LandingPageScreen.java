@@ -1,6 +1,7 @@
 package com.libgdx.undercooked.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -144,19 +145,15 @@ public class LandingPageScreen implements Screen {
             }
         });
 
-        // Map table setup
         mapTable = new Table();
         setupMapButtons(skin);
-
-        // Create a parent table to hold both userTable and mapTable
         Table parentTable = new Table();
         parentTable.add(userTable).expandY().center().pad(20).left();
         parentTable.add(mapTable).expandY().center().pad(20).right();
 
-        // Add parentTable to root, centered vertically
         root.add(parentTable).expand().center();
 
-        // Set background image
+        root.background(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
     }
 
     @Override
@@ -171,6 +168,11 @@ public class LandingPageScreen implements Screen {
         blockClouds1.draw(batch);
         blockClouds2.draw(batch);
         batch.end();
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            Main.deleteScreen(ScreenType.LANDING);
+            context.setScreen(ScreenType.MAINMENUTRANSITION);
+        }
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -192,7 +194,7 @@ public class LandingPageScreen implements Screen {
             });
 
             mapTable.add(highScoreButton).width(200F).pad(10);
-            mapTable.row(); // Align buttons in a column
+            mapTable.row();
         }
     }
 
