@@ -112,6 +112,10 @@ public class SQLOperations {
                 }
             } else {
                 insertAccount(userName);
+                try (PreparedStatement resetStmt = conn.prepareStatement(
+                    "UPDATE tblAccount SET lastPlayed = FALSE")) {
+                    resetStmt.executeUpdate();
+                }
                 try (PreparedStatement updateStmt = conn.prepareStatement(
                     "UPDATE tblAccount SET lastPlayed = TRUE WHERE userName = ?")) {
                     updateStmt.setString(1, userName);
