@@ -1,9 +1,13 @@
-# Undercooked  <img src="https://github.com/kwiruu/Undercooked-/blob/4246caa39050929f434155a5627933bedb37e955/assets/screens/title_screen/undercooked_text.png">
+# Undercooked
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 Created for the CSIT228 Object Oriented Programming 2 Final Capstone Project.
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+
+<p align="center">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/4246caa39050929f434155a5627933bedb37e955/assets/screens/title_screen/undercooked_text.png" width="50%">
+</p>
 
 ## Platforms
 
