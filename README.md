@@ -7,7 +7,7 @@ This project was generated with a template including simple application launcher
 
 ## Platforms
 
--`intellij`: Main IDE to run the software.
+- `intellij`: Main IDE to run the software.
 - `core`: Main module with the application logic shared by all platforms.
 - `lwjgl3`: Primary desktop platform using LWJGL3.
 - `xampp`: For cross-platform server database for the informations.
