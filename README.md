@@ -1,4 +1,4 @@
-# Undercooked
+# Undercooked  <img src="https://github.com/kwiruu/Undercooked-/blob/4246caa39050929f434155a5627933bedb37e955/assets/screens/title_screen/undercooked_text.png">
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 Created for the CSIT228 Object Oriented Programming 2 Final Capstone Project.
