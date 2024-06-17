@@ -54,6 +54,19 @@ This project was generated with a template including simple application launcher
  </tr>
 </table>
 
+<p align="center">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map_selector.png" width="100%">
+</p>
+
+<p>
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/chop.gif" width="49%">
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/cook.gif" width="49%">
+</p>
+<p>
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/drop.gif" width="49%">
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/mix.gif" width="49%">
+</p>
+
 ## 
 ## Gradle
 
