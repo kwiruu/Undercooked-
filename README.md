@@ -93,6 +93,9 @@ Note that most tasks that are not specific to a single project can be run with `
 For example, `core:clean` removes `build` folder only from the `core` project.
 
 <p align="center">
+  
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Cebu_Institute_of_Technology_University_logo.png" width="10%">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/X-Png-164.png" width="10%">
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="30%">
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/X-Png-164.png" width="10%">
   
