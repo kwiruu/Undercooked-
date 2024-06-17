@@ -9,6 +9,11 @@ This project was generated with a template including simple application launcher
   <img src="https://github.com/kwiruu/Undercooked-/blob/4246caa39050929f434155a5627933bedb37e955/assets/screens/title_screen/undercooked_text.png" width="50%">
 </p>
 
+## Requirements
+- `IntelliJ` : Needed for running the base code.
+- `Xampp` : Main database handler (name the database `dbundercooked`).
+- `jdk-21` : This version is needed to run.
+
 ## Platforms
 
 - `intellij`: Main IDE to run the software.
