@@ -93,7 +93,6 @@ Note that most tasks that are not specific to a single project can be run with `
 For example, `core:clean` removes `build` folder only from the `core` project.
 
 <p align="center">
-  
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Cebu_Institute_of_Technology_University_logo.png" width="10%">
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/X-Png-164.png" width="10%">
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="30%">
@@ -101,3 +100,11 @@ For example, `core:clean` removes `build` folder only from the `core` project.
   
   <img src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/518488/fb7373a2df024eaa8a6b0ff7913ea600/eyJoIjoxMDgwLCJ3IjoxMDgwfQ%3D%3D/8.png?token-time=1719878400&token-hash=W-zLveNjqo29v06WPnP7rBP4KdaiCvy4cNGgJhAxW4c%3D" width="11%">
 </p>
+
+## License & Contributions 
+- Huge thanks to <a href="https://limezu.itch.io/">LimeZu</a> with his `Modern Exteriors`, `Modern Interiors`, `Modern Ui Assets`. Most of the sprites in this project was created by `LimeZu` which played a huge role in contributing in this repository. When cloning in this repository, you automatically agree that your contribution cannot be distributed under LimeZu. You will not be able to revoke this right once your distribution has been distributed.
+
+## Security
+- Distributing a bundled assets of this repository has security implications, just like editing and altering sprites and using the same base code of this repository. Make sure you understand the implications before deciding to clone this repository.
+  
+
