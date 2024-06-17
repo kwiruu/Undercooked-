@@ -96,5 +96,5 @@ For example, `core:clean` removes `build` folder only from the `core` project.
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="30%">
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/X-Png-164.png" width="10%">
   
-  <img src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/518488/fb7373a2df024eaa8a6b0ff7913ea600/eyJoIjoxMDgwLCJ3IjoxMDgwfQ%3D%3D/8.png?token-time=1719878400&token-hash=W-zLveNjqo29v06WPnP7rBP4KdaiCvy4cNGgJhAxW4c%3D" width="15%">
+  <img src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/518488/fb7373a2df024eaa8a6b0ff7913ea600/eyJoIjoxMDgwLCJ3IjoxMDgwfQ%3D%3D/8.png?token-time=1719878400&token-hash=W-zLveNjqo29v06WPnP7rBP4KdaiCvy4cNGgJhAxW4c%3D" width="11%">
 </p>
