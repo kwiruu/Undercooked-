@@ -6,7 +6,7 @@ Created for the CSIT228 Object Oriented Programming 2 Final Capstone Project.
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
 <p align="center">
-  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Title%20Screen.png" width="20%" style="margin-right: 100px;">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Title%20Screen.png" width="20%">
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="30%">
 </p>
 
