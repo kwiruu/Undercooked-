@@ -21,9 +21,6 @@ This project was generated with a template including simple application launcher
 - `Benitez, Mars`
 - `Cabili, Keiru Vent`
 - `So, Alec Giuseppe`
-<p align="center">
-  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="50%">
-</p>
       
 ## Requirements
 - `IntelliJ` : Needed for running the base code.
@@ -63,10 +60,10 @@ This project was generated with a template including simple application launcher
 
 <p>
 <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/chop.gif" width="49%">
-<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/cook.gif" width="49%">
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Chef1Atlas.png" width="49%">
 </p>
 <p>
-<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/drop.gif" width="49%">
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/info_img.png" width="49%">
 <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/mix.gif" width="49%">
 </p>
 
@@ -95,3 +92,8 @@ Useful Gradle tasks and flags:
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
 
+<p align="center">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="30%">
+  
+  <img src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/518488/fb7373a2df024eaa8a6b0ff7913ea600/eyJoIjoxMDgwLCJ3IjoxMDgwfQ%3D%3D/8.png?token-time=1719878400&token-hash=W-zLveNjqo29v06WPnP7rBP4KdaiCvy4cNGgJhAxW4c%3D" width="10%">
+</p>
