@@ -25,14 +25,6 @@ This project was generated with a template including simple application launcher
 - `lwjgl3`: Primary desktop platform using LWJGL3.
 - `xampp`: For cross-platform server database for the informations.
 
-## Assets
-
-- `Modern Exteriors`: By LimeZu
-- `Modern Interiors`: By LimeZu
-- `Modern User Interfact`: By LimeZu
-- `8-bit Audio` : Free royalty audio from youtube.
-
-
 ## 
 ## Gradle
 
@@ -54,7 +46,7 @@ Useful Gradle tasks and flags:
 - `lwjgl3:run`: starts the application.
 - `test`: runs unit tests (if any).
 - `java connector`: needed to communicate to the xampp.
-- 
+
    </td>
    <td>
      <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map1.gif">
