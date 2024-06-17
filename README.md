@@ -13,17 +13,38 @@ This project was generated with a template including simple application launcher
  <tr>
     <td width="50%">
       
+## About
+- We created this project as the final requirements for the CSIT228 `Object Oriented Programming 2` Final Project in `Cebu Institute of Technology - University` located in Cebu City, Philippines. Consisted of 4 Contributors guided by Proffessor `Jay Vince Serato`.
+      
 ## Requirements
 - `IntelliJ` : Needed for running the base code.
 - `Xampp` : Main database handler (name the database `dbundercooked`).
 - `jdk-21` : This version is needed to run.
 
 ## Platforms
-
 - `intellij`: Main IDE to run the software.
 - `core`: Main module with the application logic shared by all platforms.
 - `lwjgl3`: Primary desktop platform using LWJGL3.
 - `xampp`: For cross-platform server database for the informations.
+
+## Assets
+- `Modern Exteriors`: By LimeZu
+- `Modern Interiors`: By LimeZu
+- `Modern User Interface`: By LimeZu
+- `8-bit Audio` : Free royalty audio from youtube.
+
+   </td>
+   <td>
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map1.gif">
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map2.gif">
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map3.gif">
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map4.gif"> 
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map5.gif">
+   </td>
+ </tr>
+ <tr>
+ </tr>
+</table>
 
 ## 
 ## Gradle
@@ -46,20 +67,6 @@ Useful Gradle tasks and flags:
 - `lwjgl3:run`: starts the application.
 - `test`: runs unit tests (if any).
 - `java connector`: needed to communicate to the xampp.
-
-   </td>
-   <td>
-     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map1.gif">
-     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map2.gif">
-     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map3.gif">
-     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map4.gif"> 
-     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map5.gif">
-   </td>
- </tr>
- <tr>
- </tr>
-</table>
-
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
