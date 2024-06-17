@@ -9,7 +9,7 @@ This project was generated with a template including simple application launcher
   <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Title%20Screen.png" width="30%">
 </p>
 
-<table border="0">
+<table border="1">
  <tr>
     <td width="50%">
       
@@ -55,7 +55,7 @@ This project was generated with a template including simple application launcher
 </table>
 
 <p align="center">
-  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map_selector.png" width="100%">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map_selector.png" width="60%">
 </p>
 
 <p>
@@ -91,3 +91,8 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+
+<p align="center">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="60%">
+</p>
