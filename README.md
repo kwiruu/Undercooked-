@@ -64,7 +64,7 @@ This project was generated with a template including simple application launcher
 </p>
 <p>
 <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/info_img.png" width="49%">
-<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/mix.gif" width="49%">
+<img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Screenshot%202024-06-17%20173938.png" width="49%">
 </p>
 
 ## 
