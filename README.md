@@ -6,9 +6,13 @@ Created for the CSIT228 Object Oriented Programming 2 Final Capstone Project.
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
 <p align="center">
-  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="30%">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/Title%20Screen.png" width="30%">
 </p>
 
+<table border="0">
+ <tr>
+    <td width="50%">
+      
 ## Requirements
 - `IntelliJ` : Needed for running the base code.
 - `Xampp` : Main database handler (name the database `dbundercooked`).
@@ -52,3 +56,15 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+   </td>
+   <td>
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map1.gif">
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map2.gif">
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map3.gif">
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map4.gif"> 
+     <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/map5.gif">
+   </td>
+ </tr>
+ <tr>
+ </tr>
+</table>
