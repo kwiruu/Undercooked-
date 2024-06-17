@@ -15,6 +15,12 @@ This project was generated with a template including simple application launcher
       
 ## About
 - We created this project as the final requirements for the CSIT228 `Object Oriented Programming 2` Final Project in `Cebu Institute of Technology - University` located in Cebu City, Philippines. Consisted of 4 Contributors guided by Proffessor `Jay Vince Serato`.
+
+## Contributors
+- `Bolante, Val Mykel Ceven`
+- `Benitez, Mars`
+- `Cabili, Keiru Vent`
+- `So, Alec Giuseppe`
       
 ## Requirements
 - `IntelliJ` : Needed for running the base code.
