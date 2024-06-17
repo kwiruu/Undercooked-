@@ -14,13 +14,16 @@ This project was generated with a template including simple application launcher
     <td width="50%">
       
 ## About
-- We created this project as the final requirements for the CSIT228 `Object Oriented Programming 2` Final Project in `Cebu Institute of Technology - University` located in Cebu City, Philippines. Consisted of 4 Contributors guided by Proffessor `Jay Vince Serato`.
+- We created this project as the final requirements for the CSIT228 `Object Oriented Programming 2` Final Project in `Cebu Institute of Technology - University` located in Cebu City, Philippines. Consisted of 4 Contributors guided by Professor `Jay Vince Serato`.
 
 ## Contributors
 - `Bolante, Val Mykel Ceven`
 - `Benitez, Mars`
 - `Cabili, Keiru Vent`
 - `So, Alec Giuseppe`
+<p align="center">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="50%">
+</p>
       
 ## Requirements
 - `IntelliJ` : Needed for running the base code.
@@ -92,7 +95,3 @@ Useful Gradle tasks and flags:
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
 
-
-<p align="center">
-  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="50%">
-</p>
