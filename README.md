@@ -94,5 +94,5 @@ For example, `core:clean` removes `build` folder only from the `core` project.
 
 
 <p align="center">
-  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="60%">
+  <img src="https://github.com/kwiruu/Undercooked-/blob/master/assets/github-icons/splashscreen-export.png" width="50%">
 </p>
