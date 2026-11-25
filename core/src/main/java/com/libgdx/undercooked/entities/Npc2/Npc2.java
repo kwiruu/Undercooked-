@@ -13,7 +13,7 @@ public abstract class Npc2 {
     private final int width;
     private final int height;
     SpriteBatch batch;
-    protected static TextureAtlas iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
+    protected static TextureAtlas iconAtlas = new TextureAtlas("floating_icons/float_icons.atlas");
     protected Array<TextureAtlas.AtlasRegion> iconFrames = new Array<>();
     boolean isActive = true;
     int spriteCtr = 0;

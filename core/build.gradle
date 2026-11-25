@@ -1,24 +1,10 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
 
-repositories {
-  mavenCentral()
-  maven {
-    url 'https://repo.mysql.com/'
-  }
-}
-
 dependencies {
+  // Only libraries that are pure Java (or have a web version) belong here, because the core
+  // module is compiled for both the desktop (lwjgl3) and the browser (teavm).
   api "com.badlogicgames.ashley:ashley:$ashleyVersion"
-  api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
-  api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
-  api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-  api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-  api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
-  implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-  implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-  implementation "mysql:mysql-connector-java:8.0.27"
-  implementation "com.badlogicgames.gdx:gdx-freetype:1.9.12"
 }

@@ -32,7 +32,7 @@ import database.UserInfo;
 
 import static com.libgdx.undercooked.AudioManager.MapSound.mapRunning;
 import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
-import static database.SQLOperations.getInfo;
+import static database.GameData.getInfo;
 
 public class SelectionScreen implements Screen {
 
@@ -44,8 +44,6 @@ public class SelectionScreen implements Screen {
     private MapSound mapSound;
     private static String selectedMap = "Map1";
 
-    //This will handle the drag movement sa background
-    private Thread mapSoundThread;
     private SpriteBatch spriteBatch;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
@@ -58,20 +56,18 @@ public class SelectionScreen implements Screen {
 
     public SelectionScreen(final Main context) {
         this.context = context;
-        startMapSound("assets/audio/spirited_away.wav");
+        startMapSound("audio/spirited_away.mp3");
     }
 
     private void startMapSound(String filePath) {
-        mapSound = new MapSound(filePath);
-        mapSoundThread = new Thread(mapSound);
-        mapSoundThread.start();
         mapRunning = true;
+        mapSound = new MapSound(filePath);
+        mapSound.run();
     }
 
     private void stopMapSound(){
         if (mapSound != null) {
             mapRunning = false;
-            mapSoundThread.interrupt();
             MapSound.stop();
         }
     }
@@ -79,14 +75,14 @@ public class SelectionScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+        skin = new Skin(Gdx.files.internal("ui/ui-skin.json"));
 
         // animation my friend
         tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
-        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
-        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("screens/title_screen/block_clouds2.png"));
 
         blockClouds1 = new Sprite(blockCloud1Texture);
         blockClouds2 = new Sprite(blockCloud2Texture);
@@ -111,15 +107,15 @@ public class SelectionScreen implements Screen {
         // end animation!
 
 
-        backgroundTexture = new Texture(Gdx.files.internal("assets/tilesets/map_selector.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("tilesets/map_selector.png"));
         spriteBatch = new SpriteBatch();
 
         //For the Unlocked Map Buttons
-        map1Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map1_unlocked.png"));
-        map2Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map2_unlocked.png"));
-        map3Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map3_unlocked.png"));
-        map4Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map4_unlocked.png"));
-        map5Texture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/map5_unlocked.png"));
+        map1Texture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/map1_unlocked.png"));
+        map2Texture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/map2_unlocked.png"));
+        map3Texture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/map3_unlocked.png"));
+        map4Texture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/map4_unlocked.png"));
+        map5Texture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/map5_unlocked.png"));
 
 
         UserInfo userInfo = getInfo(getUsername());
@@ -220,9 +216,9 @@ public class SelectionScreen implements Screen {
         Drawable normalDrawable;
 
         // Load hover and clicked textures
-        Texture hoverTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_hovered.png"));
-        Texture clickedTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_clicked.png"));
-        Texture unlockedTexture = new Texture(Gdx.files.internal("assets/tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_locked.png"));
+        Texture hoverTexture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_hovered.png"));
+        Texture clickedTexture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_clicked.png"));
+        Texture unlockedTexture = new Texture(Gdx.files.internal("tilesets/mapsButtons - Copy/" + mapName.toLowerCase() + "_locked.png"));
         Drawable hoverDrawable = new TextureRegionDrawable(hoverTexture);
         Drawable clickedDrawable = new TextureRegionDrawable(clickedTexture);
 
@@ -251,7 +247,7 @@ public class SelectionScreen implements Screen {
                     setSelectedMap(mapName);
                     mapId = mapNumber;
                     context.setScreen(ScreenType.GAME);
-                    startMapSound("assets/audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.wav");
+                    startMapSound("audio/" + mapName.replace(" ", "").toLowerCase() + "_sound.mp3");
                 }
 
                 @Override

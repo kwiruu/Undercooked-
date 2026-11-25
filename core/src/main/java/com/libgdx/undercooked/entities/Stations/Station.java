@@ -22,7 +22,7 @@ public abstract class Station {
     protected float frameDuration;
     protected float stateTime; // Time elapsed since the start of the animation
     SpriteBatch batch;
-    protected static TextureAtlas floating_iconAtlas = new TextureAtlas("assets/floating_icons/float_icons.atlas");
+    protected static TextureAtlas floating_iconAtlas = new TextureAtlas("floating_icons/float_icons.atlas");
     protected Array<TextureAtlas.AtlasRegion>[] floatingIconFrames = new Array[3];
     @SuppressWarnings("unchecked")
     public Station(World world, float x, float y, int width, int height, SpriteBatch batch) {

@@ -72,5 +72,7 @@ public class GameSound {
         errorSound.dispose();
         slicingSound.dispose();
         bellSound.dispose();
+        poofSound.dispose();
+        walkingSound.dispose();
     }
 }

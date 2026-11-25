@@ -41,8 +41,8 @@ public class Player implements Runnable {
 
     @Override
     public void run() {
-        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("assets/sprites/Chef1Atlas.atlas"));
-        TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("assets/fx_sprites/fxAtlas.atlas"));
+        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("sprites/Chef1Atlas.atlas"));
+        TextureAtlas smokeAtlas = new TextureAtlas(Gdx.files.internal("fx_sprites/fxAtlas.atlas"));
         playerAnimations = new PlayerAnimations(textureAtlas, smokeAtlas);
         playerControls = new PlayerControls(this,playerAnimations);
         setLocation();
@@ -173,7 +173,7 @@ public class Player implements Runnable {
 
         // igo rani mu animate sa up and down
         if (heldItem != null) {
-            Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + heldItem + ".png"));
+            Texture texture = new Texture(Gdx.files.internal("food_sprites/foods/" + heldItem + ".png"));
             if (!texture.getTextureData().isPrepared()) {
                 texture.getTextureData().prepare();
             }

@@ -3,7 +3,7 @@ package com.libgdx.undercooked.AudioManager;
 public class SlicingSound extends BaseSound {
 
     public SlicingSound() {
-        super("assets/audio/choppingSound.wav");
+        super("audio/choppingSound.mp3");
     }
 
     @Override

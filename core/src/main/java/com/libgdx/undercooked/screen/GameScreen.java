@@ -22,7 +22,7 @@ import static com.libgdx.undercooked.GameManager.timesUp;
 import static com.libgdx.undercooked.screen.LandingPageScreen.getUsername;
 import static com.libgdx.undercooked.screen.SelectionScreen.mapId;
 import static com.libgdx.undercooked.utils.Constants.PPM;
-import static database.SQLOperations.*;
+import static database.GameData.*;
 
 public class GameScreen extends ScreenAdapter {
     private final Main context;

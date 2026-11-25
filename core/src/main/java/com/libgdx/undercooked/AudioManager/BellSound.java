@@ -3,7 +3,7 @@ package com.libgdx.undercooked.AudioManager;
 public class BellSound extends BaseSound {
 
     public BellSound() {
-        super("assets/audio/bellSound.wav");
+        super("audio/bellSound.mp3");
     }
 
     @Override

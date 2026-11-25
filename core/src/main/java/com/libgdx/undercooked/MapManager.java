@@ -25,17 +25,17 @@ public class MapManager {
 
         String selectedMap = getSelectedMap();
         System.out.println(selectedMap);
-        map = new TmxMapLoader().load("assets/maps/" + selectedMap + ".tmx");
+        map = new TmxMapLoader().load("maps/" + selectedMap + ".tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("collision_layer").getObjects());
 
         test_map_textures = new Texture[]{
-            new Texture("assets/maps/" + selectedMap + "/blackwall.png"),
-            new Texture("assets/maps/" + selectedMap + "/wall.png"),
-            new Texture("assets/maps/" + selectedMap + "/furnitures.png"),
-            new Texture("assets/maps/" + selectedMap + "/on_top.png"),
-            new Texture("assets/maps/" + selectedMap + "/behind_player.png"),
+            new Texture("maps/" + selectedMap + "/blackwall.png"),
+            new Texture("maps/" + selectedMap + "/wall.png"),
+            new Texture("maps/" + selectedMap + "/furnitures.png"),
+            new Texture("maps/" + selectedMap + "/on_top.png"),
+            new Texture("maps/" + selectedMap + "/behind_player.png"),
         };
 
     }

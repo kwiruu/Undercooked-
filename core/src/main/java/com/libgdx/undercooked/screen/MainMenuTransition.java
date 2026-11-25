@@ -15,10 +15,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.libgdx.undercooked.Main;
-import database.SQLOperations;
 
 import static com.libgdx.undercooked.screen.LandingPageScreen.username;
-import static database.SQLOperations.userDefaultSignIn;
+import static database.GameData.userDefaultSignIn;
 
 public class MainMenuTransition implements Screen {
     private SpriteBatch batch;
@@ -44,10 +43,6 @@ public class MainMenuTransition implements Screen {
     @Override
     public void show() {
 
-        SQLOperations.createDatabase();
-        SQLOperations.createTableAccount("tblAccount");
-        SQLOperations.createTableMap();
-        SQLOperations.createTableHighScore();
 
 
         batch = new SpriteBatch();
@@ -55,25 +50,25 @@ public class MainMenuTransition implements Screen {
         Tween.registerAccessor(Sprite.class, new SpriteAccessor()); // This should be after tweenManager initialization
 
         // Load textures
-        Texture bgTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
-        Texture cloudTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/clouds.png"));
-        Texture textTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/undercooked_text.png"));
-        Texture cloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/clouds1.png"));
-        Texture cloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/clouds2.png"));
-        Texture pressTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/press_text.png"));
-        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
-        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
+        Texture bgTexture = new Texture(Gdx.files.internal("screens/title_screen/bg.png"));
+        Texture cloudTexture = new Texture(Gdx.files.internal("screens/title_screen/clouds.png"));
+        Texture textTexture = new Texture(Gdx.files.internal("screens/title_screen/undercooked_text.png"));
+        Texture cloud1Texture = new Texture(Gdx.files.internal("screens/title_screen/clouds1.png"));
+        Texture cloud2Texture = new Texture(Gdx.files.internal("screens/title_screen/clouds2.png"));
+        Texture pressTexture = new Texture(Gdx.files.internal("screens/title_screen/press_text.png"));
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("screens/title_screen/block_clouds2.png"));
 
 
         // Load button textures
-        playTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/play.png"));
-        playClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/play_clicked.png"));
-        settingsTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/settings.png"));
-        settingsClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/settings_clicked.png"));
-        exitTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/exit.png"));
-        exitClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/exit_clicked.png"));
-        profileTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/profiles.png"));
-        profileClickedTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/profiles_clicked.png"));
+        playTexture = new Texture(Gdx.files.internal("screens/title_screen/play.png"));
+        playClickedTexture = new Texture(Gdx.files.internal("screens/title_screen/play_clicked.png"));
+        settingsTexture = new Texture(Gdx.files.internal("screens/title_screen/settings.png"));
+        settingsClickedTexture = new Texture(Gdx.files.internal("screens/title_screen/settings_clicked.png"));
+        exitTexture = new Texture(Gdx.files.internal("screens/title_screen/exit.png"));
+        exitClickedTexture = new Texture(Gdx.files.internal("screens/title_screen/exit_clicked.png"));
+        profileTexture = new Texture(Gdx.files.internal("screens/title_screen/profiles.png"));
+        profileClickedTexture = new Texture(Gdx.files.internal("screens/title_screen/profiles_clicked.png"));
 
 
 
@@ -314,7 +309,8 @@ public class MainMenuTransition implements Screen {
                     }
                     if(playButtonPressed){
                         username = userDefaultSignIn();
-                        context.setScreen(ScreenType.SELECTMAP);
+                        // First time on this device: there is no profile yet, so pick or create one first.
+                        context.setScreen(username.isEmpty() ? ScreenType.LANDING : ScreenType.SELECTMAP);
                         playButtonPressed=false;
                         transitionStarted = false;
                     }

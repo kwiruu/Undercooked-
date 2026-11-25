@@ -1,0 +1,24 @@
+// Browser version of the game. TeaVM turns the compiled Java into JavaScript + WebGL.
+//   ./gradlew :teavm:build   -> writes the playable site to teavm/build/dist/webapp
+// Serve that folder with any static web server to play locally, e.g.  npx serve teavm/build/dist/webapp
+
+eclipse.project.name = appName + '-teavm'
+java.sourceCompatibility = 11
+java.targetCompatibility = 11
+
+dependencies {
+  implementation project(':core')
+  implementation "com.github.xpenatan.gdx-teavm:backend-teavm:$gdxTeaVMVersion"
+  // Pure-Java Box2D. The TeaVM builder swaps it in for the native desktop Box2D automatically.
+  implementation "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion"
+  implementation "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
+}
+
+tasks.register('buildJavaScript', JavaExec) {
+  dependsOn classes
+  description = 'Transpile the game to JavaScript with TeaVM'
+  mainClass.set('com.libgdx.undercooked.teavm.TeaVMBuilder')
+  classpath = sourceSets.main.runtimeClasspath
+  workingDir = projectDir
+}
+build.dependsOn buildJavaScript

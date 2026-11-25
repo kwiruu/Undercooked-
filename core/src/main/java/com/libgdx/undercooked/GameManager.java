@@ -59,7 +59,7 @@ public class GameManager implements Disposable {
             score = 0;
 
             // Load NPC texture
-            npcTexture = new Texture(Gdx.files.internal("assets/sprites/Chef2/idle_down_01.png"));
+            npcTexture = new Texture(Gdx.files.internal("sprites/Chef2/idle_down_01.png"));
             Sprite npcSprite = new Sprite(npcTexture);
             //createAndAddNpc(new Vector2(96, 72), npcSprite);
             System.out.println("Created ");

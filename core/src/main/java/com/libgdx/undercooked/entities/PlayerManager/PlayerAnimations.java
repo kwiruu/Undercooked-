@@ -56,7 +56,7 @@ public class PlayerAnimations extends Animations {
         return smokeAnimation;
     }
     private void initInvalidIcon() {
-        invalidIcon = new Texture(Gdx.files.internal("assets/floating_icons/null.png"));
+        invalidIcon = new Texture(Gdx.files.internal("floating_icons/null.png"));
     }
 
     public Texture getInvalidIcon() {

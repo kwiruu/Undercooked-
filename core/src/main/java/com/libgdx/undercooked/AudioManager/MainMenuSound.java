@@ -1,40 +1,30 @@
 package com.libgdx.undercooked.AudioManager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 
-public class MainMenuSound implements Runnable {
-    private static Sound startSound;
+/** Main menu theme. Loaded only when it is actually played, without a background thread. */
+public class MainMenuSound {
+    private static Music music;
     public static boolean running = false;
     private float volume = .5f;
 
-    public MainMenuSound() {
-        startSound = Gdx.audio.newSound(Gdx.files.internal("assets/audio/mainTrack.mp3"));
-    }
-
-    @Override
     public void run() {
-        if(running){
-            startSound.play(volume);
+        if (running) {
+            if (music == null) {
+                music = Gdx.audio.newMusic(Gdx.files.internal("audio/mainTrack.mp3"));
+                music.setLooping(true);
+            }
+            music.setVolume(volume);
+            music.play();
         }
     }
 
     public void setVolume(float volume) {
         this.volume = volume;
-    }
-
-    private long startSoundDuration() {
-        long startTime = System.currentTimeMillis();
-        startSound.play(volume);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (music != null) {
+            music.setVolume(volume);
         }
-        // startSound.stop();
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        return duration;
     }
 
     public static void stop() {
@@ -42,9 +32,11 @@ public class MainMenuSound implements Runnable {
         dispose();
     }
 
-    public static void dispose(){
-        if (startSound != null) {
-            startSound.dispose();
+    public static void dispose() {
+        if (music != null) {
+            music.stop();
+            music.dispose();
+            music = null;
         }
     }
 }
