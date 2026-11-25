@@ -65,8 +65,8 @@ public class TeaVMBuilder {
 
         TeaVMTool tool = TeaBuilder.config(config);
         tool.setMainClass(TeaVMLauncher.class.getName());
-        tool.setOptimizationLevel(TeaVMOptimizationLevel.SIMPLE);
-        tool.setObfuscated(false);
+        tool.setOptimizationLevel(TeaVMOptimizationLevel.ADVANCED);
+        tool.setObfuscated(true);
         if (!TeaBuilder.build(tool)) {
             throw new IllegalStateException("TeaVM build failed, see the errors above.");
         }

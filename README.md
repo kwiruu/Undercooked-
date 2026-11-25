@@ -3,7 +3,7 @@
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 Created for the CSIT228 Object Oriented Programming 2 Final Capstone Project.
 
-### ▶ [Play it in your browser](https://kwiruu.github.io/Undercooked-/)
+### ▶ [Play it in your browser](https://undercooked-nshf.onrender.com/)
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 

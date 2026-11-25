@@ -27,6 +27,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Build desktop jar and web version
+        # For readable errors in the browser console while debugging, set setObfuscated(false)
+        # and TeaVMOptimizationLevel.SIMPLE in teavm/.../TeaVMBuilder.java.
         run: |
           chmod +x gradlew
           ./gradlew :lwjgl3:jar :teavm:build --stacktrace
