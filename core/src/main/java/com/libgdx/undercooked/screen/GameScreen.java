@@ -51,6 +51,13 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
+        // In the browser, loading the map can pause show() while a file is fetched, and frames keep
+        // coming in the meantime. Draw a blank frame until the map has finished loading.
+        if (gameManager == null || gameUI == null) {
+            Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            return;
+        }
         update(deltaTime);
         Gdx.gl.glClearColor(58 / 255f, 58 / 255f, 80 / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
