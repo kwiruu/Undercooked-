@@ -96,7 +96,7 @@ When running from IntelliJ, set the run configuration's working directory to the
 
 ## Web version and leaderboard
 
-- Every push to `master` builds the game with GitHub Actions (`.github/workflows/web.yml`) and publishes it to the `gh-pages` branch, which GitHub Pages serves at https://kwiruu.github.io/Undercooked-/.
+- Every push to `master` builds the game with GitHub Actions (`.github/workflows/web.yml`) and publishes the finished site to the `web-build` branch. Render serves that branch as a static site and redeploys whenever it changes.
 - The browser downloads all assets before the game starts, so keep `assets/` lean. Audio is MP3, and editor files (`.aseprite`, `.tpproj`, `github-icons/`) are left out of the web build.
 - Saved data (`core/src/main/java/database/GameData.java`) uses libGDX `Preferences`: browser storage on the web, a file in your user folder on desktop.
 - The World Hall of Fame (`database/Leaderboard.java`) calls two Supabase database functions over HTTP: `undercooked_submit_score` (keeps each player's best per map and rejects impossible scores) and `undercooked_top_scores`. The key in that file is Supabase's public "publishable" key; on its own it can only call those two functions.

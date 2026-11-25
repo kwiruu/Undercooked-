@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # lets the deploy step push the built site to the gh-pages branch
+  contents: write   # lets the publish step push the built site to the web-build branch
 
 concurrency:
   group: web-${{ github.ref }}
@@ -41,10 +41,13 @@ jobs:
           name: undercooked-web
           path: teavm/build/dist/webapp
 
-      - name: Deploy to GitHub Pages (gh-pages branch)
+      # Render serves the web-build branch as a static site and redeploys whenever it changes.
+      # (Render's static site builder has no Java, so the game is built here instead.)
+      - name: Publish the built site to the web-build branch
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: teavm/build/dist/webapp
+          publish_branch: web-build
           force_orphan: true
