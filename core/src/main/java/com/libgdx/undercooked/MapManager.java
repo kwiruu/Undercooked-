@@ -23,7 +23,8 @@ public class MapManager {
 
     public MapManager(World world, SpriteBatch batch, Npc npcManager) {  // Add NPC manager to constructor
 
-        String selectedMap = getSelectedMap();
+        // Asset file names are lowercase; web servers treat "Map1" and "map1" as different files.
+        String selectedMap = getSelectedMap().toLowerCase();
         System.out.println(selectedMap);
         map = new TmxMapLoader().load("maps/" + selectedMap + ".tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
