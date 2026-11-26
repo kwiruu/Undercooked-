@@ -1,47 +1,37 @@
 package com.libgdx.undercooked.AudioManager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 
-public class MapSound implements Runnable {
-    private static Sound startSound;
+/**
+ * Looping background music for the map selector and each map. Uses {@link Music}, which streams the
+ * track instead of decoding all of it into memory, and runs without a background thread so it works
+ * in the browser.
+ */
+public class MapSound {
+    private static Music music;
     public static boolean mapRunning = false;
     private float volume = 0.3f;
-    private long soundId;
 
     public MapSound(String songpath) {
-        startSound = Gdx.audio.newSound(Gdx.files.internal(songpath));
+        dispose();
+        music = Gdx.audio.newMusic(Gdx.files.internal(songpath));
+        music.setLooping(true);
+        music.setVolume(volume);
     }
 
-    @Override
+    /** Starts the track if music is currently enabled. */
     public void run() {
-        if (mapRunning) {
-            if (startSound != null) {
-                soundId = startSound.loop(volume);
-                setVolume(volume);
-            }
+        if (mapRunning && music != null && !music.isPlaying()) {
+            music.play();
         }
     }
 
     public void setVolume(float volume) {
         this.volume = volume;
-        if (startSound != null && mapRunning) {
-            startSound.setVolume(soundId, volume);
+        if (music != null) {
+            music.setVolume(volume);
         }
-    }
-
-    private long startSoundDuration() {
-        if (startSound == null) return 0;
-        long startTime = System.currentTimeMillis();
-        soundId = startSound.play(volume);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        return duration;
     }
 
     public static void stop() {
@@ -51,8 +41,10 @@ public class MapSound implements Runnable {
     }
 
     public static void dispose() {
-        if (startSound != null) {
-            startSound.dispose();
+        if (music != null) {
+            music.stop();
+            music.dispose();
+            music = null;
         }
     }
 }

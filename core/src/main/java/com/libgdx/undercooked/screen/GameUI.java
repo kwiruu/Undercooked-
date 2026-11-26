@@ -43,7 +43,7 @@ public class GameUI implements UIUpdater {
     public GameUI(final Main context) {
         this.context = context;
         this.stage = new Stage(new ScreenViewport());
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("assets/ui/buttonsAtlas.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/buttonsAtlas.atlas"));
         buttonRegions = new TextureRegion[4];
         buttonRegions[0] = atlas.findRegion("pause_button", 0); // Unclicked region
         buttonRegions[1] = atlas.findRegion("pause_button", 1); // Clicked region
@@ -51,7 +51,7 @@ public class GameUI implements UIUpdater {
         buttonRegions[3] = atlas.findRegion("info_button", 1); // Clicked region
 
         // Load the info image
-        Texture infoTexture = new Texture(Gdx.files.internal("assets/ui/info_img.png"));
+        Texture infoTexture = new Texture(Gdx.files.internal("ui/info_img.png"));
         infoImage = new Image(infoTexture);
 
         // Create the container to center the info image
@@ -95,7 +95,7 @@ public class GameUI implements UIUpdater {
             }
         });
 
-        Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+        Skin skin = new Skin(Gdx.files.internal("ui/ui-skin.json"));
 
         rootTable = new Table();
         rootTable.setFillParent(true);
@@ -104,14 +104,14 @@ public class GameUI implements UIUpdater {
 
         infoTable = new Table();
         infoTable.setHeight(32);
-        Texture topBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/top_table_background.png"));
+        Texture topBackgroundTexture = new Texture(Gdx.files.internal("ui/top_table_background.png"));
         TextureRegionDrawable topBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(topBackgroundTexture));
         infoTable.setBackground(topBackgroundDrawable);
 
         rootTable.add(infoTable).pad(0).align(Align.topRight);
 
         orderTable = new Table();
-        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/ui/table_background.png"));
+        Texture backgroundTexture = new Texture(Gdx.files.internal("ui/table_background.png"));
         TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
         orderTable.setBackground(backgroundDrawable);
         orderTable.pad(2);
@@ -122,7 +122,7 @@ public class GameUI implements UIUpdater {
         rootTable.row();
 
         belowTable = new Table();
-        Texture belowBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/below_table_background.png"));
+        Texture belowBackgroundTexture = new Texture(Gdx.files.internal("ui/below_table_background.png"));
         TextureRegionDrawable belowBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(belowBackgroundTexture));
         belowTable.setBackground(belowBackgroundDrawable);
         rootTable.add(belowTable).pad(0).expand().align(Align.topRight);
@@ -154,12 +154,15 @@ public class GameUI implements UIUpdater {
         }
     }
 
+    /** While the first-time tour is running the 3:00 timer stands still. */
+    public static boolean timerPaused = false;
+
     public void update(Player player) {
         scoreLabel.setText("  " + score + "   ");
-        elapsedTime -= Gdx.graphics.getDeltaTime();
+        if (!timerPaused) elapsedTime -= Gdx.graphics.getDeltaTime();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
-        timerLabel.setText(String.format("     %02d:%02d", minutes, seconds));
+        timerLabel.setText("     " + twoDigits(minutes) + ":" + twoDigits(seconds));
         if (elapsedTime <= 0) {
             timesUp = true;
         }
@@ -177,12 +180,12 @@ public class GameUI implements UIUpdater {
 
         System.out.println(orderList.size());
 
-        Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+        Skin skin = new Skin(Gdx.files.internal("ui/ui-skin.json"));
 
-        Texture rowBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/row_background.png"));
+        Texture rowBackgroundTexture = new Texture(Gdx.files.internal("ui/row_background.png"));
         TextureRegionDrawable rowBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(rowBackgroundTexture));
 
-        Texture itemBackgroundTexture = new Texture(Gdx.files.internal("assets/ui/item_background.png"));
+        Texture itemBackgroundTexture = new Texture(Gdx.files.internal("ui/item_background.png"));
         TextureRegionDrawable itemBackgroundDrawable = new TextureRegionDrawable(new TextureRegion(itemBackgroundTexture));
 
         for (FoodOrder order : orderList) {
@@ -195,7 +198,7 @@ public class GameUI implements UIUpdater {
                 imageTable.setBackground(itemBackgroundDrawable);
                 imageTable.align(Align.center).pad(0);
 
-                Texture texture = new Texture(Gdx.files.internal("assets/food_sprites/foods/" + order.getFoodType().toString() + ".png"));
+                Texture texture = new Texture(Gdx.files.internal("food_sprites/foods/" + order.getFoodType().toString() + ".png"));
                 Image orderImage = new Image(texture);
                 imageTable.add(orderImage).pad(5).width(32f).height(32f);
 
@@ -242,7 +245,7 @@ public class GameUI implements UIUpdater {
     private void createEndScreen(String message) {
         stage.clear(); // Clear the stage
 
-        Skin skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json"));
+        Skin skin = new Skin(Gdx.files.internal("ui/ui-skin.json"));
 
         Table endScreenTable = new Table();
         endScreenTable.setFillParent(true);
@@ -257,7 +260,7 @@ public class GameUI implements UIUpdater {
 
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
-        Label timeLabel = new Label(String.format("Time: %02d:%02d", minutes, seconds), skin);
+        Label timeLabel = new Label("Time: " + twoDigits(minutes) + ":" + twoDigits(seconds), skin);
         endScreenTable.add(timeLabel).pad(20).row();
 
         TextButton returnButton = new TextButton("Return to Menu", skin);
@@ -268,5 +271,9 @@ public class GameUI implements UIUpdater {
             }
         });
         endScreenTable.add(returnButton).pad(20).row();
+    }
+
+    private static String twoDigits(int value) {
+        return value < 10 ? "0" + value : String.valueOf(value);
     }
 }

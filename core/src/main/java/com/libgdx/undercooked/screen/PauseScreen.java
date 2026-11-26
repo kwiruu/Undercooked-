@@ -34,21 +34,21 @@ public class PauseScreen implements Screen {
 
         Table root = new Table();
         root.setFillParent(true);
-        Texture backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
+        Texture backgroundTexture = new Texture(Gdx.files.internal("screens/title_screen/bg.png"));
         root.setBackground(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
         stage.addActor(root);
 
         root.pad(20);
 
         // Load button textures
-        Texture playTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/play.png"));
-        Texture playClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/play_clicked.png"));
-        Texture settingsTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/settings.png"));
-        Texture settingsClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/settings_clicked.png"));
-        Texture menuTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/menu.png"));
-        Texture menuClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/menu_clicked.png"));
-        Texture exitTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/exit.png"));
-        Texture exitClickedTexture = new Texture(Gdx.files.internal("assets/screens/pause_screen/exit_clicked.png"));
+        Texture playTexture = new Texture(Gdx.files.internal("screens/pause_screen/play.png"));
+        Texture playClickedTexture = new Texture(Gdx.files.internal("screens/pause_screen/play_clicked.png"));
+        Texture settingsTexture = new Texture(Gdx.files.internal("screens/pause_screen/settings.png"));
+        Texture settingsClickedTexture = new Texture(Gdx.files.internal("screens/pause_screen/settings_clicked.png"));
+        Texture menuTexture = new Texture(Gdx.files.internal("screens/pause_screen/menu.png"));
+        Texture menuClickedTexture = new Texture(Gdx.files.internal("screens/pause_screen/menu_clicked.png"));
+        Texture exitTexture = new Texture(Gdx.files.internal("screens/pause_screen/exit.png"));
+        Texture exitClickedTexture = new Texture(Gdx.files.internal("screens/pause_screen/exit_clicked.png"));
 
         // Create ImageButtons
         ImageButton startButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(playTexture)),

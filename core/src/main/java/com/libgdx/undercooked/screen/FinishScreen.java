@@ -47,7 +47,7 @@ public class FinishScreen implements Screen {
         this.font = new BitmapFont();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.setToOrtho(false);
-        this.skin = new Skin(Gdx.files.internal("assets/ui/ui-skin.json")); // Initialize the skin
+        this.skin = new Skin(Gdx.files.internal("ui/ui-skin.json")); // Initialize the skin
         this.random = new Random();
         this.context = context;
     }
@@ -57,10 +57,10 @@ public class FinishScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        winTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/youwin_text.png"));
-        loseTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/youlose_text.png"));
-        backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
-        scorebox = new Texture(Gdx.files.internal("assets/screens/title_screen/score-box.png"));
+        winTexture = new Texture(Gdx.files.internal("screens/title_screen/youwin_text.png"));
+        loseTexture = new Texture(Gdx.files.internal("screens/title_screen/youlose_text.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("screens/title_screen/bg.png"));
+        scorebox = new Texture(Gdx.files.internal("screens/title_screen/score-box.png"));
 
         scoreLabel = new Label("", skin);
         scoreLabel.setPosition(Gdx.graphics.getWidth() / 2f - 30, Gdx.graphics.getHeight() / 2f-50);
@@ -82,7 +82,7 @@ public class FinishScreen implements Screen {
 
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
             context.setScreen(ScreenType.SELECTMAP);
             finishGame();
         }
@@ -115,14 +115,14 @@ public class FinishScreen implements Screen {
             scoreLabel.setText("Score: " + random.nextInt(1000));
             int randomMinutes = random.nextInt(60);
             int randomSeconds = random.nextInt(60);
-            String formattedRandomTime = String.format("Time: %02d:%02d", randomMinutes, randomSeconds);
+            String formattedRandomTime = "Time: " + twoDigits(randomMinutes) + ":" + twoDigits(randomSeconds);
             timeLabel.setText(formattedRandomTime);
         } else {
             // Display the actual score and elapsed time
             scoreLabel.setText("Score: " + score);
             int minutes = (int) elapsedTime / 60;
             int seconds = (int) elapsedTime % 60;
-            String formattedTime = String.format("Time: %02d:%02d", minutes, seconds);
+            String formattedTime = "Time: " + twoDigits(minutes) + ":" + twoDigits(seconds);
             timeLabel.setText(formattedTime);
         }
 
@@ -160,5 +160,9 @@ public class FinishScreen implements Screen {
         backgroundTexture.dispose();
         skin.dispose();
         score = 0;
+    }
+
+    private static String twoDigits(int value) {
+        return value < 10 ? "0" + value : String.valueOf(value);
     }
 }

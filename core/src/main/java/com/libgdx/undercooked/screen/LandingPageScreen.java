@@ -20,12 +20,13 @@ import com.libgdx.undercooked.Main;
 import com.libgdx.undercooked.AudioManager.MainMenuSound;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
+import database.GameData;
 import database.HighScore;
-import database.SQLOperations;
+import database.Leaderboard;
 
 import java.util.List;
 
-import static database.SQLOperations.userSignIn;
+import static database.GameData.userSignIn;
 
 public class LandingPageScreen implements Screen {
     private final Main context;
@@ -61,10 +62,10 @@ public class LandingPageScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        imgTexture = new Texture(Gdx.files.internal("assets/sprites_raw/login_box2.png"));
+        imgTexture = new Texture(Gdx.files.internal("sprites_raw/login_box2.png"));
 
-        Texture blockCloud1Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds1.png"));
-        Texture blockCloud2Texture = new Texture(Gdx.files.internal("assets/screens/title_screen/block_clouds2.png"));
+        Texture blockCloud1Texture = new Texture(Gdx.files.internal("screens/title_screen/block_clouds1.png"));
+        Texture blockCloud2Texture = new Texture(Gdx.files.internal("screens/title_screen/block_clouds2.png"));
 
         blockClouds1 = new Sprite(blockCloud1Texture);
         blockClouds2 = new Sprite(blockCloud2Texture);
@@ -84,9 +85,9 @@ public class LandingPageScreen implements Screen {
             .target(Gdx.graphics.getWidth())
             .start(tweenManager);
 
-        skin = new Skin(Gdx.files.internal("assets/metal-ui.json"));
-        backgroundTexture = new Texture(Gdx.files.internal("assets/screens/title_screen/bg.png"));
-        landingBox = new Texture(Gdx.files.internal("assets/screens/title_screen/landing_box.png"));
+        skin = new Skin(Gdx.files.internal("metal-ui.json"));
+        backgroundTexture = new Texture(Gdx.files.internal("screens/title_screen/bg.png"));
+        landingBox = new Texture(Gdx.files.internal("screens/title_screen/landing_box.png"));
 
         Table root = new Table();
         root.setFillParent(true);
@@ -145,6 +146,8 @@ public class LandingPageScreen implements Screen {
                     }
 
                     if (userSignIn(selectedUser)) {
+                        // Use the cleaned-up name that was actually saved.
+                        username = GameData.cleanName(selectedUser);
                         context.setScreen(ScreenType.SELECTMAP);
                     } else {
                         Dialog warningDialog = new Dialog("Warning", skin);
@@ -191,7 +194,7 @@ public class LandingPageScreen implements Screen {
 
     public void setupMapButtons(Skin skin) {
         mapTable.clear();
-        mapTable.add(new Label("HALL OF FAME:", skin)).pad(20f).left().row();
+        mapTable.add(new Label("WORLD HALL OF FAME:", skin)).pad(20f).left().row();
 
         for (int i = 1; i <= 5; i++) {
             final int mapNumber = i;
@@ -209,26 +212,51 @@ public class LandingPageScreen implements Screen {
         }
     }
 
-    private void showHighScoresDialog(int mapId) {
-        List<HighScore> highScores = SQLOperations.getTopHighScores(mapId);
-
-        Dialog dialog = new Dialog("Top 10 High Scores", skin);
-        dialog.getContentTable().add(new Label("Username", skin)).pad(10);
-        dialog.getContentTable().add(new Label("Score", skin)).pad(10);
-        dialog.getContentTable().row();
-
-        for (HighScore highScore : highScores) {
-            dialog.getContentTable().add(new Label(highScore.getUserName(), skin)).pad(10);
-            dialog.getContentTable().add(new Label(String.valueOf(highScore.getHighScore()), skin)).pad(10);
-            dialog.getContentTable().row();
-        }
-
+    private void showHighScoresDialog(final int mapId) {
+        final Dialog dialog = new Dialog("Map " + mapId + " - Top 10", skin);
+        final Table content = dialog.getContentTable();
+        content.add(new Label("Loading...", skin)).pad(10);
         dialog.button("Close", true);
         dialog.show(stage);
+
+        // The leaderboard is online, so the scores arrive a moment later and fill in the open dialog.
+        Leaderboard.fetchTopScores(mapId, new Leaderboard.Callback() {
+            @Override
+            public void onResult(List<HighScore> highScores) {
+                content.clear();
+                if (highScores.isEmpty()) {
+                    content.add(new Label("No scores yet. Be the first!", skin)).pad(10);
+                } else {
+                    content.add(new Label("#", skin)).pad(10);
+                    content.add(new Label("Player", skin)).pad(10);
+                    content.add(new Label("Score", skin)).pad(10);
+                    content.row();
+                    int rank = 1;
+                    for (HighScore highScore : highScores) {
+                        content.add(new Label(String.valueOf(rank++), skin)).pad(6);
+                        content.add(new Label(highScore.getUserName(), skin)).pad(6).left();
+                        content.add(new Label(String.valueOf(highScore.getHighScore()), skin)).pad(6);
+                        content.row();
+                    }
+                }
+                dialog.pack();
+                dialog.setPosition(Math.round((stage.getWidth() - dialog.getWidth()) / 2f),
+                    Math.round((stage.getHeight() - dialog.getHeight()) / 2f));
+            }
+
+            @Override
+            public void onError(String message) {
+                content.clear();
+                content.add(new Label(message, skin)).pad(10);
+                dialog.pack();
+                dialog.setPosition(Math.round((stage.getWidth() - dialog.getWidth()) / 2f),
+                    Math.round((stage.getHeight() - dialog.getHeight()) / 2f));
+            }
+        });
     }
 
     private void loadUserSelectBoxData() {
-        List<String> users = SQLOperations.getAccounts();
+        List<String> users = GameData.getAccounts();
         users.add(0, "Select a user");
         userSelectBox.setItems(users.toArray(new String[0]));
         userSelectBox.setSelected("Select a user");

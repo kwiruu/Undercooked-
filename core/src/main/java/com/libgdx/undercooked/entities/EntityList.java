@@ -201,6 +201,10 @@ public class EntityList {
         }
     }
 
+    public Array<Station> getStations() {
+        return stationArray;
+    }
+
     public Station pointStation (Vector2 v2) {
         Rectangle r;
         float displacement = 48F;

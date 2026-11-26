@@ -3,7 +3,7 @@ package com.libgdx.undercooked.AudioManager;
 public class CookingSound extends BaseSound {
 
     public CookingSound() {
-        super("assets/audio/cookingSound.wav");
+        super("audio/cookingSound.mp3");
     }
     @Override
     public void run() {

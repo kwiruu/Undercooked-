@@ -3,6 +3,8 @@
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 Created for the CSIT228 Object Oriented Programming 2 Final Capstone Project.
 
+### ▶ [Play it in your browser](https://undercooked-nshf.onrender.com/)
+
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
 <p align="center">
@@ -24,14 +26,15 @@ This project was generated with a template including simple application launcher
       
 ## Requirements
 - `IntelliJ` : Needed for running the base code.
-- `Xampp` : Main database handler (name the database `dbundercooked`).
-- `jdk-21` : This version is needed to run.
+- `jdk-17` or newer (`jdk-21` works).
+- No database server needed anymore. Profiles, unlocked maps and personal bests are saved on the player's device, and the world leaderboard is online (see below).
 
 ## Platforms
 - `intellij`: Main IDE to run the software.
 - `core`: Main module with the application logic shared by all platforms.
 - `lwjgl3`: Primary desktop platform using LWJGL3.
-- `xampp`: For cross-platform server database for the informations.
+- `teavm`: Browser platform. TeaVM turns the Java code into JavaScript + WebGL.
+- `supabase`: Hosts the online World Hall of Fame (top 10 per map).
 - `aseprite`: Pixel art editor used for animation and static sprites.
 - `tiled`: Mapping the whole maptile and tilesets.
 
@@ -86,8 +89,17 @@ Useful Gradle tasks and flags:
 - `idea`: generates IntelliJ project data.
 - `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/lib`.
 - `lwjgl3:run`: starts the application.
+- `teavm:build`: builds the browser version into `teavm/build/dist/webapp`. To play it locally, serve that folder with any static web server, e.g. `npx serve teavm/build/dist/webapp`.
 - `test`: runs unit tests (if any).
-- `java connector`: needed to communicate to the xampp.
+
+When running from IntelliJ, set the run configuration's working directory to the `assets` folder (asset paths are relative to it, which is what the browser version needs).
+
+## Web version and leaderboard
+
+- Every push to `master` builds the game with GitHub Actions (`.github/workflows/web.yml`) and publishes the finished site to the `web-build` branch. Render serves that branch as a static site and redeploys whenever it changes.
+- The browser downloads all assets before the game starts, so keep `assets/` lean. Audio is MP3, and editor files (`.aseprite`, `.tpproj`, `github-icons/`) are left out of the web build.
+- Saved data (`core/src/main/java/database/GameData.java`) uses libGDX `Preferences`: browser storage on the web, a file in your user folder on desktop.
+- The World Hall of Fame (`database/Leaderboard.java`) calls two Supabase database functions over HTTP: `undercooked_submit_score` (keeps each player's best per map and rejects impossible scores) and `undercooked_top_scores`. The key in that file is Supabase's public "publishable" key; on its own it can only call those two functions.
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
