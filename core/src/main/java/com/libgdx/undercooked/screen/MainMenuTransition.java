@@ -46,6 +46,10 @@ public class MainMenuTransition implements Screen {
 
 
         batch = new SpriteBatch();
+        if (labelFont == null) {
+            labelFont = new com.badlogic.gdx.graphics.g2d.BitmapFont(Gdx.files.internal("fonts/Text_font_white.fnt"));
+            labelFont.setUseIntegerPositions(true);
+        }
         tweenManager = new TweenManager(); // Ensure tweenManager is initialized here
         Tween.registerAccessor(Sprite.class, new SpriteAccessor()); // This should be after tweenManager initialization
 
@@ -188,6 +192,11 @@ public class MainMenuTransition implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                // A click works like "press any key" on the title screen.
+                if (!buttonsVisible && initialAnimationComplete) {
+                    keyPressedSinceLastFrame = true;
+                    return true;
+                }
                 if (buttonsVisible) {
                     screenY = Gdx.graphics.getHeight() - screenY; // Invert Y coordinate
                     if (playButton.getBoundingRectangle().contains(screenX, screenY)) {
@@ -210,10 +219,10 @@ public class MainMenuTransition implements Screen {
                         startTransitionAnimation(); // Start the transition animation
                         return true;
                     }
-                    if (exitButton.getBoundingRectangle().contains(screenX, screenY)) {
+                    if (showExit() && exitButton.getBoundingRectangle().contains(screenX, screenY)) {
                         exitButton.setTexture(exitClickedTexture);
                         revertTexture(exitButton, exitTexture);
-                        startTransitionAnimation(); // Start the transition animation
+                        Gdx.app.exit();
                         return true;
                     }
                 }
@@ -225,6 +234,32 @@ public class MainMenuTransition implements Screen {
 
     }
 
+
+    private com.badlogic.gdx.graphics.g2d.BitmapFont labelFont;
+    private final com.badlogic.gdx.graphics.g2d.GlyphLayout labelLayout = new com.badlogic.gdx.graphics.g2d.GlyphLayout();
+
+    /** A browser tab can't be closed by the game, so the Quit button only exists on desktop. */
+    private static boolean showExit() {
+        return Gdx.app.getType() != com.badlogic.gdx.Application.ApplicationType.WebGL;
+    }
+
+    private boolean isHovered(Sprite button) {
+        float mx = Gdx.input.getX(), my = Gdx.graphics.getHeight() - Gdx.input.getY();
+        return button.getBoundingRectangle().contains(mx, my);
+    }
+
+    /** Draws an icon button with a hover highlight and, if given, a text label to its right. */
+    private void drawMenuButton(Sprite button, String label) {
+        boolean over = isHovered(button);
+        button.setColor(over ? 1f : 0.92f, over ? 1f : 0.92f, over ? 1f : 0.92f, 1f);
+        button.draw(batch);
+        if (label == null || labelFont == null) return;
+        labelFont.getData().setScale(0.9f);
+        labelFont.setColor(1f, 1f, 1f, over ? 1f : 0.85f);
+        labelLayout.setText(labelFont, label);
+        labelFont.draw(batch, labelLayout, button.getX() + button.getWidth() + 14,
+            button.getY() + button.getHeight() / 2f + labelLayout.height / 2f);
+    }
 
     private void revertTexture(final Sprite button, final Texture originalTexture) {
         Timer.schedule(new Timer.Task() {
@@ -371,10 +406,19 @@ public class MainMenuTransition implements Screen {
         pressSprite.draw(batch);
 
         if (buttonsVisible) {
-            playButton.draw(batch);
-            settingsButton.draw(batch);
-            exitButton.draw(batch);
-            profileButton.draw(batch);
+            drawMenuButton(playButton, "Play");
+            drawMenuButton(settingsButton, "Settings");
+            if (showExit()) drawMenuButton(exitButton, "Quit");
+            drawMenuButton(profileButton, null);
+            if (labelFont != null) {
+                // Profiles button sits bottom-right: put its label to the left of it.
+                labelFont.getData().setScale(0.8f);
+                boolean over = isHovered(profileButton);
+                labelFont.setColor(1f, 1f, 1f, over ? 1f : 0.85f);
+                labelLayout.setText(labelFont, "Profiles");
+                labelFont.draw(batch, labelLayout, profileButton.getX() - labelLayout.width - 12,
+                    profileButton.getY() + profileButton.getHeight() / 2f + labelLayout.height / 2f);
+            }
         }
 
         blockClouds2.draw(batch);

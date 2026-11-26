@@ -31,6 +31,9 @@ public class GameScreen extends ScreenAdapter {
     private FitViewport viewport;
     private GameUI gameUI;
     private static GameManager gameManager;
+    private static TourOverlay tour;
+    /** Set by the map screen's "How to play" button to replay the tour even if it was seen before. */
+    public static boolean forceTour = false;
     private float elapsedTime = 0f;
 
     public GameScreen(final Main context) {
@@ -44,6 +47,10 @@ public class GameScreen extends ScreenAdapter {
             gameUI = new GameUI(context);
             // Pass the Main context to the GameManager
             gameManager = new GameManager(context, gameUI);
+            String user = getUsername();
+            boolean runTour = forceTour || (mapId == 1 && !hasSeenTour(user));
+            forceTour = false;
+            tour = new TourOverlay(gameManager, viewport, user, runTour);
             Gdx.input.setInputProcessor(gameUI.getStage());
             debugRenderer = new Box2DDebugRenderer();
         }
@@ -71,6 +78,7 @@ public class GameScreen extends ScreenAdapter {
             gameManager.render(currentFrame);
             batch.end();
             gameUI.render();
+            if (tour != null) tour.render();
         } catch (NullPointerException e) {
             // Handle exception if gameManager is null
             Gdx.app.log("GameScreen","Game Ended!");
@@ -84,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.app.log("GameScreen"," : "+score);
         MapManager.tmr.setView(camera);
         gameUI.update(gameManager.getPlayerManager());
+        if (tour != null) tour.update(deltaTime);
         if (timesUp || Orders.noOrders) {
             Gdx.app.log("GameScreen", " : "+ timesUp + " " + Orders.noOrders);
             if (gameManager.getWin()) {
@@ -123,6 +132,10 @@ public class GameScreen extends ScreenAdapter {
         mapRunning = false;
         gameManager.dispose();
         gameManager = null;
+        if (tour != null) {
+            tour.dispose();
+            tour = null;
+        }
         MapSound.stop();
         mapId = 0;
         Orders.noOrders = false;

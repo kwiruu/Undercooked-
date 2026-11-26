@@ -82,7 +82,7 @@ public class FinishScreen implements Screen {
 
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
             context.setScreen(ScreenType.SELECTMAP);
             finishGame();
         }

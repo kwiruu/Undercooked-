@@ -154,9 +154,12 @@ public class GameUI implements UIUpdater {
         }
     }
 
+    /** While the first-time tour is running the 3:00 timer stands still. */
+    public static boolean timerPaused = false;
+
     public void update(Player player) {
         scoreLabel.setText("  " + score + "   ");
-        elapsedTime -= Gdx.graphics.getDeltaTime();
+        if (!timerPaused) elapsedTime -= Gdx.graphics.getDeltaTime();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText("     " + twoDigits(minutes) + ":" + twoDigits(seconds));

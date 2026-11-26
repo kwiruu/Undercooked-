@@ -70,5 +70,28 @@ public class TeaVMBuilder {
         if (!TeaBuilder.build(tool)) {
             throw new IllegalStateException("TeaVM build failed, see the errors above.");
         }
+        scaleCanvasToWindow(new File(config.webappPath, "webapp/index.html"));
+    }
+
+    /**
+     * The game always runs at 1400x800 (every menu is laid out for that size), but the page used to
+     * show it at that exact size, with black bars or scrollbars on other screens. This makes the
+     * canvas scale up or down to fill the browser window while keeping its shape, with crisp pixels.
+     * Mouse input still lines up because the backend converts clicks from page to canvas pixels.
+     */
+    private static void scaleCanvasToWindow(File index) throws IOException {
+        if (!index.exists()) {
+            System.err.println("index.html not found at " + index + ", canvas scaling skipped");
+            return;
+        }
+        String html = new String(java.nio.file.Files.readAllBytes(index.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+        String css = "<style>\n"
+            + "      body { display: flex; background: #1b1820; }\n"
+            + "      body > div { display: flex; width: 100vw; height: 100vh; align-items: center; justify-content: center; }\n"
+            + "      #canvas { display: block; width: min(100vw, calc(100vh * 1.75)); height: min(100vh, calc(100vw / 1.75));\n"
+            + "                image-rendering: pixelated; image-rendering: crisp-edges; outline: none; }\n"
+            + "    </style>\n</head>";
+        html = html.replaceFirst("</head>", java.util.regex.Matcher.quoteReplacement(css));
+        java.nio.file.Files.write(index.toPath(), html.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
 }

@@ -119,6 +119,10 @@ public class GameManager implements Disposable {
         return mapManager;
     }
 
+    public EntityList getEntityList() {
+        return entityList;
+    }
+
     public Orders getOrders() {
         return orders;
     }

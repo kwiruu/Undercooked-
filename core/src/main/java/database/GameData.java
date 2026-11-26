@@ -110,6 +110,18 @@ public final class GameData {
         Leaderboard.submitScore(getPlayerId(username), username, mapId, score);
     }
 
+    /** Whether this profile has finished or skipped the first-time kitchen tour. */
+    public static boolean hasSeenTour(String username) {
+        return prefs().getBoolean(tourKey(username), false);
+    }
+
+    public static void setSeenTour(String username) {
+        prefs().putBoolean(tourKey(username), true);
+        prefs().flush();
+    }
+
+    private static String tourKey(String name) { return "tourDone." + name; }
+
     public static int getPersonalBest(String username, int mapId) {
         return prefs().getInteger(bestKey(username, mapId), 0);
     }
